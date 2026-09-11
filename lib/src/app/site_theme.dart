@@ -10,7 +10,18 @@ import 'package:flutter/material.dart';
 /// system preference already matches.
 class SiteThemeController extends ChangeNotifier {
   /// Creates a controller, dark by default.
-  SiteThemeController({ThemeMode initial = ThemeMode.dark}) : _mode = initial;
+  SiteThemeController({ThemeMode? initial}) : _mode = initial ?? fromUrl();
+
+  /// Reads an optional `?theme=light` override from the URL.
+  ///
+  /// Dark remains the default for anyone who just opens the site; this exists
+  /// so a light-mode screenshot can be captured head-lessly and so a link can
+  /// point at a specific treatment. Anything other than `light` — including no
+  /// query at all, and every non-web platform, where `Uri.base` is a file
+  /// path — resolves to dark.
+  static ThemeMode fromUrl() => Uri.base.queryParameters['theme'] == 'light'
+      ? ThemeMode.light
+      : ThemeMode.dark;
 
   ThemeMode _mode;
 

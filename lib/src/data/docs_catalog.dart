@@ -928,6 +928,13 @@ class SiteThemeController extends ChangeNotifier {
     notifyListeners();
   }
 }''', filename: 'lib/src/app/site_theme.dart'),
+      DocParagraph(
+        'There is one escape hatch: appending ?theme=light to any URL on this '
+        'site boots into the light theme. That is not a preference store — it '
+        'exists so a light-mode screenshot can be captured head-lessly and so '
+        'a link can point at a specific treatment. Anyone who simply opens the '
+        'site still gets dark.',
+      ),
       DocCallout(
         title: 'The crossfade is free',
         body:
