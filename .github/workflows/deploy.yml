@@ -1,0 +1,74 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: 3.44.0
+
+# Required by actions/deploy-pages: `pages` to publish, `id-token` for the
+# OIDC token it exchanges with the Pages service.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; queue rather than cancel, so a push that lands
+# during a deploy still ends up live.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # The site is served from https://rlphjyson.github.io/cairn_site/, so
+      # every asset URL has to resolve against that prefix.
+      - name: Build
+        run: flutter build web --release --base-href /cairn_site/
+
+      # GitHub Pages has no SPA rewrite rule, so a hard refresh on
+      # /cairn_site/docs/theming would 404. Pages serves 404.html for any
+      # unmatched path; because that document carries the same <base href>,
+      # the app boots, reads window.location.pathname and routes correctly.
+      # This is what makes usePathUrlStrategy() viable here instead of falling
+      # back to hash URLs.
+      - name: Add SPA fallback
+        run: cp build/web/index.html build/web/404.html
+
+      # Pages would otherwise run the output through Jekyll, which ignores
+      # files and directories beginning with an underscore.
+      - name: Disable Jekyll
+        run: touch build/web/.nojekyll
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

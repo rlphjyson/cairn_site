@@ -1,0 +1,56 @@
+name: cairn_site
+description: The marketing and documentation site for Cairn UI, built with Cairn UI.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.0
+
+dependencies:
+  # The whole point of this repository: the site's own chrome — nav, buttons,
+  # cards, tabs, tables, dialogs — is built from the library it documents.
+  #
+  # Pinned to an exact commit rather than a branch. A floating `ref: main` would
+  # let an upstream push silently change what this site renders, which would
+  # make a CI failure here indistinguishable from a library regression.
+  cairn_ui:
+    git:
+      url: https://github.com/rlphjyson/cairn_ui.git
+      ref: 7abb0cc70dea5daaeefda0a93ae94e0c0d2bf737
+  fl_chart: ^1.2.0
+  flutter:
+    sdk: flutter
+  # For usePathUrlStrategy(); see the comment in lib/main.dart.
+  flutter_web_plugins:
+    sdk: flutter
+  # Pinned below 18.x deliberately: go_router 18 pulls flutter_localizations,
+  # intl, material_ui and cupertino_ui into the graph, which is dead weight in a
+  # web bundle for a site that ships one locale and no Cupertino widgets.
+  go_router: ^17.5.0
+  url_launcher: ^6.3.2
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  fonts:
+    # Geist is the typeface shadcn/ui's own site ships, and the one Cairn's
+    # golden tests are pinned to. Bundling it here means the site renders with
+    # the same metrics the library was measured against instead of whatever
+    # sans-serif the visitor's browser happens to default to.
+    #
+    # SIL Open Font License 1.1 — see fonts/OFL.txt and NOTICE.md.
+    - family: Geist
+      fonts:
+        - asset: fonts/Geist-Regular.ttf
+          weight: 400
+        - asset: fonts/Geist-Medium.ttf
+          weight: 500
+        - asset: fonts/Geist-SemiBold.ttf
+          weight: 600
+        - asset: fonts/Geist-Bold.ttf
+          weight: 700

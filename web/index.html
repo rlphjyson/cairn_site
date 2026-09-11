@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Replaced at build time by `flutter build web --base-href /cairn_site/`. -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <!--
+    A client-rendered Flutter web app has no server-rendered HTML for a crawler
+    or a link unfurler to read, so these tags are the whole SEO and social
+    surface. Per-route titles are set at runtime via
+    SystemChrome.setApplicationSwitcherDescription; see lib/src/app/page_title.dart.
+  -->
+  <title>Cairn UI — shadcn/ui, measured and rebuilt in Flutter</title>
+  <meta name="description" content="Cairn UI is a Flutter component library rebuilt to shadcn/ui's measurements: the same spacing, radii, colour tokens, type scale and focus-ring treatment, held in place by golden tests. 45 components, no runtime dependencies beyond Flutter.">
+  <meta name="author" content="rlphjyson">
+  <link rel="canonical" href="https://rlphjyson.github.io/cairn_site/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Cairn UI">
+  <meta property="og:title" content="Cairn UI — shadcn/ui, measured and rebuilt in Flutter">
+  <meta property="og:description" content="45 components with dimensionally accurate tokens extracted from shadcn/ui's real source. This entire site is built with the library it documents.">
+  <meta property="og:url" content="https://rlphjyson.github.io/cairn_site/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Cairn UI">
+  <meta name="twitter:description" content="shadcn/ui, measured and rebuilt in Flutter.">
+
+  <!-- `--background` in the dark theme, oklch(0.145 0 0). -->
+  <meta name="theme-color" content="#0A0A0A">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Cairn UI">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    /*
+      The site boots into the dark theme, so the document does too. Without
+      this the browser paints its default white page for the few hundred
+      milliseconds before the Flutter canvas appears, which reads as a flash
+      of the wrong theme.
+    */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #0A0A0A;
+      color: #FAFAFA;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    #boot {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-direction: column;
+      transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* The wordmark: three stones, narrowing upwards. */
+    #boot .stone {
+      background-color: #FAFAFA;
+      border-radius: 3px;
+      opacity: 0.28;
+      animation: settle 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+    #boot .s1 { width: 44px; height: 12px; animation-delay: 0ms; }
+    #boot .s2 { width: 32px; height: 12px; animation-delay: 160ms; }
+    #boot .s3 { width: 18px; height: 12px; animation-delay: 320ms; }
+
+    @keyframes settle {
+      0%, 100% { opacity: 0.18; }
+      50%      { opacity: 0.75; }
+    }
+
+    #boot .label {
+      margin-top: 14px;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      color: #A1A1A1;
+    }
+  </style>
+</head>
+<body>
+  <div id="boot">
+    <div class="stone s3"></div>
+    <div class="stone s2"></div>
+    <div class="stone s1"></div>
+    <div class="label">Cairn UI</div>
+  </div>
+
+  <noscript>
+    <div style="padding: 40px; max-width: 640px; margin: 0 auto;">
+      <h1>Cairn UI</h1>
+      <p>
+        A Flutter component library rebuilt to shadcn/ui's measurements — the
+        same spacing, radii, colour tokens, type scale and focus-ring
+        treatment, held in place by golden tests. 45 components, no runtime
+        dependencies beyond Flutter itself.
+      </p>
+      <p>
+        This site is a Flutter web application and needs JavaScript. The source
+        is at
+        <a href="https://github.com/rlphjyson/cairn_ui" style="color:#FAFAFA">github.com/rlphjyson/cairn_ui</a>.
+      </p>
+    </div>
+  </noscript>
+
+  <script>
+    // Fade the boot placeholder out once Flutter has painted its first frame.
+    window.addEventListener('flutter-first-frame', function () {
+      var boot = document.getElementById('boot');
+      if (!boot) return;
+      boot.style.opacity = '0';
+      window.setTimeout(function () { boot.remove(); }, 220);
+    });
+  </script>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>

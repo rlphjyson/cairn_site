@@ -1,0 +1,7 @@
+# Normalise to LF in the repository so `dart format --set-exit-if-changed`
+# behaves identically on Windows developer machines and the Linux CI runner.
+* text=auto eol=lf
+
+*.png binary
+*.ttf binary
+*.otf binary

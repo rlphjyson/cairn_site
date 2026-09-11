@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Pinned rather than tracking `stable`, for the same reason cairn_ui pins it:
+# this repository builds against a library whose appearance is locked by golden
+# images, and a Flutter upgrade can change text shaping. Bumping the toolchain
+# should be a deliberate commit, not something that happens overnight.
+env:
+  FLUTTER_VERSION: 3.44.0
+
+jobs:
+  verify:
+    name: Analyze, format and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Verify formatting
+        run: dart format --set-exit-if-changed .
+
+      - name: Analyze
+        run: flutter analyze --fatal-infos --fatal-warnings
+
+      - name: Test
+        run: flutter test --reporter expanded
+
+  build:
+    name: Build web
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # The same command the deploy workflow runs, so a broken release build
+      # fails on a pull request rather than on main.
+      - name: Build release bundle
+        run: flutter build web --release --base-href /cairn_site/

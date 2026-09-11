@@ -1,0 +1,122 @@
+# Cairn Site
+
+The marketing and documentation site for
+[Cairn UI](https://github.com/rlphjyson/cairn_ui) — built as a Flutter web app,
+**with Cairn UI itself**.
+
+**Live: <https://rlphjyson.github.io/cairn_site/>**
+
+---
+
+## The point
+
+A component library that only ever shows its components in isolation has not
+proved very much. A grid of buttons on a grey background tells you the buttons
+render; it tells you nothing about whether the library composes, whether its
+tokens hold up across a whole screen, or whether its overlays survive being
+mounted fifty at a time and then navigated away from.
+
+So this repository adds `cairn_ui` as a dependency and builds its own chrome out
+of it:
+
+| Cairn widget | What it does here |
+| --- | --- |
+| `CairnButton` | Every nav link, CTA, toolbar control and pagination arrow |
+| `CairnTabs` | The Preview / Code toggle on every example, and the category filter on `/components` |
+| `CairnCommand` | The Ctrl+K palette, wired to the real routes |
+| `CairnSheet` | The navigation drawer below 1024px |
+| `CairnDialog` | The snippet viewer behind each catalogue card's **Code** button |
+| `CairnToast` | The confirmation after a code block is copied |
+| `CairnTooltip` | The theme toggle, the copy button and the pinned-commit badge |
+| `CairnScrollArea` | Every page scroller, the docs sidebar and the "On this page" rail |
+| `CairnDataTable` | The `/directory` index — sorting, filtering and pagination for free |
+| `CairnBreadcrumb` | Docs and component detail pages |
+| `CairnAlert` | Every callout in the documentation prose |
+| `CairnCard`, `CairnBadge`, `CairnInput`, `CairnSelect`, `CairnSeparator` | Everywhere |
+
+If a component regresses upstream, this site breaks. That is the point, and it
+is why the dependency is pinned to an exact commit rather than a branch.
+
+It has already paid for itself once: mounting all 45 components on one page and
+navigating away surfaced a latent crash in `CairnContextMenu`, which is now
+fixed upstream with a regression test.
+
+## Sections
+
+| Route | What it is |
+| --- | --- |
+| `/` | Landing page: hero, a bento grid of live component previews, the four design decisions, the dogfooding story, a live block |
+| `/docs/*` | Eight documentation pages with a sticky sidebar, an "On this page" rail with working anchors, and copyable code blocks |
+| `/components` | All 45 component modules — 50 cards, because five widgets ship inside a sibling's file — each a live, interactive preview |
+| `/components/:slug` | One component: preview/code panes, the measurement note, prev/next |
+| `/blocks` | Five composed screens: login, dashboard shell, settings, pricing, team roster |
+| `/charts` | Seven chart shapes on Cairn's token palette, and an honest note about why they are not Cairn components |
+| `/directory` | Every module, widget, block and doc page in one sortable table |
+| `/typeset` | The type scale as a live style guide, with three rhythm knobs over a prose specimen |
+
+## Running it
+
+```bash
+flutter pub get
+flutter test
+flutter analyze --fatal-infos --fatal-warnings
+
+# Debug mode is slow for a component-heavy page; build once and serve the
+# static output instead.
+flutter build web --release
+cd build/web && python -m http.server 8000
+```
+
+To reproduce the deployed build exactly, add `--base-href /cairn_site/` and
+serve from a parent directory whose `cairn_site/` folder is the output, with
+`404.html` copied from `index.html`.
+
+## How it is put together
+
+```
+lib/
+  main.dart                    usePathUrlStrategy + runApp
+  src/
+    app/       app, router, routes, theme controller, page titles, links
+    shell/     the header, the footer, the default page wrapper
+    pages/     one file per route
+    data/      the component, block and docs catalogues, and their previews
+    widgets/   code block, syntax highlighter, preview pane, bento grid, icons
+    charts/    the fl_chart adapter that speaks Cairn tokens
+```
+
+The catalogues in `lib/src/data/` are plain `const` lists. Every page, the
+command palette, the directory table and the footer all read from them, so a
+new component is one list entry rather than six edits — and
+`test/catalog_test.dart` asserts that nothing in them points at a route the
+router does not serve.
+
+## Notable decisions
+
+**Dark by default.** `SiteThemeController` starts at `ThemeMode.dark`, not
+`ThemeMode.system`, and the toggle only ever moves between the two explicit
+modes so it is never a no-op. The crossfade between them is free:
+`CairnTheme` implements `ThemeExtension.lerp`, and `MaterialApp` wraps the tree
+in an `AnimatedTheme`.
+
+**Real URLs.** `go_router` with `usePathUrlStrategy()`, so `/components/switch`
+and `/docs/theming` are shareable and survive a refresh. GitHub Pages has no SPA
+rewrite, so the deploy workflow copies `index.html` to `404.html`; Pages serves
+that for unmatched paths, the `<base href>` resolves the assets, and the router
+reads the real pathname.
+
+**Charts are fl_chart, restyled.** shadcn/ui's own charts are a thin
+`ChartContainer` over Recharts that injects `--chart-1` … `--chart-5`.
+Reproducing that decision in Flutter means doing the same thing rather than
+hand-painting axes inside a library whose contract is "no runtime dependencies
+beyond Flutter". `lib/src/charts/chart_theme.dart` is the adapter, and the
+Charts page says all of this out loud.
+
+**No icon font.** The glyphs the site needs that the library does not ship are
+drawn with a `CustomPainter` on Lucide's 24×24 grid, matching what Cairn does
+internally. The site ships no image assets at all.
+
+## Licence
+
+MIT — see [LICENSE](LICENSE). Third-party attribution is in
+[NOTICE.md](NOTICE.md).
