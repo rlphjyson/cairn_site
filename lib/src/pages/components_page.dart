@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../data/components_catalog.dart';
+import '../widgets/clickable_variant.dart';
 import '../widgets/code_block.dart';
 import '../widgets/site_icons.dart';
 import '../widgets/surfaces.dart';
@@ -224,6 +225,13 @@ class ComponentCard extends StatelessWidget {
               // data table is 560 wide — down into the card without clipping
               // them, and the scale transform still hit-tests correctly, so
               // the shrunken component stays interactive.
+              //
+              // Rendered read-only: `VariantSetView` with no `onSelected` is
+              // exactly the tree the preview used to return, with none of the
+              // detail page's hit-area padding or selection rings. A ring
+              // around a variant inside a card scaled to 60% would be fiddly to
+              // hit and would fight the card's own hover lift; the Code button
+              // below already covers the "just show me the snippet" case here.
               SizedBox(
                 height: 190,
                 child: DotGrid(
@@ -232,7 +240,10 @@ class ComponentCard extends StatelessWidget {
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.center,
-                      child: Builder(builder: entry.preview),
+                      child: Builder(
+                        builder: (BuildContext context) =>
+                            VariantSetView(set: entry.preview(context)),
+                      ),
                     ),
                   ),
                 ),

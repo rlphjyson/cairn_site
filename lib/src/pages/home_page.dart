@@ -9,6 +9,7 @@ import '../data/block_previews.dart';
 import '../data/component_previews.dart';
 import '../data/components_catalog.dart';
 import '../widgets/bento.dart';
+import '../widgets/clickable_variant.dart';
 import '../widgets/code_block.dart';
 import '../widgets/reveal.dart';
 import '../widgets/site_icons.dart';
@@ -228,7 +229,7 @@ class _BentoSection extends StatelessWidget {
                   label: 'Button',
                   caption: '6 variants, 8 sizes',
                   span: 2,
-                  child: Previews.button(context),
+                  child: VariantSetView(set: Previews.button(context)),
                 ),
                 BentoTile(
                   label: 'Card',
@@ -273,8 +274,8 @@ class _BentoSection extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     spacing: CairnSpacing.s5,
                     children: <Widget>[
-                      Previews.badge(context),
-                      Previews.avatar(context),
+                      VariantSetView(set: Previews.badge(context)),
+                      VariantSetView(set: Previews.avatar(context)),
                     ],
                   ),
                 ),
@@ -283,7 +284,7 @@ class _BentoSection extends StatelessWidget {
                   caption: 'fixed 7 x 6 grid',
                   span: 2,
                   height: 380,
-                  child: Previews.calendar(context),
+                  child: VariantSetView(set: Previews.calendar(context)),
                 ),
                 BentoTile(
                   label: 'Data Table',
@@ -299,13 +300,13 @@ class _BentoSection extends StatelessWidget {
                     CairnSpacing.s4,
                     CairnSpacing.s4,
                   ),
-                  child: Previews.dataTable(context),
+                  child: VariantSetView(set: Previews.dataTable(context)),
                 ),
                 BentoTile(
                   label: 'Tabs',
                   caption: 'filled and line variants',
                   span: 2,
-                  child: Previews.tabs(context),
+                  child: VariantSetView(set: Previews.tabs(context)),
                 ),
                 BentoTile(
                   label: 'Controls',
@@ -313,15 +314,18 @@ class _BentoSection extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     spacing: CairnSpacing.s5,
                     children: <Widget>[
-                      Previews.switchToggle(context),
-                      SizedBox(width: 200, child: Previews.slider(context)),
+                      VariantSetView(set: Previews.switchToggle(context)),
+                      SizedBox(
+                        width: 200,
+                        child: VariantSetView(set: Previews.slider(context)),
+                      ),
                     ],
                   ),
                 ),
                 BentoTile(
                   label: 'Toast',
                   caption: 'try one',
-                  child: Previews.toast(context),
+                  child: VariantSetView(set: Previews.toast(context)),
                 ),
               ],
             ),

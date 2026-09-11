@@ -52,7 +52,7 @@ fixed upstream with a regression test.
 | `/` | Landing page: hero, a bento grid of live component previews, the four design decisions, the dogfooding story, a live block |
 | `/docs/*` | Eight documentation pages with a sticky sidebar, an "On this page" rail with working anchors, and copyable code blocks |
 | `/components` | All 45 component modules — 50 cards, because five widgets ship inside a sibling's file — each a live, interactive preview |
-| `/components/:slug` | One component: preview/code panes, the design note, prev/next |
+| `/components/:slug` | One component: a preview where **every rendered instance is clickable** and reveals its own exact snippet, the quick-start example, the design note, prev/next |
 | `/blocks` | Five composed screens: login, dashboard shell, settings, pricing, team roster |
 | `/charts` | Seven chart shapes on Cairn's token palette, and an honest note about why they are not Cairn components |
 | `/directory` | Every module, widget, block and doc page in one sortable table |
@@ -96,6 +96,25 @@ new component is one list entry rather than six edits — and
 router does not serve.
 
 ## Notable decisions
+
+**Nobody should have to read the source.** A detail page used to render several
+configurations of a component and then show one generic snippet underneath, so
+a visitor who wanted the small destructive button had to reverse-engineer it.
+Every preview is now a `VariantSet` (`lib/src/data/variant_sample.dart`): a list
+of `VariantSample`s, each pairing a live widget with the complete, standalone
+code that reproduces *that* instance. Clicking a rendered widget rings it and
+opens its snippet in place, under the preview — 100 snippets across the 50
+catalogue entries, all of them written against the real public API rather than
+paraphrased.
+
+Two details in there are load-bearing. The selection wrapper uses a `Listener`
+rather than a `GestureDetector`, because a gesture detector would enter the
+arena and fight every component it wraps — a Slider drag, a Carousel swipe, a
+Tabs tap would each have to win against it; a listener only observes the pointer
+stream, so the wrapped widget behaves exactly as it does anywhere else. And the
+snippet opens *under* the preview instead of switching to the Code tab, because
+switching would throw away whatever the visitor was in the middle of doing to
+the live widget.
 
 **Dark by default.** `SiteThemeController` starts at `ThemeMode.dark`, not
 `ThemeMode.system`, and the toggle only ever moves between the two explicit

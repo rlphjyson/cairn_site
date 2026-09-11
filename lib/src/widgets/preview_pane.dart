@@ -5,13 +5,110 @@ import 'code_block.dart';
 import 'surfaces.dart';
 import 'syntax.dart';
 
-enum _Pane { preview, code }
+/// Which half of a pane is showing.
+enum PreviewTab {
+  /// The live widget.
+  preview,
 
-/// A live component preview with a Preview / Code toggle.
+  /// The snippet.
+  code,
+}
+
+/// The bordered canvas a live preview sits on.
 ///
-/// The toggle is a real [CairnTabs] — the same widget the catalogue documents,
-/// doing the site's own job. The preview surface is a bordered panel over a
-/// [DotGrid] so that transparent components still read as deliberate.
+/// Extracted so [PreviewPane] and `VariantPreviewPane` draw an identical
+/// surface rather than two that drift apart. A bordered panel over a [DotGrid],
+/// so that transparent components still read as deliberate.
+class PreviewSurface extends StatelessWidget {
+  /// Creates a surface around [child].
+  const PreviewSurface({
+    super.key,
+    required this.child,
+    this.minHeight = 240.0,
+    this.padding = const EdgeInsets.all(CairnSpacing.s8),
+    this.alignment = Alignment.center,
+    this.fillWidth = false,
+    this.minContentWidth = 640.0,
+  });
+
+  /// The live content.
+  final Widget child;
+
+  /// The minimum height of the surface.
+  final double minHeight;
+
+  /// Padding around the content.
+  final EdgeInsets padding;
+
+  /// Where the content sits inside the surface.
+  final Alignment alignment;
+
+  /// Whether the content should stretch to the surface's width.
+  final bool fillWidth;
+
+  /// The narrowest the content is ever laid out at.
+  final double minContentWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    final CairnTheme theme = CairnTheme.of(context);
+    final Widget body = Padding(padding: padding, child: child);
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        border: Border.all(color: theme.border),
+        borderRadius: BorderRadius.circular(theme.radiusScale.lg),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(theme.radiusScale.lg),
+        child: DotGrid(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: minHeight),
+            child: fillWidth
+                ? SizedBox(width: double.infinity, child: body)
+                : MinWidthScroller(
+                    minWidth: minContentWidth,
+                    alignment: alignment,
+                    child: body,
+                  ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The Preview / Code toggle, as a real [CairnTabs].
+///
+/// The same widget the catalogue documents, doing the site's own job.
+class PreviewTabs extends StatelessWidget {
+  /// Creates the toggle.
+  const PreviewTabs({super.key, required this.value, required this.onChanged});
+
+  /// The showing half.
+  final PreviewTab value;
+
+  /// Called when the visitor switches.
+  final ValueChanged<PreviewTab> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return CairnTabs<PreviewTab>(
+      value: value,
+      onChanged: onChanged,
+      tabs: const <CairnTab<PreviewTab>>[
+        CairnTab<PreviewTab>(value: PreviewTab.preview, label: Text('Preview')),
+        CairnTab<PreviewTab>(value: PreviewTab.code, label: Text('Code')),
+      ],
+    );
+  }
+}
+
+/// A live preview with a Preview / Code toggle over one fixed snippet.
+///
+/// Used by Blocks and Charts, where the preview is one composed thing rather
+/// than a set of addressable variants. Component detail pages use
+/// `VariantPreviewPane` instead.
 class PreviewPane extends StatefulWidget {
   /// Creates a pane.
   const PreviewPane({
@@ -65,24 +162,18 @@ class PreviewPane extends StatefulWidget {
 }
 
 class _PreviewPaneState extends State<PreviewPane> {
-  _Pane _pane = _Pane.preview;
+  PreviewTab _pane = PreviewTab.preview;
 
   @override
   Widget build(BuildContext context) {
-    final CairnTheme theme = CairnTheme.of(context);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Align(
           alignment: Alignment.centerLeft,
-          child: CairnTabs<_Pane>(
+          child: PreviewTabs(
             value: _pane,
-            onChanged: (_Pane v) => setState(() => _pane = v),
-            tabs: const <CairnTab<_Pane>>[
-              CairnTab<_Pane>(value: _Pane.preview, label: Text('Preview')),
-              CairnTab<_Pane>(value: _Pane.code, label: Text('Code')),
-            ],
+            onChanged: (PreviewTab v) => setState(() => _pane = v),
           ),
         ),
         const SizedBox(height: CairnSpacing.s4),
@@ -94,8 +185,18 @@ class _PreviewPaneState extends State<PreviewPane> {
             duration: CairnMotion.d150,
             switchInCurve: CairnMotion.easeOut,
             switchOutCurve: CairnMotion.easeIn,
-            child: _pane == _Pane.preview
-                ? _previewSurface(theme)
+            child: _pane == PreviewTab.preview
+                ? KeyedSubtree(
+                    key: const ValueKey<String>('preview'),
+                    child: PreviewSurface(
+                      minHeight: widget.minHeight,
+                      padding: widget.padding,
+                      alignment: widget.alignment,
+                      fillWidth: widget.fillWidth,
+                      minContentWidth: widget.minContentWidth,
+                      child: Builder(builder: widget.preview),
+                    ),
+                  )
                 : KeyedSubtree(
                     key: const ValueKey<String>('code'),
                     child: CodeBlock(
@@ -107,38 +208,6 @@ class _PreviewPaneState extends State<PreviewPane> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _previewSurface(CairnTheme theme) {
-    final Widget body = Padding(
-      padding: widget.padding,
-      child: Builder(builder: widget.preview),
-    );
-
-    return KeyedSubtree(
-      key: const ValueKey<String>('preview'),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          border: Border.all(color: theme.border),
-          borderRadius: BorderRadius.circular(theme.radiusScale.lg),
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(theme.radiusScale.lg),
-          child: DotGrid(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: widget.minHeight),
-              child: widget.fillWidth
-                  ? SizedBox(width: double.infinity, child: body)
-                  : MinWidthScroller(
-                      minWidth: widget.minContentWidth,
-                      alignment: widget.alignment,
-                      child: body,
-                    ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import '../widgets/syntax.dart';
 import 'component_previews.dart';
+import 'variant_sample.dart';
 
 /// One renderable piece of a documentation page.
 sealed class DocNode {
@@ -100,8 +101,11 @@ class DocPreview extends DocNode {
   /// Creates an embedded preview.
   const DocPreview(this.builder, {this.caption});
 
-  /// Builds the widget.
-  final WidgetBuilder builder;
+  /// Builds the widget, as the catalogue's own variant set.
+  ///
+  /// Rendered read-only here: a documentation page is making a point about one
+  /// behaviour, not offering a per-variant code browser.
+  final VariantsBuilder builder;
 
   /// A line under the preview.
   final String? caption;

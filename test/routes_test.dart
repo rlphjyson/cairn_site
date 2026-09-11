@@ -118,6 +118,11 @@ void main() {
       Routes.directory,
       Routes.typeset,
       Routes.docsIntroduction,
+      // A detail page too: the variant pane puts a hint line beside the
+      // Preview/Code tabs, which is the one row on it that can run out of
+      // width on a phone.
+      '/components/button',
+      '/components/data-table',
     ]) {
       testWidgets(location, (WidgetTester tester) async {
         await pumpSite(tester, location, surface: phone);

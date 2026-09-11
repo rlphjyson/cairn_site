@@ -5,9 +5,10 @@ import 'package:go_router/go_router.dart';
 import '../app/routes.dart';
 import '../app/site_theme.dart';
 import '../data/components_catalog.dart';
-import '../widgets/preview_pane.dart';
+import '../widgets/code_block.dart';
 import '../widgets/site_icons.dart';
 import '../widgets/surfaces.dart';
+import '../widgets/variant_preview_pane.dart';
 
 /// A single component's page: live preview, code, and the measurement note
 /// that explains why it is built the way it is.
@@ -64,7 +65,9 @@ class ComponentDetailPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: CairnSpacing.s8),
-          PreviewPane(preview: entry.preview, code: entry.code, minHeight: 260),
+          VariantPreviewPane(variants: entry.preview),
+          const SizedBox(height: CairnSpacing.s6),
+          _QuickStart(code: entry.code),
           if (entry.note != null) ...<Widget>[
             const SizedBox(height: CairnSpacing.s8),
             _Note(text: entry.note!),
@@ -123,6 +126,60 @@ class ComponentDetailPage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// The component's general orientation snippet, folded away by default.
+///
+/// The pane above it now answers "how do I reproduce *that*"; this answers
+/// "what does this component look like in an app at all". Closed by default so
+/// it does not compete with the per-variant code, and built from a real
+/// [CairnCollapsible] rather than an `ExpansionTile`.
+class _QuickStart extends StatefulWidget {
+  const _QuickStart({required this.code});
+
+  final String code;
+
+  @override
+  State<_QuickStart> createState() => _QuickStartState();
+}
+
+class _QuickStartState extends State<_QuickStart> {
+  bool _open = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final CairnTheme theme = CairnTheme.of(context);
+    return CairnCollapsible(
+      open: _open,
+      onToggle: () => setState(() => _open = !_open),
+      trigger: Padding(
+        padding: const EdgeInsets.symmetric(vertical: CairnSpacing.s2),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Text(
+                'Quick start snippet',
+                style: theme
+                    .textStyle(CairnTypography.sm)
+                    .copyWith(
+                      color: theme.foreground,
+                      fontWeight: CairnTypography.medium,
+                    ),
+              ),
+            ),
+            CairnIcon(
+              _open ? CairnIconData.chevronUp : CairnIconData.chevronDown,
+              color: theme.mutedForeground,
+            ),
+          ],
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(top: CairnSpacing.s2),
+        child: CodeBlock(widget.code, maxHeight: 360),
       ),
     );
   }

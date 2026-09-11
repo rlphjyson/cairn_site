@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import 'component_previews.dart';
+import 'variant_sample.dart';
 
 /// How the catalogue is grouped.
 ///
@@ -58,11 +59,21 @@ class ComponentEntry {
   /// A one-line summary, shown in the catalogue and the directory.
   final String description;
 
-  /// A realistic usage snippet.
+  /// A realistic "quick start" snippet for the component as a whole.
+  ///
+  /// Kept as the general orientation example — the one you would paste to get
+  /// going — now that the detail page shows a *per-instance* snippet for every
+  /// rendered variant. The catalogue grid's Code dialog and the detail page's
+  /// "Quick start" disclosure both read it.
   final String code;
 
-  /// Builds the live preview.
-  final WidgetBuilder preview;
+  /// Builds the live preview as individually addressable variants.
+  ///
+  /// Each [VariantSample] carries its own copy-pasteable snippet, which is what
+  /// makes the detail pages clickable: a visitor points at the exact instance
+  /// they want and gets exactly that code, rather than a multi-example block
+  /// they have to read [code] and edit down themselves.
+  final VariantsBuilder preview;
 
   /// Additional public widgets this component's source file exports.
   ///

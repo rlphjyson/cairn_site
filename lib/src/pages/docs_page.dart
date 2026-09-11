@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../app/site_theme.dart';
 import '../data/docs_catalog.dart';
 import '../shell/site_footer.dart';
+import '../widgets/clickable_variant.dart';
 import '../widgets/code_block.dart';
 import '../widgets/site_icons.dart';
 import '../widgets/surfaces.dart';
@@ -674,7 +675,10 @@ class DocNodeView extends StatelessWidget {
                       minWidth: 560,
                       child: Padding(
                         padding: const EdgeInsets.all(CairnSpacing.s8),
-                        child: Builder(builder: preview.builder),
+                        child: Builder(
+                          builder: (BuildContext context) =>
+                              VariantSetView(set: preview.builder(context)),
+                        ),
                       ),
                     ),
                   ),
