@@ -1,5 +1,9 @@
 # Cairn Site
 
+[![CI](https://github.com/rlphjyson/cairn_site/actions/workflows/ci.yml/badge.svg)](https://github.com/rlphjyson/cairn_site/actions/workflows/ci.yml)
+[![Deploy](https://github.com/rlphjyson/cairn_site/actions/workflows/deploy.yml/badge.svg)](https://github.com/rlphjyson/cairn_site/actions/workflows/deploy.yml)
+[![Licence: MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
+
 The marketing and documentation site for
 [Cairn UI](https://github.com/rlphjyson/cairn_ui) — built as a Flutter web app,
 **with Cairn UI itself**.
