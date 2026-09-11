@@ -4,11 +4,13 @@ import 'block_previews.dart';
 
 /// A pre-composed screen built from several Cairn components.
 ///
-/// shadcn/ui's Blocks are copy-pasteable compositions rather than primitives —
-/// a login page, a dashboard shell, a settings screen. These follow the same
-/// idea, with one difference worth stating: shadcn ships blocks through a CLI
-/// that writes files into your project. Cairn has no CLI, so a block here is
-/// exactly what it looks like — a widget tree you read and adapt.
+/// A block is a whole screen rather than a primitive — a login page, a
+/// dashboard shell, a settings screen — assembled entirely from catalogue
+/// components. The point of shipping them is that a design system either holds
+/// together at screen scale or it does not, and nothing here is allowed to
+/// invent a widget to make a layout work. There is no CLI and nothing to
+/// install: a block is exactly what it looks like, a widget tree to read and
+/// adapt.
 @immutable
 class BlockEntry {
   /// Creates a block.

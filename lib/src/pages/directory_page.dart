@@ -60,13 +60,15 @@ class DirectoryRow {
 
 /// Every component, widget, block and doc page in one searchable index.
 ///
-/// shadcn/ui's Directory is a *registry* directory — a list of third-party
-/// registries you can install components from with `npx shadcn add
-/// @registry/component`. Cairn has no CLI and no registry ecosystem, so
-/// pretending otherwise would be theatre. What the page keeps is the job that
-/// section actually does on shadcn's site: one place that lists everything
-/// installable, with a description and a link. Here that means every module,
-/// every co-located widget, every block and every documentation page.
+/// A catalogue grouped by category is good for browsing and bad for finding: a
+/// visitor who already knows the name of the thing they want should not have to
+/// guess which group it was filed under. So this page flattens the entire site
+/// into one sortable, filterable table — every component module, every widget
+/// exported alongside one, every block and every documentation page — with a
+/// description and a link on each row.
+///
+/// The table is itself a `CairnDataTable`, so the sorting, filtering and
+/// pagination on this page are the library's, not the site's.
 class DirectoryPage extends StatelessWidget {
   /// Creates the page.
   const DirectoryPage({super.key});
@@ -132,7 +134,7 @@ class DirectoryPage extends StatelessWidget {
                 'every documentation page.',
           ),
           const SizedBox(height: CairnSpacing.s6),
-          const _NoteOnShadcn(),
+          const _NoteOnTheIndex(),
           const SizedBox(height: CairnSpacing.s8),
           Wrap(
             spacing: CairnSpacing.s3,
@@ -237,8 +239,8 @@ class DirectoryPage extends StatelessWidget {
   }
 }
 
-class _NoteOnShadcn extends StatelessWidget {
-  const _NoteOnShadcn();
+class _NoteOnTheIndex extends StatelessWidget {
+  const _NoteOnTheIndex();
 
   @override
   Widget build(BuildContext context) {
@@ -254,7 +256,7 @@ class _NoteOnShadcn extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'How this differs from shadcn/ui\'s Directory',
+            'Why a flat index as well as a catalogue',
             style: theme
                 .textStyle(CairnTypography.sm)
                 .copyWith(
@@ -266,12 +268,13 @@ class _NoteOnShadcn extends StatelessWidget {
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 760),
             child: Text(
-              'shadcn/ui\'s Directory lists third-party registries you install '
-              'from with npx shadcn add @registry/component. Cairn is a pub '
-              'package with no CLI and no registry ecosystem, so a registry '
-              'directory would be an empty shelf. What this page keeps is the '
-              'job that section does: one place that lists everything, with a '
-              'description and a link.',
+              'The Components page groups by what a thing does, which is right '
+              'for browsing and wrong for looking something up — a visitor who '
+              'already knows the name should not have to guess the group. This '
+              'page is the flat view: everything the library and these docs '
+              'contain, in one table you can sort, filter and page through. '
+              'The table is a CairnDataTable, so the sorting and filtering you '
+              'are using are the library\'s, not this site\'s.',
               style: theme
                   .textStyle(CairnTypography.sm)
                   .copyWith(

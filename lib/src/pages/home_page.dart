@@ -73,7 +73,7 @@ class _Hero extends StatelessWidget {
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 900),
                 child: Text(
-                  'shadcn/ui, measured and rebuilt in Flutter.',
+                  'A modern, accessible component library for Flutter.',
                   style: headline,
                 ),
               ),
@@ -84,10 +84,12 @@ class _Hero extends StatelessWidget {
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 680),
                 child: Text(
-                  'Every padding, radius, colour and easing curve is derived '
-                  'from shadcn/ui\'s real Tailwind source — not remembered, not '
-                  'eyeballed — and held in place by golden tests. Forty-five '
-                  'components, no runtime dependencies beyond Flutter itself.',
+                  'Forty-five components on one design-token layer — OKLCH '
+                  'colour, a multiplier-based radius scale, focus-visible '
+                  'rings. Every padding, radius, colour and easing curve is a '
+                  'named token rather than a number typed into a widget, and '
+                  'golden tests hold it there. No runtime dependencies beyond '
+                  'Flutter itself.',
                   style: theme
                       .textStyle(CairnTypography.lg)
                       .copyWith(color: theme.mutedForeground, height: 1.6),
@@ -350,12 +352,12 @@ class _FeatureSection extends StatelessWidget {
   static const List<_Feature> _features = <_Feature>[
     _Feature(
       icon: SiteIconData.ruler,
-      title: 'Measured, not remembered',
+      title: 'Specified, not eyeballed',
       body:
-          'Tokens were extracted from shadcn/ui\'s registry and component '
-          'source, and each one records the string it came from. That is how '
-          'the library caught that the radius scale is multiplier-based now, '
-          'and that the docs site\'s theme is not the registry\'s theme.',
+          'Every token is written as the CSS value it stands for — '
+          'oklch(0.205 0 0), px-4, rounded-md — and converted in exactly one '
+          'place, with the source string recorded next to the result. The '
+          'provenance of any number in the library is one click away.',
     ),
     _Feature(
       icon: SiteIconData.contrast,
@@ -368,7 +370,7 @@ class _FeatureSection extends StatelessWidget {
     ),
     _Feature(
       icon: SiteIconData.shieldCheck,
-      title: 'Radix behaviour, not just Radix looks',
+      title: 'Behaviour, not just appearance',
       body:
           'focus-visible rather than focus, roving focus in tabs and radio '
           'groups, focus trapping and restore in modals, Escape semantics that '
@@ -397,7 +399,8 @@ class _FeatureSection extends StatelessWidget {
               'Why it is built this way',
               subtitle:
                   'Four decisions that account for most of the difference '
-                  'between this and a component library assembled from memory.',
+                  'between this and a component library assembled one widget '
+                  'at a time.',
             ),
             const SizedBox(height: CairnSpacing.s8),
             LayoutBuilder(

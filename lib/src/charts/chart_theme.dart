@@ -8,28 +8,25 @@ import '../app/site_theme.dart';
 ///
 /// ## Why fl_chart rather than new Cairn components
 ///
-/// shadcn/ui's own charts are not bespoke chart code. They are a thin
-/// `ChartContainer` wrapper around **Recharts** that injects `--chart-1` …
-/// `--chart-5`, the muted foreground and the popover surface into an existing
-/// charting library. Copying the *architecture* of that decision — rather than
-/// only its output — means doing the same thing in Flutter: take an
-/// established charting package and dress it in the design system's tokens.
+/// Charting is a genuinely large problem — axes, ticks, curve interpolation,
+/// hit-testing, tooltips, animation — and Flutter already has a mature package
+/// that solves it. The useful thing a design system adds on top is not another
+/// implementation of that; it is a consistent skin. So this adapter takes an
+/// established charting package and dresses it in Cairn's tokens.
 ///
 /// The alternative, adding chart widgets to `package:cairn_ui`, was rejected on
 /// two counts. The library's stated contract is "no runtime dependencies beyond
-/// Flutter itself", so it would have had to hand-paint axes, ticks, curve
-/// interpolation, hit-testing and tooltips from scratch — a large, genuinely
-/// hard surface with no shadcn/ui measurements to check it against, since
-/// shadcn has none of its own either. And every component in that package is
-/// pinned by a golden test generated on Linux CI; adding a chart family means
-/// adding golden sheets for it, which is a real cost to pay for something that
-/// is not part of the shadcn/ui catalogue being reproduced.
+/// Flutter itself", so a chart family would have to be hand-painted from
+/// scratch — and every component in that package is pinned by a golden test
+/// generated on Linux CI, so it would also mean maintaining golden sheets for
+/// a surface far larger and far more data-dependent than any control in the
+/// catalogue.
 ///
 /// What Cairn *does* already ship is the palette: `CairnColors.chart1` through
-/// `chart5`, converted from the registry's `--chart-N` OKLCH values. In the
-/// Neutral base those are achromatic — `#D4D4D4` down to `#262626` — which is
-/// why these charts are monochrome by default rather than reaching for colours
-/// the design system does not define.
+/// `chart5`, defined as `--chart-N` OKLCH values alongside the other tokens. In
+/// the Neutral base those are achromatic — `#D4D4D4` down to `#262626` — which
+/// is why these charts are monochrome by default rather than reaching for
+/// colours the design system does not define.
 abstract final class ChartTheme {
   /// The five-step series ramp, straight from the library's tokens.
   ///
@@ -60,8 +57,8 @@ abstract final class ChartTheme {
 
   /// Horizontal grid lines only, at `--border`, hairline width.
   ///
-  /// shadcn's `CartesianGrid` defaults to `vertical={false}` — horizontal
-  /// rules help read a value, vertical ones mostly add noise.
+  /// Horizontal rules help a reader carry a point across to the value axis;
+  /// vertical ones mostly add noise, since the category is already labelled.
   static FlGridData grid(CairnTheme theme, {double? interval}) => FlGridData(
     drawVerticalLine: false,
     horizontalInterval: interval,

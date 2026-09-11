@@ -61,7 +61,8 @@ class NavDestination {
   }
 }
 
-/// The primary navigation, matching shadcn/ui's own top bar order.
+/// The primary navigation, ordered from "what is this" through to the
+/// reference material.
 const List<NavDestination> siteNav = <NavDestination>[
   NavDestination(
     label: 'Home',

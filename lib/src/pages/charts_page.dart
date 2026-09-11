@@ -283,12 +283,12 @@ class _DecisionPanel extends StatelessWidget {
         ),
         const SizedBox(height: CairnSpacing.s4),
         Text(
-          'shadcn/ui\'s charts are not bespoke chart code either — they are a '
-          'thin ChartContainer around Recharts that injects --chart-1 through '
-          '--chart-5, the muted foreground and the popover surface into an '
-          'existing library. Reproducing that decision in Flutter means doing '
-          'the same thing: take an established charting package and dress it '
-          'in the design system\'s tokens.',
+          'Charting is a large problem in its own right — axes, ticks, curve '
+          'interpolation, hit-testing, tooltips, animation — and Flutter '
+          'already has a mature package that solves it. What a design system '
+          'usefully adds on top is not a second implementation of all that; it '
+          'is a consistent skin. So these charts are fl_chart, dressed in '
+          'Cairn\'s tokens by a small adapter in this site\'s own source.',
           style: theme
               .textStyle(CairnTypography.sm)
               .copyWith(
@@ -300,12 +300,12 @@ class _DecisionPanel extends StatelessWidget {
         Text(
           'Adding chart widgets to the package itself was considered and '
           'rejected. cairn_ui\'s contract is "no runtime dependencies beyond '
-          'Flutter", so it would have to hand-paint axes, ticks, curve '
-          'interpolation, hit-testing and tooltips — a large surface with no '
-          'shadcn/ui measurements to check it against, because shadcn has none '
-          'of its own. Every component there is also pinned by a golden sheet '
-          'generated on Linux CI, so a chart family means golden sheets for '
-          'something that is not part of the catalogue being reproduced.',
+          'Flutter", so a chart family would have to be hand-painted from '
+          'scratch. Every component there is also pinned by a golden sheet '
+          'generated on Linux CI, and charts are far larger and far more '
+          'data-dependent than any control in the catalogue — a maintenance '
+          'cost the library would carry forever, for something an existing '
+          'package already does well.',
           style: theme
               .textStyle(CairnTypography.sm)
               .copyWith(
@@ -316,10 +316,10 @@ class _DecisionPanel extends StatelessWidget {
         const SizedBox(height: CairnSpacing.s4),
         Text(
           'What the library does already ship is the palette. CairnColors.chart1 '
-          'through chart5 are converted from the registry\'s --chart-N OKLCH '
-          'values, and in the Neutral base they are achromatic — #D4D4D4 down '
-          'to #262626. That is why these charts are monochrome rather than '
-          'reaching for colours the design system does not define.',
+          'through chart5 are defined as --chart-N OKLCH values alongside the '
+          'other tokens, and in the Neutral base they are achromatic — #D4D4D4 '
+          'down to #262626. That is why these charts are monochrome rather '
+          'than reaching for colours the design system does not define.',
           style: theme
               .textStyle(CairnTypography.sm)
               .copyWith(

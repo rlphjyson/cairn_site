@@ -5,7 +5,7 @@
     "display": "standalone",
     "background_color": "#0A0A0A",
     "theme_color": "#0A0A0A",
-    "description": "A Flutter component library rebuilt to shadcn/ui's measurements. 45 components, dimensionally accurate tokens, golden-tested.",
+    "description": "A modern, accessible component library for Flutter. 45 components on one design-token layer, golden-tested.",
     "orientation": "any",
     "prefer_related_applications": false,
     "icons": [

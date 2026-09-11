@@ -9,10 +9,10 @@ import '../widgets/site_icons.dart';
 
 /// The site footer: navigation, credits and the licence line.
 ///
-/// The credits block is not decoration. Cairn is an independent implementation
-/// that reproduces shadcn/ui's *measurements*, bundles Vercel's Geist and
-/// redraws Lucide's geometry — every one of those obligations is discharged
-/// here as well as in the repository's NOTICE.md.
+/// The credits block is not decoration. This site bundles Vercel's Geist,
+/// redraws Lucide's geometry and restyles fl_chart on the Charts page — every
+/// one of those obligations is discharged here as well as in the repository's
+/// NOTICE.md.
 class SiteFooter extends StatelessWidget {
   /// Creates the footer.
   const SiteFooter({super.key});
@@ -71,16 +71,6 @@ class SiteFooter extends StatelessWidget {
                     const _FooterColumn(
                       heading: 'Credits',
                       links: <_FooterLink>[
-                        _FooterLink(
-                          'shadcn/ui',
-                          SiteLinks.shadcn,
-                          external: true,
-                        ),
-                        _FooterLink(
-                          'Radix UI',
-                          SiteLinks.radix,
-                          external: true,
-                        ),
                         _FooterLink('Geist', SiteLinks.geist, external: true),
                         _FooterLink('Lucide', SiteLinks.lucide, external: true),
                         _FooterLink(
@@ -101,8 +91,8 @@ class SiteFooter extends StatelessWidget {
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: <Widget>[
                     Text(
-                      'MIT licensed. Cairn is an independent implementation and '
-                      'is not affiliated with shadcn/ui, Radix UI or Vercel.',
+                      'MIT licensed. Cairn is an independent open-source '
+                      'project and is not affiliated with Vercel or Lucide.',
                       style: theme
                           .textStyle(CairnTypography.xs)
                           .copyWith(color: theme.mutedForeground),
@@ -150,9 +140,9 @@ class _Brand extends StatelessWidget {
         ),
         const SizedBox(height: CairnSpacing.s3),
         Text(
-          'A Flutter component library rebuilt to shadcn/ui\'s measurements — '
-          'the same spacing, radii, colour tokens, type scale and focus-ring '
-          'treatment, held in place by golden tests.',
+          'A modern, accessible component library for Flutter. Forty-five '
+          'components on one design-token layer — spacing, radii, OKLCH '
+          'colour, type and motion — held in place by golden tests.',
           style: theme
               .textStyle(CairnTypography.sm)
               .copyWith(

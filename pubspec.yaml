@@ -38,10 +38,10 @@ flutter:
   uses-material-design: true
 
   fonts:
-    # Geist is the typeface shadcn/ui's own site ships, and the one Cairn's
-    # golden tests are pinned to. Bundling it here means the site renders with
-    # the same metrics the library was measured against instead of whatever
-    # sans-serif the visitor's browser happens to default to.
+    # Geist is the typeface Cairn's golden tests are pinned to. Bundling it
+    # here means the site renders with the same metrics the library's goldens
+    # were captured against instead of whatever sans-serif the visitor's
+    # browser happens to default to.
     #
     # SIL Open Font License 1.1 — see fonts/OFL.txt and NOTICE.md.
     - family: Geist

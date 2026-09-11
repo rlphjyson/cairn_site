@@ -23,7 +23,7 @@ void main() {
       await pumpSite(tester, Routes.home);
       expect(find.byType(HomePage), findsOneWidget);
       expect(
-        find.text('shadcn/ui, measured and rebuilt in Flutter.'),
+        find.text('A modern, accessible component library for Flutter.'),
         findsOneWidget,
       );
       expect(tester.takeException(), isNull);

@@ -7,13 +7,19 @@ import '../widgets/surfaces.dart';
 
 /// The typography style guide.
 ///
-/// shadcn/ui's Typeset is a single CSS file that styles rendered HTML and
-/// markdown — headings, paragraphs, lists, tables — through three rhythm
-/// variables: `--typeset-size`, `--typeset-leading` and `--typeset-flow`.
-/// Flutter has no cascade and no unstyled HTML to inherit, so a literal port
-/// would be meaningless. What carries over is the idea: a type system that is
-/// controlled by a small number of knobs rather than dozens of variables, and
-/// a specimen you can look at while you turn them.
+/// A type scale is the part of a design system that is hardest to judge from a
+/// table of numbers: `text-lg / 1.556` tells you nothing about whether a
+/// paragraph reads well. So this page is a specimen rather than a reference —
+/// every size, line height, weight and tracking value is read live from
+/// `CairnTypography`, and the Rhythm section puts three knobs on it
+/// (`size`, `leading`, `flow`) so the whole scale can be retuned at once and
+/// read in place.
+///
+/// Three knobs rather than one variable per step is the deliberate part. Prose
+/// rhythm is a relationship between size, line height and the space between
+/// blocks; exposing those three as multipliers over the scale keeps the
+/// relationship intact while it is being adjusted, which a pile of independent
+/// per-step variables does not.
 class TypesetPage extends StatefulWidget {
   /// Creates the page.
   const TypesetPage({super.key});
@@ -121,8 +127,8 @@ class _TypesetPageState extends State<TypesetPage> {
             'Rhythm',
             subtitle:
                 'Three knobs — size, leading and flow — over a prose specimen '
-                'built from the same tokens. This is the part of shadcn/ui\'s '
-                'Typeset that survives the translation to Flutter.',
+                'built from the same tokens. Retune the whole scale at once '
+                'and read the result in place.',
           ),
           const SizedBox(height: CairnSpacing.s6),
           Container(
@@ -217,9 +223,9 @@ class _TypesetPageState extends State<TypesetPage> {
           const SectionHeading(
             'The font',
             subtitle:
-                'Cairn\'s typography tokens leave fontFamily null, exactly as '
-                'shadcn/ui\'s components only ever say font-sans. One copyWith '
-                'sets it for the whole app.',
+                'Cairn\'s typography tokens leave fontFamily null — the scale '
+                'is about size, leading, weight and tracking, not about which '
+                'typeface you use. One copyWith sets it for the whole app.',
           ),
           const SizedBox(height: CairnSpacing.s5),
           const CodeBlock('''
@@ -233,9 +239,9 @@ static ThemeData themeData(Brightness brightness) {
 }'''),
           const SizedBox(height: CairnSpacing.s5),
           const Prose(
-            'Geist is the typeface shadcn/ui\'s own site ships, and the one '
-            'Cairn pins its golden tests to. That last part matters more than '
-            'it sounds: flutter test loads no real font by default, so text '
+            'Geist is the typeface this site ships and the one Cairn pins its '
+            'golden tests to. That second part matters more than it sounds: '
+            'flutter test loads no real font by default, so text '
             'lays out with a placeholder where every glyph is an identical '
             'box. Bundling the font in the repository is what makes a golden '
             'image reproducible on someone else\'s machine.',
@@ -263,7 +269,7 @@ class _MappingNote extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'How this differs from shadcn/ui\'s Typeset',
+            'Why this page exists',
             style: theme
                 .textStyle(CairnTypography.sm)
                 .copyWith(
@@ -275,15 +281,17 @@ class _MappingNote extends StatelessWidget {
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 760),
             child: Text(
-              'shadcn/typeset is one CSS file that styles unstyled HTML and '
-              'rendered markdown through a container class, with three rhythm '
-              'variables: --typeset-size, --typeset-leading and --typeset-flow. '
-              'It exists because the web hands you a stream of h1, p, ul and '
-              'table elements you did not author. Flutter has no cascade and no '
-              'unstyled markup — a Text widget has no style until you give it '
-              'one — so there is nothing for a prose reset to reset. The idea '
-              'that survives is the small control surface, which the Rhythm '
-              'section below reproduces.',
+              'A type scale is the part of a design system that is hardest to '
+              'judge from a table of numbers — text-lg on a 1.556 ratio tells '
+              'you nothing about whether a paragraph reads well. So this page '
+              'is a specimen, not a reference. Flutter has no cascade to '
+              'inherit from, which means nothing here is styled by accident: a '
+              'Text widget has no style until a token gives it one, and every '
+              'value below is read live from CairnTypography. The Rhythm '
+              'section puts three multipliers on the whole scale at once, '
+              'because prose rhythm is a relationship between size, leading '
+              'and the space between blocks — adjusting them independently, '
+              'one step at a time, is how a scale stops holding together.',
               style: theme
                   .textStyle(CairnTypography.sm)
                   .copyWith(
@@ -570,10 +578,10 @@ class _Specimen extends StatelessWidget {
         ),
         SizedBox(height: gap),
         Text(
-          'Cairn reproduces shadcn/ui\'s measurements rather than its code. '
-          'React and Flutter share no runtime, so there was nothing to copy '
-          'even in principle — what transferred was padding, radii, colour '
-          'values, durations, and the behavioural contracts Radix defines.',
+          'Cairn is a component library for Flutter built on a single layer of '
+          'design tokens. Padding, radii, colour, type and motion are each '
+          'specified once, in one place, and every component reads them — so '
+          'changing a theme changes the whole system rather than one widget.',
           style: _style(
             theme,
             CairnTypography.sm,
@@ -590,8 +598,8 @@ class _Specimen extends StatelessWidget {
         ),
         SizedBox(height: gap * 0.6),
         Text(
-          'Tokens were extracted from the live registry and the component '
-          'source, and each one records the string it came from:',
+          'Each token is written as the CSS value it stands for and records '
+          'that string next to the converted result:',
           style: _style(
             theme,
             CairnTypography.sm,
@@ -599,9 +607,9 @@ class _Specimen extends StatelessWidget {
         ),
         SizedBox(height: gap * 0.8),
         for (final String item in const <String>[
-          'Per-component Tailwind class strings for padding, height and gap',
-          'The canonical light and dark token values, in OKLCH',
-          'The radius formula the CLI actually writes today',
+          'Tailwind-style utility strings for padding, height and gap',
+          'The light and dark colour slots, in OKLCH',
+          'A multiplier formula over a single radius base',
         ])
           Padding(
             padding: EdgeInsets.only(bottom: gap * 0.4),

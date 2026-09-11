@@ -103,7 +103,7 @@ abstract final class SiteTokens {
   /// The width of the docs "On this page" rail.
   static const double tocWidth = 216.0;
 
-  /// The sticky header's height — shadcn's site uses `h-14`.
+  /// The sticky header's height — `h-14` on the spacing scale.
   static const double headerHeight = 56.0;
 
   /// The breakpoint above which the desktop nav and sidebars appear.

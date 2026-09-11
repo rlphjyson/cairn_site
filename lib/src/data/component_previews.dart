@@ -486,7 +486,7 @@ abstract final class Previews {
       children: <Widget>[
         CairnAvatar(fallback: Text('CA')),
         Text('Cairn UI'),
-        Text('shadcn/ui, measured and rebuilt in Flutter.'),
+        Text('A modern, accessible component library for Flutter.'),
       ],
     ),
     child: CairnButton(
@@ -609,8 +609,7 @@ abstract final class Previews {
                         .copyWith(fontWeight: CairnTypography.medium),
                   ),
                   Text(
-                    'Components built to shadcn/ui\'s exact measurements, in '
-                    'Flutter.',
+                    'Forty-five components on one token layer, in Flutter.',
                     style: theme
                         .textStyle(CairnTypography.sm)
                         .copyWith(color: theme.mutedForeground),
@@ -924,7 +923,7 @@ class _AccordionPreviewState extends State<_AccordionPreview> {
           value: 'b',
           title: Text('Is it styled?'),
           content: Text(
-            'To shadcn/ui measurements, down to the 2px chevron nudge.',
+            'Every value comes from a token, down to the 2px chevron nudge.',
           ),
         ),
         CairnAccordionItem(

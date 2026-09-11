@@ -106,7 +106,8 @@ class _SiteHeader extends StatelessWidget {
 
     return ClipRect(
       child: BackdropFilter(
-        // `bg-background/95 backdrop-blur` on shadcn's own header. Flutter's
+        // A translucent `--background` with a backdrop blur, so content scrolls
+        // under the header rather than behind an opaque bar. Flutter's
         // BackdropFilter needs the ClipRect above it or it samples the whole
         // layer tree and the blur bleeds down the page.
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
@@ -309,8 +310,9 @@ class _SearchTrigger extends StatelessWidget {
   Widget build(BuildContext context) {
     final CairnTheme theme = CairnTheme.of(context);
     // The Kbd hint deliberately does *not* go in the button's `trailing` slot.
-    // CairnButton wraps leading/trailing in `SizedBox.square(iconSize)` to
-    // reproduce shadcn/ui's `[&_svg]:size-4`, so anything that is not an icon
+    // CairnButton wraps leading/trailing in `SizedBox.square(iconSize)` so that
+    // icons are uniform whatever their intrinsic size — anything that is not an
+    // icon
     // — a two-key Kbd group is about 54 logical pixels wide — overflows a 16px
     // box. The slot is for icons; everything else belongs in the child.
     return SizedBox(
@@ -425,7 +427,9 @@ Future<void> _openNavSheet(BuildContext context) {
     builder: (BuildContext sheetContext) => CairnSheet(
       side: CairnSheetSide.left,
       title: const Text('Cairn UI'),
-      description: const Text('shadcn/ui, measured and rebuilt in Flutter.'),
+      description: const Text(
+        'A modern, accessible component library for Flutter.',
+      ),
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[

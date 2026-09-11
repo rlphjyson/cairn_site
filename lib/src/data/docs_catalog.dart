@@ -167,10 +167,10 @@ const List<DocPage> docsCatalog = <DocPage>[
     slug: 'introduction',
     group: 'Get started',
     summary:
-        'Cairn is a Flutter component library rebuilt to shadcn/ui\'s '
-        'measurements — the same spacing, radii, colour tokens, type scale, '
-        'shadows and focus-ring treatment, translated from shadcn/ui\'s actual '
-        'Tailwind source into Flutter and held in place by golden tests.',
+        'Cairn is a modern, accessible component library for Flutter, built on '
+        'one design-token layer: spacing, radii, OKLCH colour, a type scale, '
+        'shadows and a focus-ring treatment, all specified once and held in '
+        'place by golden tests.',
     nodes: <DocNode>[
       DocHeading('What this is'),
       DocParagraph(
@@ -187,54 +187,55 @@ const List<DocPage> docsCatalog = <DocPage>[
         'grid. If a component regresses upstream, this site breaks.',
       ),
 
-      DocHeading('What "pixel-perfect" honestly means'),
+      DocHeading('What "token-driven" means here'),
       DocParagraph(
-        'Flutter rasterises with Skia/Impeller; a browser rasterises with its '
-        'own engine and its own font shaping. The two will never produce '
-        'byte-identical screenshots, and chasing that would be wasted effort. '
-        'So Cairn does not claim screenshot-identical rendering to '
-        'ui.shadcn.com. The claim is narrower and checkable:',
+        'Plenty of libraries describe themselves as token-driven and still '
+        'hardcode a 13 somewhere inside a widget. Cairn treats that as a bug, '
+        'and the claim it makes is narrow enough to be checkable:',
       ),
       DocList(<String>[
-        'Every dimension is derived from shadcn/ui\'s real, current source '
-            'rather than eyeballed or remembered.',
-        'Every conversion between CSS and Flutter semantics is explicit and '
-            'documented where the two disagree — of which there are more than '
-            'you would expect.',
-        'Golden tests lock the result down, so the implementation cannot '
-            'drift.',
+        'No component hardcodes a value that belongs in a token file. Padding, '
+            'height, gap, radius, font size, shadow, ring width and transition '
+            'all resolve to a named token.',
+        'Every conversion between CSS semantics and Flutter semantics is '
+            'explicit and documented where the two disagree — of which there '
+            'are more than you would expect.',
+        'Golden tests lock the rendered result down, so the implementation '
+            'cannot drift once it is right.',
       ], ordered: true),
 
-      DocHeading('Where the numbers come from'),
+      DocHeading('How the values are specified'),
       DocParagraph(
-        'The tokens were extracted from shadcn/ui\'s live repository and '
-        'registry, not from memory.',
+        'The design system is written in CSS terms — the notation this kind of '
+        'system is normally expressed in — and converted into Flutter once, in '
+        'the token layer, rather than ad hoc at each call site.',
       ),
       DocTable(
-        headers: <String>['Source', 'What was taken from it'],
+        headers: <String>['Written as', 'Becomes'],
         rows: <List<String>>[
           <String>[
-            'shadcn-ui/ui → apps/v4/registry/new-york-v4/ui/*.tsx',
-            'Per-component Tailwind class strings: padding, height, gap, '
-                'radius, font size, shadow, ring, transition',
+            'Tailwind-style utility strings (h-9, px-4, gap-2, text-sm)',
+            'Per-component padding, height, gap, font size, shadow, ring and '
+                'transition constants',
           ],
           <String>[
-            'ui.shadcn.com/r/colors/neutral.json',
-            'The canonical cssVars.light / cssVars.dark token values',
+            'oklch() custom properties, light and dark',
+            'The nineteen semantic colour slots plus the five-step chart ramp',
           ],
           <String>[
-            'packages/shadcn/src/utils/updaters/update-css-vars.ts',
-            'The radius formula the CLI actually writes',
+            'A multiplier formula over a single --radius base',
+            'The rounded-* radius scale, rescalable from one number',
           ],
           <String>[
-            'Tailwind CSS v4 docs',
-            'The spacing base, type scale and box-shadow values',
+            'Tailwind CSS v4\'s published scales',
+            'The 0.25rem spacing base, the type scale and the box-shadow values',
           ],
         ],
       ),
       DocParagraph(
-        'Each token file records its source next to the converted value, so '
-        'the provenance of any number is one click away in the source:',
+        'Each token file records the source string next to the converted '
+        'value, so the provenance of any number is one click away in the '
+        'source:',
       ),
       DocCode(
         '''
@@ -243,27 +244,30 @@ static const Color lightPrimary = Color(0xFF171717);''',
         filename: 'lib/src/tokens/colors.dart',
       ),
 
-      DocHeading('Things that surprised me'),
+      DocHeading('Four conversions that are easy to get wrong'),
       DocParagraph(
-        'Four findings that stale knowledge gets wrong, and which are the '
-        'reason this library re-derives rather than remembers:',
+        'CSS and Flutter agree on far less than they appear to. These are the '
+        'four places where a literal reading of a value produces something '
+        'visibly wrong, and they are the reason the conversions live in one '
+        'documented layer rather than being repeated per component:',
       ),
       DocList(<String>[
-        'shadcn/ui is on OKLCH, not HSL. The default theme moved off HSL '
-            'during the Tailwind v4 rework. Anything still converting '
-            'hsl(var(--primary)) is out of date.',
-        'The radius scale is multiplier-based now. The CLI writes '
-            '--radius-sm: calc(var(--radius) * 0.6) … * 0.8, * 1.4, not the '
-            'older - 4px / - 2px / + 4px offsets. At the default 0.625rem the '
-            'two agree exactly, which is presumably why the change went '
-            'unnoticed — they only diverge once --radius is customised.',
-        'The docs site\'s theme is not the registry\'s theme. '
-            'apps/v4/app/globals.css overrides --foreground and --primary to '
-            'pure black for the site\'s own branding; the registry, which is '
-            'what the CLI writes into your project, uses 0.145 and 0.205. '
-            'Cairn follows the registry.',
-        '--destructive-foreground was dropped. Current components hardcode '
-            'text-white on destructive fills instead of reading a variable.',
+        'Colour is defined in OKLCH, not HSL. OKLCH is perceptually uniform, '
+            'so a lightness step means the same thing at every hue — which is '
+            'what makes an achromatic ramp stay neutral. Anything that '
+            'round-trips the palette through HSL loses that.',
+        'The radius scale is multiplier-based, not offset-based. Every step is '
+            '--radius × a factor (0.6, 0.8, 1.0, 1.4, 1.8), so setting one '
+            'number rescales a whole app proportionally. Fixed ± 4px offsets '
+            'agree at the default and diverge the moment --radius is '
+            'customised.',
+        'A CSS blur radius is not a Flutter blur radius. CSS treats it as '
+            'twice the Gaussian sigma; Flutter feeds it through Skia\'s '
+            'radius × 0.57735 + 0.5. Pasting the number across draws a shadow '
+            'roughly 50% too wide.',
+        'An opacity modifier scales alpha, it does not set it. A token that '
+            'already carries 15% alpha, taken to /30, lands at 4.5% — not 30%. '
+            'Six times too strong is very visible on a dark-mode form control.',
       ]),
       DocCallout(
         title: 'A correctness check fell out of the conversion',
@@ -356,10 +360,11 @@ MaterialApp(
 
       DocHeading('Fonts'),
       DocParagraph(
-        'Cairn\'s typography tokens leave fontFamily null, exactly as '
-        'shadcn/ui\'s components only ever say font-sans. Whatever your app '
-        'sets is inherited. To match shadcn/ui\'s own site, bundle Geist and '
-        'set it once on the theme:',
+        'Cairn\'s typography tokens leave fontFamily null — the type scale is '
+        'about size, line height, weight and tracking, not about which '
+        'typeface you use. Whatever your app sets is inherited. To use the '
+        'font this site and the golden tests use, bundle Geist and set it once '
+        'on the theme:',
       ),
       DocCode('''
 CairnTheme.materialTheme(
@@ -565,10 +570,10 @@ MaterialApp(
       DocParagraph(
         'materialTheme() also aligns Material\'s own defaults with the Cairn '
         'tokens: scaffold and canvas colours, a matching ColorScheme, text '
-        'selection colours, no ink splash (shadcn/ui has no ripple — its '
-        'interactions are colour and shadow transitions only), and Material '
-        '3\'s filled TextField default switched off, since shadcn/ui inputs '
-        'are bg-transparent.',
+        'selection colours, no ink splash — Cairn\'s interactions are colour '
+        'and shadow transitions, not ripples — and Material 3\'s filled '
+        'TextField default switched off, since Cairn inputs are '
+        'transparent-backed with a border.',
       ),
       DocParagraph('If you would rather wire it yourself:'),
       DocCode('''
@@ -580,9 +585,9 @@ MaterialApp(
 
       DocHeading('The colour slots'),
       DocParagraph(
-        'Nineteen semantic slots, each a direct translation of a shadcn/ui CSS '
-        'variable. They come in background/foreground pairs so that a surface '
-        'and the text on it always move together.',
+        'Nineteen semantic slots, each named for the CSS custom property it is '
+        'specified as. They come in background/foreground pairs so that a '
+        'surface and the text on it always move together.',
       ),
       DocTable(
         headers: <String>['Slot', 'CSS variable', 'What it is'],
@@ -641,19 +646,19 @@ MaterialApp(
         ],
       ),
       DocCallout(
-        title: 'destructiveForeground is Cairn\'s, not shadcn\'s',
+        title: 'destructiveForeground is a real slot, not a hardcoded white',
         body:
-            'Current shadcn/ui hardcodes text-white on destructive fills '
-            'rather than reading a variable — the --destructive-foreground '
-            'token was removed. Cairn keeps it as a slot so it can be themed, '
-            'and defaults it to white to match.',
+            'The common convention is to paint white text onto a destructive '
+            'fill and leave it at that, which stops working the moment someone '
+            'themes destructive to a pale colour. Cairn keeps the foreground '
+            'as its own themeable slot and merely defaults it to white.',
       ),
 
       DocHeading('The radius scale'),
       DocParagraph(
         'One base, --radius, defaults to 0.625rem = 10 logical pixels. Every '
-        'other step is a multiplier of it, following the formula the current '
-        'shadcn CLI writes:',
+        'other step is a multiplier of it rather than a fixed offset from it, '
+        'which is what lets a single number rescale an entire app:',
       ),
       DocTable(
         headers: <String>['Step', 'Formula', 'Default', 'Used by'],
@@ -731,7 +736,7 @@ MaterialApp(theme: CairnTheme.materialTheme(brand));'''),
         'Tailwind\'s /N modifier scales a colour\'s existing alpha; it does '
         'not set it. bg-input/30 compiles to color-mix(in oklab, var(--input) '
         '30%, transparent). For an opaque token that is the same as setting '
-        'alpha to 0.30 — but shadcn/ui\'s dark --input is already '
+        'alpha to 0.30 — but Cairn\'s dark --input is already '
         'oklch(1 0 0 / 15%), so dark:bg-input/30 is white at 4.5%, not 30%. '
         'Six times too strong is very visible as a washed-out grey fill on '
         'every dark-mode form control.',
@@ -847,7 +852,7 @@ static double cssBlur(double cssBlurPx) {
         body:
             'CSS never paints an outer box-shadow through its element; Flutter '
             'paints a blurred filled copy of the shape behind the box with no '
-            'clip. On shadcn/ui\'s bg-transparent form controls that turns '
+            'clip. On Cairn\'s transparent-backed form controls that turns '
             'shadow-xs into a grey wash across the field — and turns '
             'focus-visible:ring-[3px], which compiles to box-shadow: 0 0 0 '
             '3px, into a solid fill over the entire control instead of a 3px '
@@ -896,9 +901,10 @@ CairnMotion.easeOut;  // Cubic(0.0, 0.0, 0.2, 1.0)'''),
     nodes: <DocNode>[
       DocHeading('The two presets'),
       DocParagraph(
-        'CairnTheme.light and CairnTheme.dark are shadcn/ui\'s Neutral base, '
-        'converted from the registry\'s OKLCH values. Hand both to MaterialApp '
-        'and pick with themeMode:',
+        'CairnTheme.light and CairnTheme.dark are Cairn\'s Neutral base — an '
+        'achromatic palette specified in OKLCH, where every step lands exactly '
+        'on a published neutral ramp. Hand both to MaterialApp and pick with '
+        'themeMode:',
       ),
       DocCode('''
 MaterialApp(
@@ -948,11 +954,12 @@ class SiteThemeController extends ChangeNotifier {
       DocHeading('Where dark is not just inverted light'),
       DocParagraph(
         'A handful of components genuinely branch on brightness rather than on '
-        'a token, because shadcn/ui itself uses dark: variants with no light '
-        'counterpart. The outline Button gains a dark:bg-input/30 fill that '
-        'simply does not exist in light mode; the invalid focus ring goes from '
-        '20% to 40% alpha. CairnTheme carries brightness precisely so those '
-        'branches can be honest about it.',
+        'a token, because the design calls for a dark-only treatment with no '
+        'light counterpart. The outline Button gains a subtle fill in dark mode '
+        'that simply does not exist in light mode; the invalid focus ring goes '
+        'from 20% to 40% alpha, because a destructive tint that reads clearly '
+        'on white disappears on near-black. CairnTheme carries brightness '
+        'precisely so those branches can be honest about it.',
       ),
       DocParagraph(
         'The dark theme also switches borders from an opaque grey to a '
@@ -976,17 +983,17 @@ class SiteThemeController extends ChangeNotifier {
     slug: 'accessibility',
     group: 'Quality',
     summary:
-        'shadcn/ui is built on Radix UI primarily for its accessibility '
-        'semantics, so matching the visuals without matching the behaviour '
-        'would miss the point.',
+        'Looking right is the easy half. Focus, keyboard operation and '
+        'screen-reader semantics are part of each component\'s contract in '
+        'Cairn, not a pass somebody makes later.',
     nodes: <DocNode>[
       DocHeading('Focus-visible, not focus'),
       DocParagraph(
-        'shadcn/ui draws its ring with focus-visible:, so clicking a button '
-        'must not show a ring while tabbing to it must. Flutter\'s hasFocus '
-        'cannot distinguish the two. CairnInteractive combines focus state '
-        'with FocusManager.highlightMode and tracks whether the focus change '
-        'came from a pointer press.',
+        'Cairn draws its focus ring on focus-visible rather than focus: '
+        'clicking a button must not show a ring, while tabbing to it must. '
+        'Flutter\'s hasFocus cannot distinguish the two. CairnInteractive '
+        'combines focus state with FocusManager.highlightMode and tracks '
+        'whether the focus change came from a pointer press.',
       ),
       DocCallout(
         title: 'Try it',
@@ -1000,8 +1007,8 @@ class SiteThemeController extends ChangeNotifier {
 
       DocHeading('Keyboard'),
       DocList(<String>[
-        'Space and Enter both activate, matching Radix, wired through '
-            'ActivateIntent so it composes with a host app\'s own shortcuts.',
+        'Space and Enter both activate, wired through ActivateIntent so it '
+            'composes with a host app\'s own shortcuts.',
         'Roving focus in Radio Group and Tabs: one tab stop for the group, '
             'arrow keys to move within it.',
         'Slider supports arrow keys plus Home and End, and exposes '
@@ -1010,7 +1017,8 @@ class SiteThemeController extends ChangeNotifier {
         'Escape dismisses every overlay — except Alert Dialog, which by '
             'design demands an explicit choice.',
         'The Command palette keeps focus in its input while arrow keys move a '
-            'highlight through the list, exactly as cmdk does.',
+            'highlight through the list, so typing and navigating never '
+            'compete for the same keystrokes.',
       ]),
       DocPreview(
         Previews.radioGroup,
@@ -1022,7 +1030,8 @@ class SiteThemeController extends ChangeNotifier {
         'Dialog, Alert Dialog, Sheet and Drawer push a PopupRoute, which gets '
         'Flutter\'s per-route FocusScope — so focus is trapped while they are '
         'open and restored to the trigger when they close. It also brings '
-        'back-gesture dismissal, which Radix has no equivalent of. Anchored '
+        'back-gesture dismissal, which a web implementation has no equivalent '
+        'of. Anchored '
         'surfaces (Popover, Dropdown Menu) use OverlayPortal instead, so they '
         'stay out of the navigation stack and the system back gesture does not '
         'close them.',

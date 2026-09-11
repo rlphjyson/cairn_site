@@ -6,19 +6,8 @@
 
 The marketing and documentation site for
 [Cairn UI](https://github.com/rlphjyson/cairn_ui), built as a Flutter web app
-**with Cairn UI itself**. It is an independent project and is not affiliated
-with, sponsored by or endorsed by shadcn/ui, Radix UI or Vercel.
-
-## Design inspiration
-
-- **[shadcn/ui](https://ui.shadcn.com)** by [shadcn](https://github.com/shadcn)
-  — this site's information architecture follows shadcn/ui's own site: the same
-  seven top-level sections, the preview/code pattern on every example, the docs
-  sidebar plus "On this page" rail. **All prose, code and layout here is
-  original**; what was taken is the structure and the interaction patterns, not
-  the content.
-- **[Radix UI](https://www.radix-ui.com)** — the accessibility behaviour
-  documented on the Accessibility page, which Cairn reproduces in Flutter.
+**with Cairn UI itself**. It is an independent open-source project and is not
+affiliated with, sponsored by or endorsed by Vercel or Lucide.
 
 ## Bundled assets
 

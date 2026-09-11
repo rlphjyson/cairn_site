@@ -42,11 +42,14 @@ final int count = 45;
 
   test('a URL inside a string is not mistaken for a comment', () {
     final List<TextSpan> spans = highlight(
-      "final Uri u = Uri.parse('https://ui.shadcn.com');",
+      "final Uri u = Uri.parse('https://pub.dev/packages/cairn_ui');",
       CodeLanguage.dart,
       palette,
     );
-    expect(colourOf(spans, "'https://ui.shadcn.com'"), palette.string);
+    expect(
+      colourOf(spans, "'https://pub.dev/packages/cairn_ui'"),
+      palette.string,
+    );
     expect(
       spans.any((TextSpan s) => s.style?.color == palette.comment),
       isFalse,

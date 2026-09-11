@@ -52,7 +52,7 @@ fixed upstream with a regression test.
 | `/` | Landing page: hero, a bento grid of live component previews, the four design decisions, the dogfooding story, a live block |
 | `/docs/*` | Eight documentation pages with a sticky sidebar, an "On this page" rail with working anchors, and copyable code blocks |
 | `/components` | All 45 component modules — 50 cards, because five widgets ship inside a sibling's file — each a live, interactive preview |
-| `/components/:slug` | One component: preview/code panes, the measurement note, prev/next |
+| `/components/:slug` | One component: preview/code panes, the design note, prev/next |
 | `/blocks` | Five composed screens: login, dashboard shell, settings, pricing, team roster |
 | `/charts` | Seven chart shapes on Cairn's token palette, and an honest note about why they are not Cairn components |
 | `/directory` | Every module, widget, block and doc page in one sortable table |
@@ -109,12 +109,13 @@ rewrite, so the deploy workflow copies `index.html` to `404.html`; Pages serves
 that for unmatched paths, the `<base href>` resolves the assets, and the router
 reads the real pathname.
 
-**Charts are fl_chart, restyled.** shadcn/ui's own charts are a thin
-`ChartContainer` over Recharts that injects `--chart-1` … `--chart-5`.
-Reproducing that decision in Flutter means doing the same thing rather than
-hand-painting axes inside a library whose contract is "no runtime dependencies
-beyond Flutter". `lib/src/charts/chart_theme.dart` is the adapter, and the
-Charts page says all of this out loud.
+**Charts are fl_chart, restyled.** Charting is a large problem in its own right
+— axes, ticks, curve interpolation, hit-testing, tooltips — and Flutter already
+has a mature package that solves it. What a design system usefully adds is a
+consistent skin, not a second implementation, and hand-painting one inside a
+library whose contract is "no runtime dependencies beyond Flutter" would mean
+carrying golden sheets for it forever. `lib/src/charts/chart_theme.dart` is the
+adapter, and the Charts page says all of this out loud.
 
 **No icon font.** The glyphs the site needs that the library does not ship are
 drawn with a `CustomPainter` on Lucide's 24×24 grid, matching what Cairn does

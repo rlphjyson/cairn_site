@@ -18,12 +18,6 @@ abstract final class SiteLinks {
   /// The short form of [pinnedCommit], for display.
   static const String pinnedCommitShort = '7abb0cc';
 
-  /// The project Cairn measures itself against.
-  static const String shadcn = 'https://ui.shadcn.com';
-
-  /// The accessibility behaviour shadcn/ui is built on.
-  static const String radix = 'https://www.radix-ui.com';
-
   /// The bundled typeface.
   static const String geist = 'https://vercel.com/font';
 

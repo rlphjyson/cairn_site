@@ -4,10 +4,10 @@ import 'component_previews.dart';
 
 /// How the catalogue is grouped.
 ///
-/// The grouping mirrors the one Cairn's own example app uses, which in turn
-/// follows shadcn/ui's mental model — a visitor looking for "the thing that
-/// floats above the page" should find Popover, Dialog and Sheet next to each
-/// other rather than scattered through an alphabetical list.
+/// The grouping mirrors the one Cairn's own example app uses, and it groups by
+/// what a component *does* rather than by name — a visitor looking for "the
+/// thing that floats above the page" should find Popover, Dialog and Sheet next
+/// to each other rather than scattered through an alphabetical list.
 enum ComponentCategory {
   /// Controls that collect input.
   forms('Forms'),
@@ -217,7 +217,7 @@ CairnSwitch(
     description: 'Mutually exclusive options with roving focus.',
     note:
         'One tab stop for the whole group; arrow keys move the selection '
-        'within it, matching Radix.',
+        'within it, as the ARIA radio-group pattern requires.',
     preview: Previews.radioGroup,
     code: '''
 CairnRadioGroup<String>(
@@ -369,7 +369,7 @@ const CairnBadge(
     alsoExports: <String>['CairnAvatarGroup'],
     note:
         'The fallback survives an image error rather than leaving a hole, '
-        'which is what Radix does and what naive implementations miss.',
+        'which is the case naive implementations miss.',
     preview: Previews.avatar,
     code: '''
 const CairnAvatar(fallback: Text('CA'), size: CairnAvatarSize.lg)
@@ -531,7 +531,7 @@ CairnTable<Invoice>(
     ],
     note:
         'Pushes a PopupRoute, so Flutter supplies focus trapping, focus restore '
-        'and back-gesture dismissal — behaviour Radix has no equivalent of.',
+        'and back-gesture dismissal rather than each being hand-wired.',
     preview: Previews.dialog,
     code: '''
 showCairnDialog<void>(
@@ -682,7 +682,7 @@ CairnTooltip(
 CairnHoverCard(
   openDelay: const Duration(milliseconds: 700),
   closeDelay: const Duration(milliseconds: 300),
-  content: const Text('shadcn/ui, measured and rebuilt in Flutter.'),
+  content: const Text('A modern, accessible component library for Flutter.'),
   child: CairnButton(
     variant: CairnButtonVariant.link,
     onPressed: _open,
@@ -751,7 +751,7 @@ CairnContextMenu(
     ],
     note:
         'Panels are p-1 with min-w-[8rem]. Menu items use cursor-default, not '
-        'a pointer, matching Radix.',
+        'a pointer — a menu row is not a link.',
     preview: Previews.menu,
     code: '''
 CairnMenuPanel(
@@ -773,8 +773,8 @@ CairnMenuPanel(
     category: ComponentCategory.overlays,
     description: 'A trigger whose menu matches its width.',
     note:
-        'Reproduces min-w-[var(--radix-select-trigger-width)] by measuring the '
-        'trigger and constraining the menu to it.',
+        'The menu is never narrower than the trigger: the trigger is measured '
+        'and the menu constrained to at least that width.',
     preview: Previews.select,
     code: '''
 CairnSelect<String>(
@@ -807,10 +807,11 @@ CairnCombobox<String>(
     name: 'Command',
     slug: 'command',
     category: ComponentCategory.overlays,
-    description: 'A cmdk-style palette with grouping and keyword matching.',
+    description: 'A Ctrl+K palette with grouping and keyword matching.',
     note:
         'Focus stays in the input while arrow keys move a highlight through '
-        'the list — the list itself is never focused, exactly as cmdk does it.',
+        'the list — the list itself is never focused, so typing and navigating '
+        'never compete for the same keystrokes.',
     preview: Previews.command,
     code: '''
 showCairnCommandPalette(
@@ -974,7 +975,7 @@ CairnNavigationMenu(
     name: 'Scroll Area',
     slug: 'scroll-area',
     category: ComponentCategory.navigation,
-    description: 'A scroller with a shadcn-styled thumb.',
+    description: 'A scroller with a thumb drawn from the theme\'s tokens.',
     note:
         'Configures Flutter\'s own Scrollbar rather than reimplementing '
         'scrolling: the thumb is bg-border on a w-2.5 track.',
