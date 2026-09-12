@@ -6,6 +6,7 @@ import 'package:cairn_site/src/pages/blocks_page.dart';
 import 'package:cairn_site/src/pages/charts_page.dart';
 import 'package:cairn_site/src/pages/component_detail_page.dart';
 import 'package:cairn_site/src/pages/components_page.dart';
+import 'package:cairn_site/src/pages/create_page.dart';
 import 'package:cairn_site/src/pages/directory_page.dart';
 import 'package:cairn_site/src/pages/docs_page.dart';
 import 'package:cairn_site/src/pages/home_page.dart';
@@ -76,6 +77,13 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
+    testWidgets('create', (WidgetTester tester) async {
+      await pumpSite(tester, Routes.create);
+      expect(find.byType(CreatePage), findsOneWidget);
+      expect(find.text('Configuration'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+
     testWidgets('an unknown path renders the 404 page', (
       WidgetTester tester,
     ) async {
@@ -117,6 +125,7 @@ void main() {
       Routes.charts,
       Routes.directory,
       Routes.typeset,
+      Routes.create,
       Routes.docsIntroduction,
       // A detail page too: the variant pane puts a hint line beside the
       // Preview/Code tabs, which is the one row on it that can run out of

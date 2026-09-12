@@ -8,6 +8,7 @@ import '../pages/blocks_page.dart';
 import '../pages/charts_page.dart';
 import '../pages/component_detail_page.dart';
 import '../pages/components_page.dart';
+import '../pages/create_page.dart';
 import '../pages/directory_page.dart';
 import '../pages/docs_page.dart';
 import '../pages/home_page.dart';
@@ -109,6 +110,11 @@ GoRouter buildRouter({String initialLocation = Routes.home}) {
             path: Routes.typeset,
             pageBuilder: (BuildContext context, GoRouterState state) =>
                 _page(state, 'Typeset', const SitePage(child: TypesetPage())),
+          ),
+          GoRoute(
+            path: Routes.create,
+            pageBuilder: (BuildContext context, GoRouterState state) =>
+                _page(state, 'Create', const SitePage(child: CreatePage())),
           ),
         ],
       ),

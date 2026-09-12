@@ -29,6 +29,9 @@ abstract final class Routes {
   /// The typography style guide.
   static const String typeset = '/typeset';
 
+  /// The project starter/configurator.
+  static const String create = '/create';
+
   /// The detail page for a single component.
   static String component(String slug) => '/components/$slug';
 
@@ -98,5 +101,10 @@ const List<NavDestination> siteNav = <NavDestination>[
     label: 'Typeset',
     path: Routes.typeset,
     description: 'The type scale as a style guide',
+  ),
+  NavDestination(
+    label: 'Create',
+    path: Routes.create,
+    description: 'Configure a starter project and copy the code',
   ),
 ];

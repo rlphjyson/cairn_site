@@ -98,11 +98,11 @@ class _SiteHeader extends StatelessWidget {
     final CairnTheme theme = CairnTheme.of(context);
     final double width = MediaQuery.sizeOf(context).width;
     final bool wide = width >= SiteTokens.desktopBreakpoint;
-    // Seven nav items plus a wordmark leave very little room at 1024. The
+    // Eight nav items plus a wordmark leave very little room at 1024. The
     // search trigger and the GitHub link earn their place back as the viewport
     // grows, rather than being squeezed until the row overflows.
-    final bool showSearch = width >= 1220 || (!wide && width >= 700);
-    final bool showGitHub = width >= 1120 || (!wide && width >= 480);
+    final bool showSearch = width >= 1300 || (!wide && width >= 700);
+    final bool showGitHub = width >= 1200 || (!wide && width >= 480);
 
     return ClipRect(
       child: BackdropFilter(
