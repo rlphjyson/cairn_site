@@ -21,11 +21,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "7abb0cc70dea5daaeefda0a93ae94e0c0d2bf737"
-      resolved-ref: "7abb0cc70dea5daaeefda0a93ae94e0c0d2bf737"
+      ref: fa38a8c
+      resolved-ref: fa38a8c3c7a032cd45e1e2f026c936e0f60e1e94
       url: "https://github.com/rlphjyson/cairn_ui.git"
     source: git
-    version: "0.1.0"
+    version: "0.1.1"
   characters:
     dependency: transitive
     description:

@@ -16,7 +16,7 @@ dependencies:
   cairn_ui:
     git:
       url: https://github.com/rlphjyson/cairn_ui.git
-      ref: 7abb0cc70dea5daaeefda0a93ae94e0c0d2bf737
+      ref: fa38a8c
   fl_chart: ^1.2.0
   flutter:
     sdk: flutter
