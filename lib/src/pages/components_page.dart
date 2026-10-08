@@ -46,7 +46,7 @@ class _ComponentsPageState extends State<ComponentsPage> {
   Widget build(BuildContext context) {
     final CairnTheme theme = CairnTheme.of(context);
     final List<ComponentEntry> visible = _visible;
-    const int moduleCount = 45;
+    const int moduleCount = 65;
 
     return PageContainer(
       child: Column(

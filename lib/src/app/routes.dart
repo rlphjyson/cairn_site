@@ -80,7 +80,7 @@ const List<NavDestination> siteNav = <NavDestination>[
   NavDestination(
     label: 'Components',
     path: Routes.components,
-    description: 'All 45 components, live',
+    description: 'All 65 components, live',
   ),
   NavDestination(
     label: 'Blocks',

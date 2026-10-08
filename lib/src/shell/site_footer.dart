@@ -134,13 +134,13 @@ class _Brand extends StatelessWidget {
             const SizedBox(width: CairnSpacing.s2),
             const CairnBadge(
               variant: CairnBadgeVariant.secondary,
-              label: Text('0.1.0'),
+              label: Text('0.2.0'),
             ),
           ],
         ),
         const SizedBox(height: CairnSpacing.s3),
         Text(
-          'A modern, accessible component library for Flutter. Forty-five '
+          'A modern, accessible component library for Flutter. Sixty-five '
           'components on one design-token layer — spacing, radii, OKLCH '
           'colour, type and motion — held in place by golden tests.',
           style: theme
@@ -183,7 +183,7 @@ class _PinnedCommitBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     return CairnTooltip(
       message:
-          'This site is built against an exact commit of cairn_ui, '
+          'This site is built against a published release of cairn_ui, '
           'not a floating branch.',
       child: CairnButton(
         variant: CairnButtonVariant.ghost,

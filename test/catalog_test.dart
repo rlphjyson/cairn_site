@@ -38,9 +38,9 @@ void main() {
           .length;
       expect(
         componentCatalog.length - coLocated,
-        45,
+        65,
         reason:
-            'cairn_ui ships 45 files under lib/src/components/. Every one '
+            'cairn_ui ships 65 files under lib/src/components/. Every one '
             'should have a catalogue entry, and anything extra should declare '
             'the module it lives in.',
       );

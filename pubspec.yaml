@@ -10,13 +10,9 @@ dependencies:
   # The whole point of this repository: the site's own chrome — nav, buttons,
   # cards, tabs, tables, dialogs — is built from the library it documents.
   #
-  # Pinned to an exact commit rather than a branch. A floating `ref: main` would
-  # let an upstream push silently change what this site renders, which would
-  # make a CI failure here indistinguishable from a library regression.
-  cairn_ui:
-    git:
-      url: https://github.com/rlphjyson/cairn_ui.git
-      ref: fa38a8c
+  # Caret-pinned to the 0.2 line, so a library regression shows up here only
+  # when the lockfile is deliberately bumped.
+  cairn_ui: ^0.2.0
   fl_chart: ^1.2.0
   flutter:
     sdk: flutter

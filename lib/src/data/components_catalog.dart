@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import 'component_previews.dart';
+import 'extended_previews.dart';
 import 'variant_sample.dart';
 
 /// How the catalogue is grouped.
@@ -77,7 +78,7 @@ class ComponentEntry {
 
   /// Additional public widgets this component's source file exports.
   ///
-  /// Cairn ships 45 component modules but 49 documented widgets: `dialog.dart`
+  /// Cairn ships 65 component modules but more documented widgets: `dialog.dart`
   /// also exports `CairnAlertDialog`, `sheet.dart` also exports `CairnDrawer`,
   /// and so on. Listing them here keeps the count honest while still making
   /// each widget findable in the Directory.
@@ -86,9 +87,9 @@ class ComponentEntry {
   /// Set when this widget ships inside a sibling's source file rather than its
   /// own module, e.g. Alert Dialog lives in `dialog.dart`.
   ///
-  /// This is what reconciles "45 components" (the number of modules under
+  /// This is what reconciles "65 components" (the number of modules under
   /// `lib/src/components/`, and the number the library's own README quotes)
-  /// with the 50 cards in this catalogue.
+  /// with the 70 cards in this catalogue.
   final String? livesIn;
 
   /// A measurement or behaviour worth calling out, shown under the preview.
@@ -1112,6 +1113,345 @@ CairnDatePicker(
   placeholder: 'Pick a date',
   format: (DateTime d) => DateFormat.yMMMd().format(d),
   onChanged: (DateTime d) => setState(() => _date = d),
+)''',
+  ),
+  // -------------------------------------------------------------------------
+  // Extended: ported from daisyUI's catalogue in cairn_ui 0.2.0
+  // -------------------------------------------------------------------------
+  ComponentEntry(
+    name: 'Rating',
+    slug: 'rating',
+    category: ComponentCategory.forms,
+    description: 'A star rating with half steps and keyboard control.',
+    note:
+        'A null onChanged makes it read-only. Arrow keys, Home and End step the value.',
+    preview: ExtendedPreviews.rating,
+    code: '''
+CairnRating(
+  value: _rating,
+  allowHalf: true,
+  onChanged: (double v) => setState(() => _rating = v),
+)''',
+  ),
+  ComponentEntry(
+    name: 'Swap',
+    slug: 'swap',
+    category: ComponentCategory.forms,
+    description: 'A controlled two-face toggle with fade, rotate and flip.',
+    preview: ExtendedPreviews.swap,
+    code: '''
+CairnSwap(
+  effect: CairnSwapEffect.rotate,
+  value: _on,
+  onChanged: (bool v) => setState(() => _on = v),
+  on: const CairnIcon(CairnIconData.check),
+  off: const CairnIcon(CairnIconData.plus),
+)''',
+  ),
+  ComponentEntry(
+    name: 'File Input',
+    slug: 'file-input',
+    category: ComponentCategory.forms,
+    description:
+        'A file field that draws the control and leaves picking to you.',
+    note:
+        'Cairn takes no dependencies, so wire onBrowse to file_picker or a web input.',
+    preview: ExtendedPreviews.fileInput,
+    code: '''
+CairnFileInput(
+  fileName: _file,
+  onBrowse: _pickFile,
+  onClear: () => setState(() => _file = null),
+)''',
+  ),
+  ComponentEntry(
+    name: 'Floating Action Button',
+    slug: 'fab',
+    category: ComponentCategory.forms,
+    description: 'A round action button that can open into a speed dial.',
+    note:
+        'Non-empty actions turn it into a speed dial. Position it yourself with Align or Positioned.',
+    alsoExports: <String>['CairnFabAction'],
+    preview: ExtendedPreviews.fab,
+    code: '''
+CairnFab(
+  icon: const CairnIcon(CairnIconData.plus),
+  semanticLabel: 'Create',
+  actions: <CairnFabAction>[
+    CairnFabAction(
+      icon: const CairnIcon(CairnIconData.search),
+      label: 'Document',
+      onPressed: _newDocument,
+    ),
+  ],
+)''',
+  ),
+  ComponentEntry(
+    name: 'Stat',
+    slug: 'stat',
+    category: ComponentCategory.display,
+    description: 'A figure with its label and context, grouped by Stats.',
+    note:
+        'CairnStats joins its children with 1px dividers inside one bordered card.',
+    alsoExports: <String>['CairnStats'],
+    preview: ExtendedPreviews.stat,
+    code: '''
+const CairnStats(
+  children: <Widget>[
+    CairnStat(
+      title: Text('Active users'),
+      value: Text('4,200'),
+      description: Text('+180 this week'),
+    ),
+    CairnStat(title: Text('Error rate'), value: Text('0.4%')),
+  ],
+)''',
+  ),
+  ComponentEntry(
+    name: 'Status',
+    slug: 'status',
+    category: ComponentCategory.display,
+    description: 'A small tone dot, optionally pulsing.',
+    note:
+        'Tones are the CairnTone token: success, warning and info join primary and destructive.',
+    preview: ExtendedPreviews.status,
+    code: '''
+const CairnStatus(
+  tone: CairnTone.success,
+  ping: true,
+  semanticLabel: 'Online',
+)''',
+  ),
+  ComponentEntry(
+    name: 'Timeline',
+    slug: 'timeline',
+    category: ComponentCategory.display,
+    description: 'Events on a marker rail with a connecting hairline.',
+    alsoExports: <String>['CairnTimelineItem'],
+    preview: ExtendedPreviews.timeline,
+    code: '''
+const CairnTimeline(
+  items: <CairnTimelineItem>[
+    CairnTimelineItem(
+      tone: CairnTone.success,
+      title: Text('Deployed to production'),
+      time: Text('2m ago'),
+    ),
+  ],
+)''',
+  ),
+  ComponentEntry(
+    name: 'Chat Bubble',
+    slug: 'chat-bubble',
+    category: ComponentCategory.display,
+    description: 'A message bubble that aligns itself by sender.',
+    note: 'Capped at 75% of its parent\'s width.',
+    preview: ExtendedPreviews.chatBubble,
+    code: '''
+const CairnChatBubble(
+  side: CairnChatSide.sent,
+  footer: Text('Delivered'),
+  child: Text('Shipped.'),
+)''',
+  ),
+  ComponentEntry(
+    name: 'Indicator',
+    slug: 'indicator',
+    category: ComponentCategory.display,
+    description: 'A badge or dot pinned to a corner of its child.',
+    note:
+        'The indicator is positioned over the child and does not affect layout.',
+    preview: ExtendedPreviews.indicator,
+    code: '''
+const CairnIndicator(
+  indicator: CairnBadge(label: Text('3')),
+  child: CairnAvatar(fallback: Text('RB')),
+)''',
+  ),
+  ComponentEntry(
+    name: 'Stack',
+    slug: 'stack',
+    category: ComponentCategory.display,
+    description: 'Overlapping layers, or an avatar pile.',
+    preview: ExtendedPreviews.stack,
+    code: '''
+CairnStack(
+  offset: 8,
+  children: <Widget>[
+    CairnCard(children: <Widget>[CairnCardHeader(title: Text('Top'))]),
+    CairnCard(children: <Widget>[CairnCardHeader(title: Text('Behind'))]),
+  ],
+)''',
+  ),
+  ComponentEntry(
+    name: 'Hero',
+    slug: 'hero',
+    category: ComponentCategory.display,
+    description:
+        'A landing-page header with eyebrow, actions and a 36rem measure.',
+    preview: ExtendedPreviews.hero,
+    code: '''
+CairnHero(
+  eyebrow: const CairnBadge(label: Text('New')),
+  title: const Text('Build interfaces that hold together'),
+  description: const Text('Tokens first, widgets second.'),
+  actions: <Widget>[
+    CairnButton(onPressed: _start, child: const Text('Get started')),
+  ],
+)''',
+  ),
+  ComponentEntry(
+    name: 'Diff',
+    slug: 'diff',
+    category: ComponentCategory.display,
+    description: 'A draggable before-and-after comparison.',
+    note: 'Drag the grip, or focus it and use the arrow keys, Home and End.',
+    preview: ExtendedPreviews.diff,
+    code: '''
+CairnDiff(
+  aspectRatio: 16 / 9,
+  before: Image.asset('before.png', fit: BoxFit.cover),
+  after: Image.asset('after.png', fit: BoxFit.cover),
+)''',
+  ),
+  ComponentEntry(
+    name: 'List',
+    slug: 'list',
+    category: ComponentCategory.display,
+    description: 'Rows with leading, trailing and selected states.',
+    alsoExports: <String>['CairnListItem'],
+    preview: ExtendedPreviews.list,
+    code: '''
+CairnList(
+  bordered: true,
+  children: <Widget>[
+    CairnListItem(
+      leading: const CairnAvatar(fallback: Text('RB')),
+      title: const Text('Ralph'),
+      subtitle: const Text('Owner'),
+      onTap: _open,
+    ),
+  ],
+)''',
+  ),
+  ComponentEntry(
+    name: 'Mockup',
+    slug: 'mockup',
+    category: ComponentCategory.display,
+    description:
+        'Window, browser, code and phone frames for showcasing content.',
+    alsoExports: <String>[
+      'CairnMockupWindow',
+      'CairnMockupBrowser',
+      'CairnMockupCode',
+      'CairnMockupPhone',
+    ],
+    preview: ExtendedPreviews.mockup,
+    code: '''
+const CairnMockupBrowser(
+  url: 'https://cairn.dev',
+  child: SizedBox(height: 96),
+)
+
+const CairnMockupCode(
+  lines: <String>['flutter pub add cairn_ui'],
+  highlight: <int>{0},
+)''',
+  ),
+  ComponentEntry(
+    name: 'Steps',
+    slug: 'steps',
+    category: ComponentCategory.navigation,
+    description: 'A progress rail for multi-step flows.',
+    note: 'Only completed steps are tappable.',
+    alsoExports: <String>['CairnStep'],
+    preview: ExtendedPreviews.steps,
+    code: '''
+CairnSteps(
+  current: 1,
+  onStepTap: (int i) => setState(() => _step = i),
+  steps: const <CairnStep>[
+    CairnStep(label: 'Cart'),
+    CairnStep(label: 'Shipping'),
+    CairnStep(label: 'Done'),
+  ],
+)''',
+  ),
+  ComponentEntry(
+    name: 'Navbar',
+    slug: 'navbar',
+    category: ComponentCategory.navigation,
+    description: 'A top bar with start, centre and end slots.',
+    note:
+        'The centre slot is centred on the bar itself, not on the space left over.',
+    preview: ExtendedPreviews.navbar,
+    code: '''
+CairnNavbar(
+  start: const Text('Cairn'),
+  end: CairnButton(
+    size: CairnButtonSize.sm,
+    onPressed: _signIn,
+    child: const Text('Sign in'),
+  ),
+)''',
+  ),
+  ComponentEntry(
+    name: 'Dock',
+    slug: 'dock',
+    category: ComponentCategory.navigation,
+    description: 'A 64px bottom navigation bar for mobile.',
+    note: 'Needs at least two items.',
+    alsoExports: <String>['CairnDockItem'],
+    preview: ExtendedPreviews.dock,
+    code: '''
+CairnDock(
+  index: _tab,
+  onChanged: (int i) => setState(() => _tab = i),
+  items: const <CairnDockItem>[
+    CairnDockItem(icon: CairnIcon(CairnIconData.search), label: 'Search'),
+    CairnDockItem(icon: CairnIcon(CairnIconData.info), label: 'Inbox'),
+  ],
+)''',
+  ),
+  ComponentEntry(
+    name: 'Link',
+    slug: 'link',
+    category: ComponentCategory.navigation,
+    description: 'A text link with muted and underline options.',
+    note: 'Does not navigate. Call your router or url_launcher from onPressed.',
+    preview: ExtendedPreviews.link,
+    code: '''
+CairnLink(
+  onPressed: () => context.go('/docs'),
+  child: const Text('Read the docs'),
+)''',
+  ),
+  ComponentEntry(
+    name: 'Radial Progress',
+    slug: 'radial-progress',
+    category: ComponentCategory.data,
+    description: 'An animated progress ring.',
+    preview: ExtendedPreviews.radialProgress,
+    code: '''
+const CairnRadialProgress(
+  value: 0.7,
+  tone: CairnTone.success,
+  showValue: true,
+)''',
+  ),
+  ComponentEntry(
+    name: 'Countdown',
+    slug: 'countdown',
+    category: ComponentCategory.data,
+    description: 'A ticking countdown that shows only the units it needs.',
+    note:
+        'Owns a Timer that ticks once a second. Remove it from the tree to dispose it.',
+    alsoExports: <String>['CairnCountdownDigits'],
+    preview: ExtendedPreviews.countdown,
+    code: '''
+CairnCountdown(
+  duration: const Duration(hours: 26, minutes: 14),
+  onComplete: _launch,
 )''',
   ),
 ];

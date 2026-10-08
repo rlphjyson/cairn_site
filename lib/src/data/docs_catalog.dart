@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import '../widgets/syntax.dart';
 import 'component_previews.dart';
+import 'extended_previews.dart';
 import 'variant_sample.dart';
 
 /// One renderable piece of a documentation page.
@@ -178,7 +179,7 @@ const List<DocPage> docsCatalog = <DocPage>[
     nodes: <DocNode>[
       DocHeading('What this is'),
       DocParagraph(
-        'Forty-five components, no runtime dependencies beyond Flutter itself, '
+        'Sixty-five components, no runtime dependencies beyond Flutter itself, '
         'and a token layer where every value records the source string it was '
         'converted from. It is a widget package: no backend, no network layer, '
         'no platform channels, no native code.',
@@ -308,7 +309,7 @@ static const Color lightPrimary = Color(0xFF171717);''',
       DocCode(
         '''
 dependencies:
-  cairn_ui: ^0.1.0''',
+  cairn_ui: ^0.2.0''',
         language: CodeLanguage.yaml,
         filename: 'pubspec.yaml',
       ),
@@ -316,8 +317,7 @@ dependencies:
         'Or straight from git. Pin an exact commit rather than a branch — a '
         'floating ref means an upstream push can change what your app renders '
         'between two builds of the same source, which turns a visual '
-        'regression into a mystery. This site\'s own pubspec does exactly '
-        'this:',
+        'regression into a mystery:',
       ),
       DocCode(
         '''
@@ -325,7 +325,7 @@ dependencies:
   cairn_ui:
     git:
       url: https://github.com/rlphjyson/cairn_ui.git
-      ref: 7abb0cc70dea5daaeefda0a93ae94e0c0d2bf737''',
+      ref: v0.2.0''',
         language: CodeLanguage.yaml,
         filename: 'pubspec.yaml',
       ),
@@ -657,6 +657,39 @@ MaterialApp(
             'themes destructive to a pale colour. Cairn keeps the foreground '
             'as its own themeable slot and merely defaults it to white.',
       ),
+
+      DocHeading('Tones'),
+      DocParagraph(
+        'The palette stops at primary, secondary and destructive, which is not '
+        'enough for components that carry state. CairnTone adds the missing '
+        'ones: an enum of neutral, primary, success, warning, info and '
+        'destructive, resolved against the active theme by '
+        'CairnToneColors.resolve into a fill and the foreground that belongs '
+        'on it.',
+      ),
+      DocPreview(
+        ExtendedPreviews.tones,
+        caption: 'Live token values, so they follow light and dark.',
+      ),
+      DocTable(
+        headers: <String>['Tone', 'Light', 'Dark'],
+        rows: <List<String>>[
+          <String>['success', 'green-600', 'green-400'],
+          <String>['warning', 'amber-500', 'amber-400'],
+          <String>['info', 'blue-600', 'blue-400'],
+        ],
+      ),
+      DocParagraph(
+        'Like every other Cairn colour, the additions are authored in OKLCH '
+        'with separate light and dark values. Status, Steps, Timeline, Rating '
+        'and Radial Progress all take a tone.',
+      ),
+      DocCode('''
+final CairnToneColor c = CairnToneColors.resolve(
+  CairnTheme.of(context),
+  CairnTone.success,
+);
+// c.fill for dots and markers, c.onFill for text placed on it'''),
 
       DocHeading('The radius scale'),
       DocParagraph(

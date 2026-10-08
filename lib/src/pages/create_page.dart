@@ -161,7 +161,7 @@ dependencies:
   flutter:
     sdk: flutter
   # One dependency, no code generation and no build_runner step.
-  cairn_ui: ^0.1.0
+  cairn_ui: ^0.2.0
 ''';
 
   String get _themeCode {

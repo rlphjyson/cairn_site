@@ -85,7 +85,7 @@ class _Hero extends StatelessWidget {
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 680),
                 child: Text(
-                  'Forty-five components on one design-token layer — OKLCH '
+                  'Sixty-five components on one design-token layer — OKLCH '
                   'colour, a multiplier-based radius scale, focus-visible '
                   'rings. Every padding, radius, colour and easing curve is a '
                   'named token rather than a number typed into a widget, and '
@@ -170,13 +170,13 @@ class _AnnouncementPill extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const CairnBadge(label: Text('v0.1.0')),
+            const CairnBadge(label: Text('v0.2.0')),
             const SizedBox(width: CairnSpacing.s2p5),
             Flexible(
               child: Text(
                 roomy
-                    ? '45 components, 115 tests, golden-locked'
-                    : '45 components, golden-locked',
+                    ? '65 components, 172 tests, golden-locked'
+                    : '65 components, golden-locked',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: theme
@@ -524,7 +524,7 @@ class _DogfoodSection extends StatelessWidget {
           subtitle:
               'A component library that only ever shows its components in '
               'isolation has not proved very much. So this site adds cairn_ui '
-              'as a pinned git dependency and builds its own chrome out of it.',
+              'as a pub.dev dependency and builds its own chrome out of it.',
         ),
         const SizedBox(height: CairnSpacing.s6),
         Column(
@@ -608,13 +608,10 @@ class _DogfoodSection extends StatelessWidget {
     const Widget snippet = CodeBlock(
       '''
 dependencies:
-  # Pinned to an exact commit, not a branch. A floating `ref: main`
-  # would let an upstream push change what this site renders between
-  # two builds of the same source.
-  cairn_ui:
-    git:
-      url: https://github.com/rlphjyson/cairn_ui.git
-      ref: 7abb0cc70dea5daaeefda0a93ae94e0c0d2bf737
+  # A published release from pub.dev, not a floating branch, so an
+  # upstream push cannot change what this site renders between two
+  # builds of the same source.
+  cairn_ui: ^0.2.0
   fl_chart: ^1.2.0
   go_router: ^17.5.0''',
       language: CodeLanguage.yaml,

@@ -20,12 +20,11 @@ packages:
   cairn_ui:
     dependency: "direct main"
     description:
-      path: "."
-      ref: fa38a8c
-      resolved-ref: fa38a8c3c7a032cd45e1e2f026c936e0f60e1e94
-      url: "https://github.com/rlphjyson/cairn_ui.git"
-    source: git
-    version: "0.1.1"
+      name: cairn_ui
+      sha256: "17880b6dd34468e24a50caac1f4746fa1108a00c1e9f7354da7240ea31e90c76"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   characters:
     dependency: transitive
     description:

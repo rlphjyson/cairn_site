@@ -700,7 +700,7 @@ class _PricingBlock extends StatelessWidget {
       cadence: 'forever',
       blurb: 'Everything you need to ship a side project.',
       features: <String>[
-        'All 45 components',
+        'All 65 components',
         'Light and dark themes',
         'MIT licensed',
         'Community support',

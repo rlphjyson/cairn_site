@@ -2137,7 +2137,7 @@ CairnNavigationMenu(
                   .copyWith(fontWeight: CairnTypography.medium),
             ),
             Text(
-              'Forty-five components on one token layer, in Flutter.',
+              'Sixty-five components on one token layer, in Flutter.',
               style: theme
                   .textStyle(CairnTypography.sm)
                   .copyWith(color: theme.mutedForeground),
@@ -2167,7 +2167,7 @@ CairnNavigationMenu(
                             .copyWith(fontWeight: CairnTypography.medium),
                       ),
                       Text(
-                        'Forty-five components on one token layer, in Flutter.',
+                        'Sixty-five components on one token layer, in Flutter.',
                         style: theme
                             .textStyle(CairnTypography.sm)
                             .copyWith(color: theme.mutedForeground),

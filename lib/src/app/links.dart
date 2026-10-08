@@ -10,13 +10,12 @@ abstract final class SiteLinks {
   /// This site's own source.
   static const String siteRepo = 'https://github.com/rlphjyson/cairn_site';
 
-  /// The exact commit the site's `pubspec.yaml` pins.
+  /// The cairn_ui release the site's `pubspec.yaml` depends on.
   static const String pinnedCommit =
-      'https://github.com/rlphjyson/cairn_ui/commit/'
-      '7abb0cc70dea5daaeefda0a93ae94e0c0d2bf737';
+      'https://github.com/rlphjyson/cairn_ui/releases/tag/v0.2.0';
 
   /// The short form of [pinnedCommit], for display.
-  static const String pinnedCommitShort = '7abb0cc';
+  static const String pinnedCommitShort = 'v0.2.0';
 
   /// The bundled typeface.
   static const String geist = 'https://vercel.com/font';

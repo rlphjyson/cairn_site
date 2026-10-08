@@ -39,9 +39,9 @@ of it:
 | `CairnCard`, `CairnBadge`, `CairnInput`, `CairnSelect`, `CairnSeparator` | Everywhere |
 
 If a component regresses upstream, this site breaks. That is the point, and it
-is why the dependency is pinned to an exact commit rather than a branch.
+is why the dependency is pinned to the `^0.2.0` release line rather than a branch.
 
-It has already paid for itself once: mounting all 45 components on one page and
+It has already paid for itself once: mounting the whole catalogue on one page and
 navigating away surfaced a latent crash in `CairnContextMenu`, which is now
 fixed upstream with a regression test.
 
@@ -51,9 +51,9 @@ fixed upstream with a regression test.
 | --- | --- |
 | `/` | Landing page: hero, a bento grid of live component previews, the four design decisions, the dogfooding story, a live block |
 | `/docs/*` | Eight documentation pages with a sticky sidebar, an "On this page" rail with working anchors, and copyable code blocks |
-| `/components` | All 45 component modules — 50 cards, because five widgets ship inside a sibling's file — each a live, interactive preview |
+| `/components` | All 65 component modules — 70 cards, because five widgets ship inside a sibling's file — each a live, interactive preview |
 | `/components/:slug` | One component: a preview where **every rendered instance is clickable** and reveals its own exact snippet, the quick-start example, the design note, prev/next |
-| `/blocks` | Five composed screens: login, dashboard shell, settings, pricing, team roster |
+| `/blocks` | Five composed screens: login, dashboard shell, settings, pricing, team roster — plus a "Templates — coming soon" note for the planned Flutter web and mobile templates |
 | `/charts` | Seven chart shapes on Cairn's token palette, and an honest note about why they are not Cairn components |
 | `/directory` | Every module, widget, block and doc page in one sortable table |
 | `/typeset` | The type scale as a live style guide, with three rhythm knobs over a prose specimen |
