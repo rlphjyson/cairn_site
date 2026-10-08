@@ -16,6 +16,12 @@ affiliated with, sponsored by or endorsed by Vercel or Lucide.
   its golden tests. Licensed under the SIL Open Font License 1.1 — full text at
   [`fonts/OFL.txt`](fonts/OFL.txt).
 
+- **Photographs** under `assets/images/`, used by the e-commerce template, are
+  from [Pexels](https://www.pexels.com) and used under the
+  [Pexels licence](https://www.pexels.com/license/) (free for commercial use,
+  no attribution required). They are product shots of sneakers, headphones,
+  watches and eyewear; any brand marks visible in them belong to their owners.
+
 ## Redrawn artwork
 
 - **[Lucide](https://lucide.dev)** — the icons in

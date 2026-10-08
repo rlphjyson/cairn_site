@@ -68,8 +68,6 @@ class _BlocksPageState extends State<BlocksPage> {
             _BlockSection(key: _anchors[block.slug], block: block),
           ],
           const SizedBox(height: CairnSpacing.s16),
-          const _TemplatesComingSoon(),
-          const SizedBox(height: CairnSpacing.s16),
           const CairnSeparator(),
           const SizedBox(height: CairnSpacing.s6),
           Center(
@@ -77,6 +75,14 @@ class _BlocksPageState extends State<BlocksPage> {
               variant: CairnButtonVariant.outline,
               onPressed: () => context.go(Routes.components),
               child: const Text('Browse the components these are made of'),
+            ),
+          ),
+          const SizedBox(height: CairnSpacing.s3),
+          Center(
+            child: CairnButton(
+              variant: CairnButtonVariant.ghost,
+              onPressed: () => context.go(Routes.templates),
+              child: const Text('Want a whole app? See the templates'),
             ),
           ),
         ],
@@ -148,91 +154,6 @@ class _ComponentChip extends StatelessWidget {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(onTap: () => context.go(match.path), child: badge),
-    );
-  }
-}
-
-/// The roadmap note for the planned Flutter web and mobile templates.
-///
-/// Deliberately text only: nothing is built yet, and a preview of an unbuilt
-/// template would be a promise the site cannot keep.
-class _TemplatesComingSoon extends StatelessWidget {
-  const _TemplatesComingSoon();
-
-  @override
-  Widget build(BuildContext context) {
-    final CairnTheme theme = CairnTheme.of(context);
-    final TextStyle small = theme
-        .textStyle(CairnTypography.sm)
-        .copyWith(color: theme.mutedForeground);
-
-    Widget set(String title, List<String> items) => Expanded(
-      child: CairnCard(
-        children: <Widget>[
-          CairnCardHeader(title: Text(title)),
-          CairnCardContent(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: CairnSpacing.s1p5,
-              children: <Widget>[
-                for (final String item in items) Text(item, style: small),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Row(
-          spacing: CairnSpacing.s3,
-          children: <Widget>[
-            Flexible(
-              child: Text(
-                'Templates',
-                style: theme
-                    .textStyle(CairnTypography.xl2)
-                    .copyWith(
-                      color: theme.foreground,
-                      fontWeight: CairnTypography.semibold,
-                    ),
-              ),
-            ),
-            const CairnBadge(
-              variant: CairnBadgeVariant.secondary,
-              label: Text('Coming soon'),
-            ),
-          ],
-        ),
-        const SizedBox(height: CairnSpacing.s2),
-        Text(
-          'Flutter web and mobile templates will be provided here. They are '
-          'copy-and-run, themed purely through CairnTheme, and ship in light '
-          'and dark. Planned, not built yet.',
-          style: small,
-        ),
-        const SizedBox(height: CairnSpacing.s6),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: CairnSpacing.s4,
-          children: <Widget>[
-            set('Web', const <String>[
-              'Landing page',
-              'Dashboard',
-              'Docs shell',
-              'Auth screens',
-            ]),
-            set('Mobile', const <String>[
-              'Onboarding',
-              'Tab-bar app shell, built on Dock',
-              'Settings',
-              'Chat',
-            ]),
-          ],
-        ),
-      ],
     );
   }
 }

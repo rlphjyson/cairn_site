@@ -13,6 +13,7 @@ import '../pages/directory_page.dart';
 import '../pages/docs_page.dart';
 import '../pages/home_page.dart';
 import '../pages/not_found_page.dart';
+import '../pages/templates_page.dart';
 import '../pages/typeset_page.dart';
 import '../shell/site_page.dart';
 import '../shell/site_shell.dart';
@@ -92,6 +93,14 @@ GoRouter buildRouter({String initialLocation = Routes.home}) {
             path: Routes.blocks,
             pageBuilder: (BuildContext context, GoRouterState state) =>
                 _page(state, 'Blocks', const SitePage(child: BlocksPage())),
+          ),
+          GoRoute(
+            path: Routes.templates,
+            pageBuilder: (BuildContext context, GoRouterState state) => _page(
+              state,
+              'Templates',
+              const SitePage(child: TemplatesPage()),
+            ),
           ),
           GoRoute(
             path: Routes.charts,

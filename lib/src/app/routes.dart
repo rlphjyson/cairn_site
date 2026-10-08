@@ -20,6 +20,9 @@ abstract final class Routes {
   /// Pre-composed screens.
   static const String blocks = '/blocks';
 
+  /// Whole-app templates.
+  static const String templates = '/templates';
+
   /// The charts showcase.
   static const String charts = '/charts';
 
@@ -86,6 +89,11 @@ const List<NavDestination> siteNav = <NavDestination>[
     label: 'Blocks',
     path: Routes.blocks,
     description: 'Whole screens, composed from components',
+  ),
+  NavDestination(
+    label: 'Templates',
+    path: Routes.templates,
+    description: 'A live sample mobile app, and what comes next',
   ),
   NavDestination(
     label: 'Charts',

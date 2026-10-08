@@ -170,6 +170,7 @@ void main() {
         Routes.home,
         Routes.components,
         Routes.blocks,
+        Routes.templates,
         Routes.charts,
         Routes.directory,
         Routes.typeset,

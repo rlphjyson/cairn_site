@@ -63,6 +63,7 @@ class SiteFooter extends StatelessWidget {
                       links: <_FooterLink>[
                         _FooterLink('Components', Routes.components),
                         _FooterLink('Blocks', Routes.blocks),
+                        _FooterLink('Templates', Routes.templates),
                         _FooterLink('Charts', Routes.charts),
                         _FooterLink('Directory', Routes.directory),
                         _FooterLink('Typeset', Routes.typeset),

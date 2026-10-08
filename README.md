@@ -54,6 +54,7 @@ fixed upstream with a regression test.
 | `/components` | All 65 component modules — 70 cards, because five widgets ship inside a sibling's file — each a live, interactive preview |
 | `/components/:slug` | One component: a preview where **every rendered instance is clickable** and reveals its own exact snippet, the quick-start example, the design note, prev/next |
 | `/blocks` | Five composed screens: login, dashboard shell, settings, pricing, team roster — plus a "Templates — coming soon" note for the planned Flutter web and mobile templates |
+| `/templates` | A live, clickable sample mobile storefront (search, filter, save, cart, checkout) in a phone frame, built only from Cairn components, plus the roadmap |
 | `/charts` | Seven chart shapes on Cairn's token palette, and an honest note about why they are not Cairn components |
 | `/directory` | Every module, widget, block and doc page in one sortable table |
 | `/typeset` | The type scale as a live style guide, with three rhythm knobs over a prose specimen |
@@ -143,4 +144,20 @@ internally. The site ships no image assets at all.
 ## Licence
 
 MIT — see [LICENSE](LICENSE). Third-party attribution is in
+[NOTICE.md](NOTICE.md).
+
+## Roadmap
+
+Planned, not built. Nothing in the `cairn_ui` package depends on any of it.
+
+- **Web templates** — landing page, dashboard, docs shell and auth screens.
+- **More mobile templates** — onboarding, settings and chat, alongside the
+  e-commerce storefront that exists today.
+- **Paid templates** — Cairn Site will sell its templates. Payments, licensing
+  and delivery are to be set up later; the e-commerce template is a free
+  preview until then.
+- **A Cairn MCP server** — an MCP server for `cairn_ui`, so an AI assistant can
+  look up components, tokens and exact snippets instead of guessing the API.
+
+Template photographs are from [Pexels](https://www.pexels.com); see
 [NOTICE.md](NOTICE.md).
