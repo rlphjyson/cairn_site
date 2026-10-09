@@ -29,8 +29,7 @@ void main() {
       await _settle(tester);
       expect(find.byType(TemplatesPage), findsOneWidget);
       expect(find.byType(ShopApp), findsOneWidget);
-      expect(find.text('Cairn MCP server'), findsOneWidget);
-      expect(find.text('Paid templates'), findsOneWidget);
+      expect(find.text('Roadmap'), findsNothing);
       expect(tester.takeException(), isNull);
     });
 

@@ -38,6 +38,9 @@ abstract final class Routes {
   /// The project starter/configurator.
   static const String create = '/create';
 
+  /// The MCP server for AI assistants.
+  static const String mcp = '/mcp';
+
   /// The detail page for a single component.
   static String component(String slug) => '/components/$slug';
 
@@ -52,6 +55,7 @@ class NavDestination {
     required this.label,
     required this.path,
     required this.description,
+    this.primary = true,
   });
 
   /// The nav label.
@@ -62,6 +66,11 @@ class NavDestination {
 
   /// Used by the mobile nav sheet and the command palette.
   final String description;
+
+  /// Whether it appears in the desktop header. Secondary destinations stay in
+  /// the mobile menu, the command palette and the footer, so the header does
+  /// not outgrow its row.
+  final bool primary;
 
   /// Whether [location] is inside this destination's subtree.
   bool matches(String location) {
@@ -107,11 +116,18 @@ const List<NavDestination> siteNav = <NavDestination>[
     label: 'Directory',
     path: Routes.directory,
     description: 'The searchable index of everything',
+    primary: false,
   ),
   NavDestination(
     label: 'Typeset',
     path: Routes.typeset,
     description: 'The type scale as a style guide',
+    primary: false,
+  ),
+  NavDestination(
+    label: 'MCP',
+    path: Routes.mcp,
+    description: 'Give your AI assistant the Cairn API',
   ),
   NavDestination(
     label: 'Create',

@@ -67,6 +67,7 @@ class SiteFooter extends StatelessWidget {
                         _FooterLink('Charts', Routes.charts),
                         _FooterLink('Directory', Routes.directory),
                         _FooterLink('Typeset', Routes.typeset),
+                        _FooterLink('MCP', Routes.mcp),
                       ],
                     ),
                     const _FooterColumn(

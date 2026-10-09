@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 
 import 'variant_sample.dart';
 
-/// Live previews for the Extended components — the ones ported from daisyUI's
-/// catalogue in cairn_ui 0.2.0.
+/// Live previews for the Extended components, the ones added in cairn_ui
+/// 0.2.0.
 ///
 /// Kept apart from `Previews` only to keep that file readable; the rules in its
 /// header apply unchanged. Every snippet is a complete expression that

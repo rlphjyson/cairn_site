@@ -1,7 +1,6 @@
 # SaaS landing page template
 
-A one-page SaaS landing site built only from `cairn_ui`, modelled on daisyUI's
-SaaS landing page template. Clean architecture with the layers at the top level
+A one-page SaaS landing site built only from `cairn_ui`. Clean architecture with the layers at the top level
 and features inside each layer, `flutter_bloc` for state and `get_it` for
 dependency injection. The product is a made-up project planner called
 **Kestrel**; every word, number, link and image reference lives in JSON-shaped

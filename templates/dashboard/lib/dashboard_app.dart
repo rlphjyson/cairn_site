@@ -12,8 +12,7 @@ import 'presentation/shell/dashboard_shell.dart';
 /// fl_chart restyled through Cairn's chart theme.
 ///
 /// A sidebar, a top bar with a period picker, KPI cards, revenue and traffic
-/// charts and a sortable, searchable orders table, modelled on daisyUI's
-/// dashboard templates. It fills whatever space its parent gives it and
+/// charts and a sortable, searchable orders table. It fills whatever space its parent gives it and
 /// collapses its sidebar below 760 logical pixels.
 ///
 /// Organised as clean architecture, by layer and then by feature; see the

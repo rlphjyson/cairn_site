@@ -265,10 +265,11 @@ class _DesktopNav extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         for (final NavDestination destination in siteNav)
-          _NavLink(
-            destination: destination,
-            active: destination.matches(location),
-          ),
+          if (destination.primary)
+            _NavLink(
+              destination: destination,
+              active: destination.matches(location),
+            ),
       ],
     );
   }

@@ -1,6 +1,6 @@
 # Blog template
 
-A blog built only from `cairn_ui`, modelled on daisyUI's blog template. A
+A blog built only from `cairn_ui`. A
 sticky navbar with live search, a featured post, category chips, a paginated
 grid of post cards, an article page rendered from content blocks, an About page
 and a newsletter form. Light and dark, one to three columns, keyboard

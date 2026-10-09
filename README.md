@@ -178,17 +178,5 @@ CAPTURE_SCREENSHOTS=1 FLUTTER_ROOT=<flutter sdk> \
 MIT — see [LICENSE](LICENSE). Third-party attribution is in
 [NOTICE.md](NOTICE.md).
 
-## Roadmap
-
-Planned, not built. Nothing in the `cairn_ui` package depends on any of it.
-
-- **More templates** — authentication screens, a chat app, onboarding and
-  settings, alongside the five that exist today.
-- **Paid templates** — Cairn Site will sell its templates. Payments, licensing
-  and delivery are to be set up later; the e-commerce template is a free
-  preview until then.
-- **A Cairn MCP server** — an MCP server for `cairn_ui`, so an AI assistant can
-  look up components, tokens and exact snippets instead of guessing the API.
-
 Template photographs are from [Pexels](https://www.pexels.com); see
 [NOTICE.md](NOTICE.md).

@@ -1116,7 +1116,7 @@ CairnDatePicker(
 )''',
   ),
   // -------------------------------------------------------------------------
-  // Extended: ported from daisyUI's catalogue in cairn_ui 0.2.0
+  // Extended: the components added in cairn_ui 0.2.0
   // -------------------------------------------------------------------------
   ComponentEntry(
     name: 'Rating',

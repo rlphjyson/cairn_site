@@ -14,7 +14,7 @@ import 'presentation/shell/landing_shell.dart';
 /// highlighted and a menu sheet on phones), a hero with a product mockup, a
 /// logo cloud, features with image spotlights, how it works, numbers,
 /// testimonials, pricing with a monthly/yearly toggle, an FAQ, a waitlist form
-/// and a footer, modelled on daisyUI's SaaS landing page template.
+/// and a footer.
 ///
 /// It fills whatever space its parent gives it and adapts to that width, so it
 /// works as a whole page or inside a frame. All copy lives in the in-memory

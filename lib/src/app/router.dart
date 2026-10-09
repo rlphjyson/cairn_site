@@ -13,6 +13,7 @@ import '../pages/create_page.dart';
 import '../pages/directory_page.dart';
 import '../pages/docs_page.dart';
 import '../pages/home_page.dart';
+import '../pages/mcp_page.dart';
 import '../pages/not_found_page.dart';
 import '../pages/templates_page.dart';
 import '../pages/typeset_page.dart';
@@ -139,6 +140,11 @@ GoRouter buildRouter({String initialLocation = Routes.home}) {
             path: Routes.typeset,
             pageBuilder: (BuildContext context, GoRouterState state) =>
                 _page(state, 'Typeset', const SitePage(child: TypesetPage())),
+          ),
+          GoRoute(
+            path: Routes.mcp,
+            pageBuilder: (BuildContext context, GoRouterState state) =>
+                _page(state, 'MCP', const SitePage(child: McpPage())),
           ),
           GoRoute(
             path: Routes.create,

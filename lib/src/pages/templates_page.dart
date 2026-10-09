@@ -23,33 +23,6 @@ class TemplatesPage extends StatefulWidget {
   /// The template to show first; falls back to the first in the catalogue.
   final String? initialSlug;
 
-  /// What is planned next.
-  static const List<Planned> roadmap = <Planned>[
-    Planned(
-      title: 'Paid templates',
-      status: 'Planned',
-      body:
-          'Cairn Site will sell its templates. Payments, licensing and '
-          'delivery are to be set up later; until then every template here is '
-          'a free preview.',
-    ),
-    Planned(
-      title: 'More templates',
-      status: 'Planned',
-      body:
-          'Authentication screens, a chat app, onboarding and settings, '
-          'following daisyUI\'s auth and landing templates.',
-    ),
-    Planned(
-      title: 'Cairn MCP server',
-      status: 'Planned',
-      body:
-          'An MCP server for cairn_ui, so an AI assistant can look up '
-          'components, tokens and exact snippets instead of guessing the '
-          'API.',
-    ),
-  ];
-
   @override
   State<TemplatesPage> createState() => _TemplatesPageState();
 }
@@ -100,24 +73,6 @@ class _TemplatesPageState extends State<TemplatesPage> {
           const CairnSeparator(),
           const SizedBox(height: CairnSpacing.s10),
           _Screenshots(entry: entry),
-          const SizedBox(height: CairnSpacing.s16),
-          const CairnSeparator(),
-          const SizedBox(height: CairnSpacing.s10),
-          const SectionHeading(
-            'Roadmap',
-            subtitle:
-                'What is planned. None of this exists yet, and nothing in the '
-                'cairn_ui package depends on it.',
-          ),
-          const SizedBox(height: CairnSpacing.s6),
-          Wrap(
-            spacing: CairnSpacing.s4,
-            runSpacing: CairnSpacing.s4,
-            children: <Widget>[
-              for (final Planned item in TemplatesPage.roadmap)
-                SizedBox(width: 320, child: _PlannedCard(item: item)),
-            ],
-          ),
         ],
       ),
     );
@@ -578,55 +533,6 @@ class _Screenshots extends StatelessWidget {
                   ),
                 ),
             ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-/// One roadmap item.
-class Planned {
-  /// Creates an item.
-  const Planned({
-    required this.title,
-    required this.status,
-    required this.body,
-  });
-
-  /// What is planned.
-  final String title;
-
-  /// Where it stands.
-  final String status;
-
-  /// A sentence or two.
-  final String body;
-}
-
-class _PlannedCard extends StatelessWidget {
-  const _PlannedCard({required this.item});
-
-  final Planned item;
-
-  @override
-  Widget build(BuildContext context) {
-    final CairnTheme theme = CairnTheme.of(context);
-    return CairnCard(
-      children: <Widget>[
-        CairnCardHeader(
-          title: Text(item.title),
-          action: CairnBadge(
-            variant: CairnBadgeVariant.secondary,
-            label: Text(item.status),
-          ),
-        ),
-        CairnCardContent(
-          child: Text(
-            item.body,
-            style: theme
-                .textStyle(CairnTypography.sm)
-                .copyWith(color: theme.mutedForeground, height: 1.5),
           ),
         ),
       ],

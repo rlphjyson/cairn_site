@@ -1,0 +1,108 @@
+# Cairn UI
+
+> A modern, accessible Flutter component library: 65 components on a design-token layer. Version 0.2.0. Install with `flutter pub add cairn_ui`.
+
+- Import the whole library with one line: `import 'package:cairn_ui/cairn_ui.dart';`. There are no per-component imports.
+- Every public widget is prefixed `Cairn` (`CairnButton`, `CairnCard`). Do not invent widgets that are not listed by `list_components`.
+- Colours, radii, spacing and type come from the theme, never literals: `CairnTheme.of(context).primary`, `theme.radiusScale.md`, `CairnSpacing.s4`, `theme.textStyle(CairnTypography.sm)`.
+- Read the theme with `CairnTheme.of(context)`. Install it with `ThemeData(extensions: [CairnTheme.light])` or `CairnTheme.materialTheme(CairnTheme.light)`.
+- Icon-only buttons use `CairnButton.icon(...)` and need a `semanticLabel`.
+- Prefer a Cairn component over a Material one when both exist; Cairn has no ripple, so interactions are colour and shadow transitions.
+- `CairnTone` (neutral, primary, success, warning, info, destructive) colours state-bearing components such as Status, Steps, Timeline and Radial Progress.
+- Components that open overlays (toasts, dialogs, sheets) need a Navigator or a `CairnToaster` above them.
+
+## Components
+
+- [Button](https://rlphjyson.github.io/cairn_site/components/button): Six variants across eight sizes, with icon and loading forms.
+- [Input](https://rlphjyson.github.io/cairn_site/components/input): A single-line text field with leading and trailing slots.
+- [Textarea](https://rlphjyson.github.io/cairn_site/components/textarea): A multi-line field that grows with its content.
+- [Label](https://rlphjyson.github.io/cairn_site/components/label): A form label with leading-none and a disabled treatment.
+- [Checkbox](https://rlphjyson.github.io/cairn_site/components/checkbox): A checkbox with optional indeterminate state.
+- [Switch](https://rlphjyson.github.io/cairn_site/components/switch): A binary toggle with an animated thumb.
+- [Radio Group](https://rlphjyson.github.io/cairn_site/components/radio-group): Mutually exclusive options with roving focus.
+- [Slider](https://rlphjyson.github.io/cairn_site/components/slider): A range control driven by pointer or keyboard.
+- [Toggle](https://rlphjyson.github.io/cairn_site/components/toggle): A button that stays pressed.
+- [Toggle Group](https://rlphjyson.github.io/cairn_site/components/toggle-group): Joined or spaced toggles, single- or multi-select.
+- [Input OTP](https://rlphjyson.github.io/cairn_site/components/input-otp): A grouped one-time-code field.
+- [Form Field](https://rlphjyson.github.io/cairn_site/components/form-field): Label, description and error layout around any control.
+- [Card](https://rlphjyson.github.io/cairn_site/components/card): A surface with header, content and footer slots.
+- [Badge](https://rlphjyson.github.io/cairn_site/components/badge): A small status pill in five variants.
+- [Avatar](https://rlphjyson.github.io/cairn_site/components/avatar): A user image with a persistent fallback, plus a stack group.
+- [Alert](https://rlphjyson.github.io/cairn_site/components/alert): An inline banner, default or destructive.
+- [Separator](https://rlphjyson.github.io/cairn_site/components/separator): A hairline rule, horizontal or vertical.
+- [Skeleton](https://rlphjyson.github.io/cairn_site/components/skeleton): A pulsing placeholder for loading content.
+- [Spinner](https://rlphjyson.github.io/cairn_site/components/spinner): An indeterminate activity indicator.
+- [Kbd](https://rlphjyson.github.io/cairn_site/components/kbd): Keyboard key hints, single or grouped.
+- [Aspect Ratio](https://rlphjyson.github.io/cairn_site/components/aspect-ratio): Constrains a child to a fixed ratio.
+- [Empty](https://rlphjyson.github.io/cairn_site/components/empty): The zero-state panel, with a dashed border.
+- [Table](https://rlphjyson.github.io/cairn_site/components/table): A typed, column-driven table with an optional caption.
+- [Dialog](https://rlphjyson.github.io/cairn_site/components/dialog): A focus-trapped modal, dismissible by Escape or barrier.
+- [Alert Dialog](https://rlphjyson.github.io/cairn_site/components/alert-dialog): A modal that demands an explicit choice.
+- [Sheet](https://rlphjyson.github.io/cairn_site/components/sheet): A panel that slides in from any of the four edges.
+- [Drawer](https://rlphjyson.github.io/cairn_site/components/drawer): A bottom sheet with a grab handle and drag-to-dismiss.
+- [Popover](https://rlphjyson.github.io/cairn_site/components/popover): An anchored surface that flips and shifts to stay on screen.
+- [Tooltip](https://rlphjyson.github.io/cairn_site/components/tooltip): A hint that opens on hover and on keyboard focus.
+- [Hover Card](https://rlphjyson.github.io/cairn_site/components/hover-card): A rich preview with open and close grace periods.
+- [Dropdown Menu](https://rlphjyson.github.io/cairn_site/components/dropdown-menu): An anchored menu with labels, shortcuts and separators.
+- [Context Menu](https://rlphjyson.github.io/cairn_site/components/context-menu): A menu anchored to the pointer on right-click or long-press.
+- [Menu](https://rlphjyson.github.io/cairn_site/components/menu): The panel, item, checkbox item, label and separator primitives.
+- [Select](https://rlphjyson.github.io/cairn_site/components/select): A trigger whose menu matches its width.
+- [Combobox](https://rlphjyson.github.io/cairn_site/components/combobox): A select with a search field over the options.
+- [Command](https://rlphjyson.github.io/cairn_site/components/command): A Ctrl+K palette with grouping and keyword matching.
+- [Tabs](https://rlphjyson.github.io/cairn_site/components/tabs): Filled and line variants with roving focus.
+- [Accordion](https://rlphjyson.github.io/cairn_site/components/accordion): Single or multiple disclosure sections.
+- [Collapsible](https://rlphjyson.github.io/cairn_site/components/collapsible): The single-section primitive underneath Accordion.
+- [Breadcrumb](https://rlphjyson.github.io/cairn_site/components/breadcrumb): A trail with a current-page crumb and an ellipsis form.
+- [Pagination](https://rlphjyson.github.io/cairn_site/components/pagination): A windowed page range with ellipses.
+- [Menubar](https://rlphjyson.github.io/cairn_site/components/menubar): A desktop menu bar with hover-to-switch behaviour.
+- [Navigation Menu](https://rlphjyson.github.io/cairn_site/components/navigation-menu): A top-level nav with arbitrary dropdown panels.
+- [Scroll Area](https://rlphjyson.github.io/cairn_site/components/scroll-area): A scroller with a thumb drawn from the theme's tokens.
+- [Carousel](https://rlphjyson.github.io/cairn_site/components/carousel): A paged viewport with controls and indicators.
+- [Progress](https://rlphjyson.github.io/cairn_site/components/progress): Determinate and indeterminate progress bars.
+- [Toast](https://rlphjyson.github.io/cairn_site/components/toast): Stacked notifications that outlive the route that fired them.
+- [Data Table](https://rlphjyson.github.io/cairn_site/components/data-table): Sorting, filtering and pagination on top of Table.
+- [Calendar](https://rlphjyson.github.io/cairn_site/components/calendar): A month grid on a fixed 7 x 6 layout.
+- [Date Picker](https://rlphjyson.github.io/cairn_site/components/date-picker): A Calendar inside a Popover, behind a formatted trigger.
+- [Rating](https://rlphjyson.github.io/cairn_site/components/rating): A star rating with half steps and keyboard control.
+- [Swap](https://rlphjyson.github.io/cairn_site/components/swap): A controlled two-face toggle with fade, rotate and flip.
+- [File Input](https://rlphjyson.github.io/cairn_site/components/file-input): A file field that draws the control and leaves picking to you.
+- [Floating Action Button](https://rlphjyson.github.io/cairn_site/components/fab): A round action button that can open into a speed dial.
+- [Stat](https://rlphjyson.github.io/cairn_site/components/stat): A figure with its label and context, grouped by Stats.
+- [Status](https://rlphjyson.github.io/cairn_site/components/status): A small tone dot, optionally pulsing.
+- [Timeline](https://rlphjyson.github.io/cairn_site/components/timeline): Events on a marker rail with a connecting hairline.
+- [Chat Bubble](https://rlphjyson.github.io/cairn_site/components/chat-bubble): A message bubble that aligns itself by sender.
+- [Indicator](https://rlphjyson.github.io/cairn_site/components/indicator): A badge or dot pinned to a corner of its child.
+- [Stack](https://rlphjyson.github.io/cairn_site/components/stack): Overlapping layers, or an avatar pile.
+- [Hero](https://rlphjyson.github.io/cairn_site/components/hero): A landing-page header with eyebrow, actions and a 36rem measure.
+- [Diff](https://rlphjyson.github.io/cairn_site/components/diff): A draggable before-and-after comparison.
+- [List](https://rlphjyson.github.io/cairn_site/components/list): Rows with leading, trailing and selected states.
+- [Mockup](https://rlphjyson.github.io/cairn_site/components/mockup): Window, browser, code and phone frames for showcasing content.
+- [Steps](https://rlphjyson.github.io/cairn_site/components/steps): A progress rail for multi-step flows.
+- [Navbar](https://rlphjyson.github.io/cairn_site/components/navbar): A top bar with start, centre and end slots.
+- [Dock](https://rlphjyson.github.io/cairn_site/components/dock): A 64px bottom navigation bar for mobile.
+- [Link](https://rlphjyson.github.io/cairn_site/components/link): A text link with muted and underline options.
+- [Radial Progress](https://rlphjyson.github.io/cairn_site/components/radial-progress): An animated progress ring.
+- [Countdown](https://rlphjyson.github.io/cairn_site/components/countdown): A ticking countdown that shows only the units it needs.
+
+## Guides
+
+- [Introduction](https://rlphjyson.github.io/cairn_site/docs/introduction): Cairn is a modern, accessible component library for Flutter, built on one design-token layer: spacing, radii, OKLCH colour, a type scale, shadows and a focus-ring treatment, all specified once and held in place by golden tests.
+- [Installation](https://rlphjyson.github.io/cairn_site/docs/installation): Cairn is a normal Flutter package with no transitive dependencies. Add it, import one barrel, and register the theme extension.
+- [Quick start](https://rlphjyson.github.io/cairn_site/docs/quick-start): A complete, runnable app in about thirty lines, and the three patterns you will use constantly.
+- [Theming](https://rlphjyson.github.io/cairn_site/docs/theming): CairnTheme is a ThemeExtension carrying nineteen semantic colour slots, a radius base and a font family. Everything else is derived.
+- [Design tokens](https://rlphjyson.github.io/cairn_site/docs/tokens): Seven token files, each recording where its numbers came from. No component hardcodes a value that should come from one of these.
+- [Dark mode](https://rlphjyson.github.io/cairn_site/docs/dark-mode): Both themes ship. Switching between them is one field on MaterialApp, and Flutter animates every token across the change.
+- [Accessibility](https://rlphjyson.github.io/cairn_site/docs/accessibility): Looking right is the easy half. Focus, keyboard operation and screen-reader semantics are part of each component's contract in Cairn, not a pass somebody makes later.
+- [Testing](https://rlphjyson.github.io/cairn_site/docs/testing): Token extraction makes the first implementation correct. Golden tests are what keep it correct.
+
+## Templates
+
+- [E-commerce](https://rlphjyson.github.io/cairn_site/templates/shop): A storefront with cart and checkout
+- [Dashboard](https://rlphjyson.github.io/cairn_site/templates/dashboard): KPIs, charts and an orders table
+- [Blog](https://rlphjyson.github.io/cairn_site/templates/blog): Posts, search, authors and a newsletter
+- [Documentation](https://rlphjyson.github.io/cairn_site/templates/docs): Sidebar, search palette and content blocks
+- [SaaS landing](https://rlphjyson.github.io/cairn_site/templates/landing): Hero, pricing, testimonials and a waitlist
+
+## Optional
+
+- [MCP server](https://github.com/rlphjyson/cairn_ui_mcp): live component, token and snippet lookup for AI assistants.

@@ -47,7 +47,6 @@ class TemplateEntry {
     required this.uses,
     required this.shots,
     required this.preview,
-    this.inspiration,
   });
 
   /// The URL segment and the package folder, e.g. `shop`.
@@ -77,9 +76,6 @@ class TemplateEntry {
   /// Builds the live template.
   final WidgetBuilder preview;
 
-  /// The daisyUI template it is modelled on, when there is one.
-  final String? inspiration;
-
   /// The package folder inside the repository.
   String get packagePath => 'templates/$slug';
 }
@@ -91,14 +87,12 @@ final List<TemplateEntry> templateCatalog = <TemplateEntry>[
     name: 'E-commerce',
     kind: TemplateKind.mobile,
     summary: 'A storefront with cart and checkout',
-    inspiration: 'daisyUI\'s Online Store template',
     description:
         'A storefront in a phone frame, and it is live: search, filter, '
         'sort, save, pick a variant, add to cart, apply the promo code '
         'CAIRN10 and check out through a four-step flow with validated '
-        'shipping and payment forms. Orders land in your history. Modelled '
-        'on daisyUI\'s Online Store template, with a bottom Dock where the '
-        'web version has a navbar.',
+        'shipping and payment forms. Orders land in your history. A bottom '
+        'Dock replaces the navbar a web store would have.',
     screens: <(String, String)>[
       ('Shop', 'Swipeable promo banner, search, categories, sorting, grid.'),
       ('Product', 'Reviews, variants, quantity, stock and a sticky buy bar.'),
@@ -144,7 +138,6 @@ final List<TemplateEntry> templateCatalog = <TemplateEntry>[
     name: 'Dashboard',
     kind: TemplateKind.web,
     summary: 'KPIs, charts and an orders table',
-    inspiration: 'daisyUI\'s Nexus and HTML dashboard templates',
     description:
         'An analytics dashboard with a sidebar, a period picker and three '
         'pages: an overview with KPI cards and a revenue chart, an '
@@ -188,7 +181,6 @@ final List<TemplateEntry> templateCatalog = <TemplateEntry>[
     name: 'Blog',
     kind: TemplateKind.web,
     summary: 'Posts, search, authors and a newsletter',
-    inspiration: 'daisyUI\'s Blog template',
     description:
         'A responsive blog: a featured post, a filterable and searchable '
         'grid with pagination, rich post pages built from typed content '
@@ -229,7 +221,6 @@ final List<TemplateEntry> templateCatalog = <TemplateEntry>[
     name: 'Documentation',
     kind: TemplateKind.web,
     summary: 'Sidebar, search palette and content blocks',
-    inspiration: 'daisyUI\'s Documentation template',
     description:
         'A documentation site with a collapsible sidebar, a version '
         'selector, a command palette (Ctrl or Cmd K), an on-this-page rail '
@@ -270,7 +261,6 @@ final List<TemplateEntry> templateCatalog = <TemplateEntry>[
     name: 'SaaS landing',
     kind: TemplateKind.web,
     summary: 'Hero, pricing, testimonials and a waitlist',
-    inspiration: 'daisyUI\'s SaaS landing page template',
     description:
         'A one-page product site: a sticky navbar with smooth-scrolling '
         'links, a hero with a product mockup, bento features, numbers, '

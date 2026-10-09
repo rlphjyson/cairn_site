@@ -17,7 +17,7 @@ import 'presentation/shell/blog_shell.dart';
 ///
 /// A sticky navbar with search, a featured post, a filterable and paginated
 /// grid of posts, an article page rendered from content blocks, an About page
-/// and a newsletter form, modelled on daisyUI's blog template. It fills
+/// and a newsletter form. It fills
 /// whatever space its parent gives it and adapts to that width, not the
 /// screen's: one column under 640 logical pixels, two under 1024, then three.
 ///

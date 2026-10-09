@@ -10,6 +10,7 @@ import 'package:cairn_site/src/pages/create_page.dart';
 import 'package:cairn_site/src/pages/directory_page.dart';
 import 'package:cairn_site/src/pages/docs_page.dart';
 import 'package:cairn_site/src/pages/home_page.dart';
+import 'package:cairn_site/src/pages/mcp_page.dart';
 import 'package:cairn_site/src/pages/not_found_page.dart';
 import 'package:cairn_site/src/pages/typeset_page.dart';
 import 'package:cairn_ui/cairn_ui.dart';
@@ -27,6 +28,17 @@ void main() {
         find.text('A modern, accessible component library for Flutter.'),
         findsOneWidget,
       );
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('mcp', (WidgetTester tester) async {
+      await pumpSite(tester, Routes.mcp);
+      expect(find.byType(McpPage), findsOneWidget);
+      expect(find.text('Cairn UI for AI assistants'), findsOneWidget);
+      expect(find.text('Claude Code'), findsWidgets);
+      await tester.tap(find.text('Cursor'));
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(find.textContaining('.cursor/mcp.json'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
 
@@ -131,6 +143,7 @@ void main() {
       Routes.directory,
       Routes.typeset,
       Routes.create,
+      Routes.mcp,
       Routes.docsIntroduction,
       // A detail page too: the variant pane puts a hint line beside the
       // Preview/Code tabs, which is the one row on it that can run out of
@@ -159,11 +172,11 @@ void main() {
     await pumpSite(tester, Routes.home);
     expect(find.byType(HomePage), findsOneWidget);
 
-    await tester.tap(find.widgetWithText(CairnButton, 'Typeset').first);
+    await tester.tap(find.widgetWithText(CairnButton, 'Charts').first);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 600));
 
-    expect(find.byType(TypesetPage), findsOneWidget);
+    expect(find.byType(ChartsPage), findsOneWidget);
     expect(find.byType(HomePage), findsNothing);
     expect(tester.takeException(), isNull);
   });
