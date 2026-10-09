@@ -1,5 +1,6 @@
 import 'package:cairn_site/src/app/routes.dart';
 import 'package:cairn_site/src/data/templates_catalog.dart';
+import 'package:cairn_site/src/pages/template_detail_page.dart';
 import 'package:cairn_site/src/pages/templates_page.dart';
 import 'package:cairn_template_app_landing/cairn_template_app_landing.dart';
 import 'package:cairn_template_auth/cairn_template_auth.dart';
@@ -12,7 +13,7 @@ import 'package:cairn_template_onboarding/cairn_template_onboarding.dart';
 import 'package:cairn_template_settings/cairn_template_settings.dart';
 import 'package:cairn_template_shop/cairn_template_shop.dart';
 import 'package:cairn_ui/cairn_ui.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'site_harness.dart';
@@ -29,19 +30,24 @@ Future<void> _settle(WidgetTester tester) async {
 /// these tests only check that the site mounts each one and links to it.
 void main() {
   group('templates page', () {
-    testWidgets('opens on the first template', (WidgetTester tester) async {
-      await pumpSite(tester, Routes.templates);
+    testWidgets('lists every template as a card, with no app mounted', (
+      WidgetTester tester,
+    ) async {
+      final SemanticsHandle semantics = tester.ensureSemantics();
+      await pumpSite(tester, Routes.templates, surface: const Size(1440, 2600));
       await _settle(tester);
       expect(find.byType(TemplatesPage), findsOneWidget);
-      expect(find.byType(ShopApp), findsOneWidget);
-      expect(find.text('Roadmap'), findsNothing);
-      expect(tester.takeException(), isNull);
-    });
-
-    testWidgets('the picker lists every template', (WidgetTester tester) async {
-      final SemanticsHandle semantics = tester.ensureSemantics();
-      await pumpSite(tester, Routes.templates);
-      await _settle(tester);
+      expect(find.byType(TemplateCard), findsNWidgets(templateCatalog.length));
+      expect(find.byType(ShopApp), findsNothing);
+      // A grid, not a sideways scroller.
+      expect(
+        find.byWidgetPredicate(
+          (Widget w) =>
+              w is SingleChildScrollView &&
+              w.scrollDirection == Axis.horizontal,
+        ),
+        findsNothing,
+      );
       for (final TemplateEntry t in templateCatalog) {
         expect(
           find.bySemanticsLabel(
@@ -51,6 +57,7 @@ void main() {
           reason: t.slug,
         );
       }
+      expect(tester.takeException(), isNull);
       semantics.dispose();
     });
 
@@ -106,9 +113,7 @@ void main() {
       },
     );
 
-    testWidgets('choosing a template swaps the preview', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('a card opens the template page', (WidgetTester tester) async {
       final SemanticsHandle semantics = tester.ensureSemantics();
       await pumpSite(tester, Routes.templates, surface: const Size(1440, 2600));
       await _settle(tester);
@@ -116,15 +121,43 @@ void main() {
         find.bySemanticsLabel(RegExp('^Dashboard template, Web')),
       );
       await _settle(tester);
-      expect(find.byType(ShopApp), findsNothing);
+      expect(find.byType(TemplatesPage), findsNothing);
+      expect(find.byType(TemplateDetailPage), findsOneWidget);
       expect(find.byType(DashboardApp), findsOneWidget);
       expect(tester.takeException(), isNull);
       semantics.dispose();
     });
 
+    testWidgets('a template page steps to the next and back to the index', (
+      WidgetTester tester,
+    ) async {
+      await pumpSite(
+        tester,
+        Routes.template(templateCatalog.first.slug),
+        surface: const Size(1440, 3200),
+      );
+      await _settle(tester);
+      final TemplateEntry second = templateCatalog[1];
+      await tester.tap(find.widgetWithText(CairnButton, second.name).last);
+      await _settle(tester);
+      expect(
+        find.byWidgetPredicate(
+          (Widget w) => w is TemplateDetailPage && w.entry.slug == second.slug,
+        ),
+        findsOneWidget,
+      );
+      await tester.tap(
+        find.text('Back to all ${templateCatalog.length} templates'),
+      );
+      await _settle(tester);
+      expect(find.byType(TemplatesPage), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+
     testWidgets('an unknown template is a 404', (WidgetTester tester) async {
       await pumpSite(tester, '/templates/nope');
       expect(find.byType(TemplatesPage), findsNothing);
+      expect(find.byType(TemplateDetailPage), findsNothing);
     });
   });
 }

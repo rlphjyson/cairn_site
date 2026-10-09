@@ -15,6 +15,7 @@ import '../pages/docs_page.dart';
 import '../pages/home_page.dart';
 import '../pages/mcp_page.dart';
 import '../pages/not_found_page.dart';
+import '../pages/template_detail_page.dart';
 import '../pages/templates_page.dart';
 import '../pages/typeset_page.dart';
 import '../shell/site_page.dart';
@@ -119,7 +120,7 @@ GoRouter buildRouter({String initialLocation = Routes.home}) {
               return _page(
                 state,
                 '${entry.name} template',
-                SitePage(child: TemplatesPage(initialSlug: slug)),
+                SitePage(child: TemplateDetailPage(entry: entry)),
               );
             },
           ),
