@@ -1,0 +1,976 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>SaaS landing page template: documentation</title>
+<style>
+:root{
+  --bg:#fff;--fg:#0a0a0a;--muted:#6b6b6b;--card:#fff;--soft:#f6f6f7;--border:#e4e4e7;
+  --accent:#4f46e5;--code-bg:#f6f6f7;--code-fg:#1f1f23;--link:#2f27c4;--ring:#a5a0ff;
+  --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0a0a0a;--fg:#f4f4f5;--muted:#a1a1aa;--card:#111113;--soft:#18181b;--border:#27272a;
+  --accent:#818cf8;--code-bg:#15151a;--code-fg:#e4e4e7;--link:#a5b4fc;--ring:#6366f1}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 var(--font);-webkit-font-smoothing:antialiased}
+a{color:var(--link)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--ring);outline-offset:2px;border-radius:4px}
+.layout{display:grid;grid-template-columns:280px minmax(0,1fr);max-width:1240px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:32px 20px 32px 28px;border-right:1px solid var(--border)}
+nav.toc .brand{font-weight:650;font-size:15px;letter-spacing:-.01em;margin:0 0 4px}
+nav.toc .sub{color:var(--muted);font-size:13px;margin:0 0 20px}
+nav.toc ol{list-style:none;margin:0;padding:0}
+nav.toc li a{display:block;padding:5px 10px;margin:1px 0;border-radius:6px;color:var(--muted);text-decoration:none;font-size:14px;line-height:1.4}
+nav.toc li a:hover{background:var(--soft);color:var(--fg)}
+nav.toc li a.active{background:var(--soft);color:var(--fg);font-weight:600}
+main{padding:48px 40px 96px;min-width:0}
+header.hero{padding-bottom:28px;margin-bottom:36px;border-bottom:1px solid var(--border)}
+header.hero h1{font-size:40px;line-height:1.1;letter-spacing:-.03em;margin:0 0 12px}
+header.hero p{color:var(--muted);max-width:62ch;margin:0}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.badges span{border:1px solid var(--border);border-radius:999px;padding:3px 11px;font-size:12.5px;color:var(--muted)}
+section{margin-bottom:64px}
+h2{font-size:28px;line-height:1.2;letter-spacing:-.02em;margin:0 0 20px;padding-top:8px;position:relative}
+h3{font-size:19px;margin:34px 0 10px;letter-spacing:-.01em}
+h4{font-size:15px;margin:26px 0 8px}
+h4 .path{font:12px var(--mono);color:var(--muted);margin-left:8px;font-weight:400}
+.anchor{position:absolute;left:-22px;color:var(--muted);text-decoration:none;opacity:0}
+h2:hover .anchor,.anchor:focus{opacity:1}
+p,li,dd{max-width:78ch}
+ul,ol{padding-left:22px}
+li{margin:4px 0}
+code{font:0.88em var(--mono);background:var(--code-bg);padding:.12em .38em;border-radius:5px;border:1px solid var(--border)}
+.codeblock{position:relative;margin:16px 0;border:1px solid var(--border);border-radius:10px;background:var(--code-bg);overflow:hidden}
+.codeblock pre{margin:0;padding:16px 18px;overflow:auto;font:13px/1.6 var(--mono);color:var(--code-fg);tab-size:2}
+.codeblock pre code{background:none;border:0;padding:0;font:inherit}
+.code-title{font:12px var(--mono);color:var(--muted);padding:8px 14px;border-bottom:1px solid var(--border);background:var(--soft)}
+.copy{position:absolute;top:6px;right:6px;border:1px solid var(--border);background:var(--card);color:var(--fg);border-radius:6px;font:12px var(--font);padding:3px 10px;cursor:pointer;opacity:.85}
+.copy:hover{opacity:1}
+.copy.done{border-color:var(--accent);color:var(--accent)}
+.tablewrap{overflow-x:auto;margin:14px 0;border:1px solid var(--border);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;vertical-align:top;padding:9px 14px;border-bottom:1px solid var(--border)}
+th{background:var(--soft);font-weight:600;font-size:13px}
+tr:last-child td{border-bottom:0}
+dl dt{font-weight:600;margin-top:20px}
+dl dd{margin:4px 0 0;color:var(--muted)}
+dl dd code{color:var(--fg)}
+.note{border-left:3px solid var(--accent);padding:2px 14px;background:var(--soft);border-radius:0 8px 8px 0}
+footer.page{margin-top:48px;padding-top:20px;border-top:1px solid var(--border);color:var(--muted);font-size:14px}
+.menu-toggle{display:none}
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr}
+  nav.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border);padding:20px}
+  nav.toc ol{display:flex;flex-wrap:wrap;gap:2px 4px}
+  main{padding:32px 20px 72px}
+  header.hero h1{font-size:32px}
+  .anchor{display:none}
+}
+@media print{
+  :root{--bg:#fff;--fg:#000;--muted:#444;--card:#fff;--soft:#f3f3f3;--border:#bbb;--code-bg:#f6f6f6;--code-fg:#000;--link:#000}
+  nav.toc,.copy{display:none}
+  .layout{display:block}
+  main{padding:0}
+  section{break-inside:auto;margin-bottom:32px}
+  h2,h3,h4{break-after:avoid}
+  .codeblock,.tablewrap,tr{break-inside:avoid}
+  .codeblock pre{white-space:pre-wrap;word-break:break-word}
+  a{text-decoration:none}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:.8em;color:#444}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Contents">
+<p class="brand">Landing page template</p>
+<p class="sub">cairn_template_landing 1.0.0</p>
+<ol><li><a href="#overview">Overview and architecture</a></li><li><a href="#requirements">Requirements</a></li><li><a href="#install">Install</a></li><li><a href="#mount">Mount it</a></li><li><a href="#content">Update the content</a></li><li><a href="#images">Replace images</a></li><li><a href="#waitlist-service">Wire the waitlist to a real service</a></li><li><a href="#stripe">Wire pricing buttons to Stripe</a></li><li><a href="#theming">Branding and theming</a></li><li><a href="#go-router">Swap in-template navigation for go_router</a></li><li><a href="#deploy">SEO and deploy notes for Flutter web</a></li><li><a href="#testing">Testing</a></li><li><a href="#troubleshooting">Troubleshooting and FAQ</a></li><li><a href="#migration">Migration notes: upgrading cairn_ui</a></li></ol>
+</nav>
+<main>
+<header class="hero">
+<h1>SaaS landing page template</h1>
+<p>A one-page landing site built only from <code>cairn_ui</code>: ten sections, light and dark, phone to desktop. Clean architecture, <code>flutter_bloc</code> and <code>get_it</code>. All copy is data you can change in one place. This page is the install guide, the tutorial and the reference.</p>
+<div class="badges"><span>Flutter web</span><span>cairn_ui ^0.2.0</span><span>No code generation</span><span>Works offline</span></div>
+</header>
+<section id="overview"><h2><a class="anchor" href="#overview" aria-hidden="true">#</a>Overview and architecture</h2>
+<p>This is a one-page SaaS landing site built only from <a href="https://pub.dev/packages/cairn_ui">cairn_ui</a>. It is a Flutter package with a single entry widget, <code>LandingApp</code>. It fills whatever space its parent gives it, adapts to that width (phone, tablet or desktop), follows light and dark through <code>CairnTheme</code>, and keeps <strong>every word, number, link and image reference</strong> in JSON-shaped data so you can rebrand it without touching a widget.</p>
+
+<p>The demo product is <strong>Kestrel</strong>, an invented project planner. Nothing in it is a real brand: the logo cloud is drawn from text, the portraits are stock photos of nobody in particular, and the dashboard in the hero is assembled from Cairn widgets.</p>
+
+<h3>The page</h3>
+<div class="tablewrap"><table><thead><tr><th>Id</th><th>Section</th><th>What it shows</th></tr></thead><tbody><tr><td><code>hero</code></td><td>Hero</td><td>Announcement pill, headline, two buttons, avatar stack with rating, and a browser mockup with a small dashboard</td></tr><tr><td><code>logos</code></td><td>Logo cloud</td><td>Six invented companies as an icon and a text wordmark</td></tr><tr><td><code>features</code></td><td>Features</td><td>Bento grid of six cards, then three image spotlights that alternate sides</td></tr><tr><td><code>how-it-works</code></td><td>How it works</td><td>Three numbered step cards</td></tr><tr><td><code>stats</code></td><td>Numbers</td><td>Four figures in a <code>CairnStats</code> strip</td></tr><tr><td><code>testimonials</code></td><td>Testimonials</td><td>Six quotes with portraits and star ratings</td></tr><tr><td><code>pricing</code></td><td>Pricing</td><td>Monthly/yearly switch that re-prices three plans</td></tr><tr><td><code>faq</code></td><td>FAQ</td><td><code>CairnAccordion</code>, heading beside it on desktop</td></tr><tr><td><code>waitlist</code></td><td>Waitlist</td><td>Email form: validation, submitting, success and error states, toast</td></tr><tr><td><code>footer</code></td><td>Footer</td><td>Brand, link columns, social icons, legal links</td></tr></tbody></table></div>
+<p>A sticky <code>CairnNavbar</code> sits above the scroll. Its links smooth-scroll to the sections, the section in view is highlighted, and below 1000&nbsp;px the links move into a menu sheet.</p>
+
+<h3>Architecture</h3>
+<p>Clean architecture with the layers at the top level and features inside each layer. State is <code>flutter_bloc</code> cubits, dependency injection is <code>get_it</code> with explicit registration (no code generation).</p>
+<div class="codeblock" data-lang="text"><div class="code-title">Layout of lib/</div><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>lib/
+  landing_app.dart               entry widget LandingApp (owns its own GetIt)
+  cairn_template_landing.dart    barrel: LandingApp and the extension points
+  core/
+    infrastructure/di/           landing_injection.dart: the container
+    presentation/
+      navigation/                LandingNavigationCubit (scroll intent)
+      widgets/                   SectionFrame, SectionHeader, grids, Reveal
+      content_cubit.dart         ContentCubit&lt;T&gt; + ContentViewModel&lt;T&gt;
+      layout.dart                breakpoints, LandingViewport
+      view_model.dart            ViewModel, ViewModelBuilder, LandingScope
+  common/
+    constants/                   section_ids.dart, landing_package.dart
+    utils/                       json.dart, price_format.dart
+  data/&lt;feature&gt;/
+    remote/                      data source interface + InMemory content
+    repositories/                implement the domain interfaces
+  domain/&lt;feature&gt;/
+    models/                      plain Equatable objects
+    mappers/                     decoded JSON -&gt; models
+    repositories/                interfaces
+    use_cases/                   one job each
+  presentation/&lt;feature&gt;/
+    bloc/  view_models/  views/  widgets/
+  presentation/shell/            providers, navbar, scroll frame, page order</code></pre></div>
+<p>Features: <code>site</code>, <code>hero</code>, <code>logos</code>, <code>features</code>, <code>how_it_works</code>, <code>stats</code>, <code>testimonials</code>, <code>pricing</code>, <code>faq</code>, <code>waitlist</code>, <code>footer</code>.</p>
+
+<h3>Rules</h3>
+<ol>
+<li><strong>Dependencies point inwards.</strong> Presentation depends on domain; data depends on domain; domain depends on nothing but Dart and <code>common</code>.</li>
+<li><strong>Views never touch the container.</strong> A section that needs a screen-scoped cubit uses <code>ViewModelBuilder&lt;T&gt;</code> (content sections go through <code>ContentView&lt;T&gt;</code>, which wraps it). Session cubits are read with <code>context.read</code>.</li>
+<li><strong>Two kinds of cubit.</strong> <em>Session cubits</em> (navigation, site info) are lazy singletons provided once with <code>BlocProvider.value</code>; only the container closes them. <em>Screen cubits</em> (every section, the pricing toggle, the waitlist form) are created by a view model that closes them in <code>dispose</code>.</li>
+<li><strong>Content-only sections share one generic cubit.</strong> <code>ContentCubit&lt;T&gt;</code> loads a use case's result. <code>pricing</code> and <code>waitlist</code> have behaviour, so they have their own cubits.</li>
+<li><strong>Features do not import each other's presentation.</strong> The navbar and footer read the brand from the session <code>ContentCubit&lt;SiteInfo&gt;</code>.</li>
+<li><strong>No code generation.</strong> Registrations are written out in <code>landing_injection.dart</code>.</li>
+</ol>
+
+<h3>How a section gets its words</h3>
+<div class="codeblock" data-lang="text"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>InMemoryHeroRemoteDataSource.fetchHero()   // a const JSON map
+        |
+HeroRepositoryImpl.getHero()               // data layer: mapHero(json)
+        |
+GetHero()                                  // use case
+        |
+ContentCubit&lt;HeroContent&gt;.load()           // created by a ContentViewModel
+        |
+HeroView -&gt; ContentView&lt;HeroContent&gt;       // builds the section once loaded</code></pre></div>
+<p>To change a word you edit the JSON. To change where the words come from you write a different data source. Nothing above the data layer notices.</p>
+</section><section id="requirements"><h2><a class="anchor" href="#requirements" aria-hidden="true">#</a>Requirements</h2>
+<div class="tablewrap"><table><thead><tr><th>Needs</th><th>Version</th></tr></thead><tbody><tr><td>Dart SDK</td><td><code>^3.12.0</code></td></tr><tr><td>Flutter</td><td>stable 3.44 or newer (the version the template was built and tested with)</td></tr><tr><td><code>cairn_ui</code></td><td><code>^0.2.0</code></td></tr><tr><td><code>flutter_bloc</code></td><td><code>^9.1.1</code></td></tr><tr><td><code>get_it</code></td><td><code>^9.3.0</code></td></tr><tr><td><code>equatable</code></td><td><code>^2.1.0</code></td></tr></tbody></table></div>
+<p>Nothing else. There is no router, HTTP client or image package in the template; the examples below add those in your app when you need them. The template uses Material <code>Icon</code>s for a handful of glyphs Cairn does not draw itself, so keep <code>uses-material-design: true</code> in your pubspec.</p>
+<p>Web is the target it was designed and tested for, but it contains no web-only code, so it also runs on mobile and desktop.</p>
+</section><section id="install"><h2><a class="anchor" href="#install" aria-hidden="true">#</a>Install</h2>
+<h3>A. As a package (recommended)</h3>
+<p>Path dependency, for a template that sits next to your app:</p>
+<div class="codeblock" data-lang="yaml"><div class="code-title">pubspec.yaml</div><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>dependencies:
+  cairn_template_landing:
+    path: ../templates/landing</code></pre></div>
+<p>Or from git, if you have pushed it to a repository (adjust <code>url</code> and <code>path</code>):</p>
+<div class="codeblock" data-lang="yaml"><div class="code-title">pubspec.yaml</div><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>dependencies:
+  cairn_template_landing:
+    git:
+      url: https://github.com/your-org/your-repo.git
+      path: templates/landing
+      ref: main</code></pre></div>
+<div class="codeblock" data-lang="shell"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>flutter pub get</code></pre></div>
+<p>The photographs travel with the package and resolve as <code>packages/cairn_template_landing/assets/images/...</code>. Nothing to declare in your own pubspec.</p>
+<p>Package mode is the right choice when you want to <em>use</em> the template and change its content through <a href="#content">data overrides</a>. If you want to edit its widgets, copy it instead.</p>
+
+<h3>B. By copying <code>lib/</code> and <code>assets/</code></h3>
+<ol>
+<li>Copy <code>templates/landing/lib/</code> into your app, for example to <code>lib/landing/</code>.</li>
+<li>Copy <code>templates/landing/assets/images/</code> to <code>assets/images/</code> and declare it:
+<div class="codeblock" data-lang="yaml"><div class="code-title">pubspec.yaml</div><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/</code></pre></div></li>
+<li>Tell the template the assets belong to your app. In <code>lib/landing/common/constants/landing_package.dart</code>:
+<div class="codeblock" data-lang="dart"><div class="code-title">landing_package.dart</div><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>abstract final class LandingPackage {
+  // ignore: unnecessary_nullable_for_final_variable_declarations
+  static const String? name = null;
+}</code></pre></div></li>
+<li>Add the four dependencies from <a href="#requirements">Requirements</a> and run <code>flutter pub get</code>.</li>
+<li>Rewrite the imports. Inside the copy everything uses relative imports, so only the entry point changes: <code>import 'landing/landing_app.dart';</code>.</li>
+</ol>
+<p>Copy <code>NOTICE.md</code> along with the images; the licence asks for nothing, but the credits belong with the files.</p>
+</section><section id="mount"><h2><a class="anchor" href="#mount" aria-hidden="true">#</a>Mount it</h2>
+<p>The template needs a <code>MaterialApp</code> (or any app with a <code>Navigator</code>, <code>Overlay</code> and <code>MediaQuery</code>) above it, and a theme that carries <code>CairnTheme</code>. A complete <code>main.dart</code>:</p>
+<div class="codeblock" data-lang="dart"><div class="code-title">lib/main.dart</div><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>import &#x27;package:cairn_template_landing/cairn_template_landing.dart&#x27;;
+import &#x27;package:cairn_ui/cairn_ui.dart&#x27;;
+import &#x27;package:flutter/material.dart&#x27;;
+
+void main() =&gt; runApp(const KestrelSite());
+
+class KestrelSite extends StatelessWidget {
+  const KestrelSite({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Use your own font family here; null inherits the platform default.
+    final CairnTheme light = CairnTheme.light.copyWith(fontFamily: &#x27;Geist&#x27;);
+    final CairnTheme dark = CairnTheme.dark.copyWith(fontFamily: &#x27;Geist&#x27;);
+
+    return MaterialApp(
+      title: &#x27;Kestrel&#x27;,
+      debugShowCheckedModeBanner: false,
+      theme: CairnTheme.materialTheme(light),
+      darkTheme: CairnTheme.materialTheme(dark),
+      themeMode: ThemeMode.system,
+      home: Scaffold(
+        body: LandingApp(
+          // Receives every content link that does not start with &#x27;#&#x27;.
+          onLink: (String href) =&gt; debugPrint(&#x27;open $href&#x27;),
+        ),
+      ),
+    );
+  }
+}</code></pre></div>
+<p>If you declare a font, list it in your pubspec:</p>
+<div class="codeblock" data-lang="yaml"><div class="code-title">pubspec.yaml</div><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>flutter:
+  fonts:
+    - family: Geist
+      fonts:
+        - asset: fonts/Geist-Regular.ttf
+        - asset: fonts/Geist-Medium.ttf
+          weight: 500
+        - asset: fonts/Geist-SemiBold.ttf
+          weight: 600
+        - asset: fonts/Geist-Bold.ttf
+          weight: 700</code></pre></div>
+
+<h3>The entry widget</h3>
+<div class="tablewrap"><table><thead><tr><th>Parameter</th><th>Type</th><th>Meaning</th></tr></thead><tbody><tr><td><code>onLink</code></td><td><code>ValueChanged&lt;String&gt;?</code></td><td>Called with the <code>href</code> of any content link that is not a <code>#</code> anchor: sign in, plan buttons, footer links, <code>mailto:</code>. If null, those links do nothing.</td></tr><tr><td><code>initialSection</code></td><td><code>String?</code></td><td>A section id to scroll to about 600&nbsp;ms after the page first builds. Use it for deep links such as <code>/pricing</code>.</td></tr><tr><td><code>onSectionChanged</code></td><td><code>ValueChanged&lt;String&gt;?</code></td><td>Told the id of the section at the top of the viewport whenever it changes.</td></tr><tr><td><code>overrides</code></td><td><code>void Function(GetIt)?</code></td><td>Runs once before anything resolves: swap a data source, repository or use case for your own. See <a href="#waitlist-service">Wire the waitlist</a>.</td></tr></tbody></table></div>
+<p>Links that start with <code>#</code> are handled by the template itself: <code>#pricing</code> scrolls to the section whose id is <code>pricing</code>. Ids are listed in <code>SectionIds</code>.</p>
+
+<h3>Mounting somewhere other than the whole screen</h3>
+<p>The page measures the space it is given, not the screen, so it works in a frame:</p>
+<div class="codeblock" data-lang="dart"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>SizedBox(
+  width: 420,
+  height: 800,
+  child: const LandingApp(),   // lays out as a phone page
+)</code></pre></div>
+<p>It always needs a bounded height, because it is a scroll view inside a column. Put it in an <code>Expanded</code>, a <code>SizedBox</code> or a <code>Scaffold</code> body, never in an unbounded <code>Column</code> child or another scroll view.</p>
+</section><section id="content"><h2><a class="anchor" href="#content" aria-hidden="true">#</a>Update the content</h2>
+<p>All copy lives in <code>lib/data/&lt;feature&gt;/remote/&lt;feature&gt;_remote_data_source.dart</code>, in a class named <code>InMemory&lt;Feature&gt;RemoteDataSource</code>. In <strong>copy mode</strong> edit those files directly. In <strong>package mode</strong> you cannot edit them, so you give <code>LandingApp.overrides</code> your own data source (see <a href="#package-content">below</a>).</p>
+
+<h3 id="rebrand">1. Rebrand</h3>
+<ol>
+<li>Open <code>data/site/remote/site_remote_data_source.dart</code>. Change <code>brandName</code>, <code>tagline</code> and <code>brandIcon</code>. The navbar, the menu sheet and the footer all read it.
+<div class="codeblock" data-lang="dart"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>static const JsonMap _json = &lt;String, Object?&gt;{
+  &#x27;brandName&#x27;: &#x27;Acme&#x27;,
+  &#x27;brandIcon&#x27;: &#x27;bolt&#x27;,
+  &#x27;tagline&#x27;: &#x27;Invoices that send themselves.&#x27;,
+  ...</code></pre></div></li>
+<li>Search the other data files for <code>Kestrel</code> and <code>kestrel.example</code>. The name appears in the hero mockup URL, testimonials, FAQ answers, footer and contact links.</li>
+<li>Change <code>copyright</code> in <code>footer_remote_data_source.dart</code>.</li>
+<li>Replace the six logo wordmarks in <code>logos_remote_data_source.dart</code> with your customers' names (as text), or leave invented ones.</li>
+</ol>
+
+<h3>2. Change the hero copy</h3>
+<p>In <code>data/hero/remote/hero_remote_data_source.dart</code>:</p>
+<div class="codeblock" data-lang="dart"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>&#x27;announcement&#x27;: &lt;String, Object?&gt;{
+  &#x27;label&#x27;: &#x27;New: automatic reminders&#x27;,
+  &#x27;href&#x27;: &#x27;#features&#x27;,
+},
+&#x27;headline&#x27;: &#x27;Get paid faster, with no chasing.&#x27;,
+&#x27;subcopy&#x27;: &#x27;Acme sends, tracks and reminds, so every invoice lands on time.&#x27;,
+&#x27;primaryCta&#x27;: &lt;String, Object?&gt;{&#x27;label&#x27;: &#x27;Start free&#x27;, &#x27;href&#x27;: &#x27;#waitlist&#x27;},
+&#x27;secondaryCta&#x27;: &lt;String, Object?&gt;{&#x27;label&#x27;: &#x27;See how it works&#x27;, &#x27;href&#x27;: &#x27;#how-it-works&#x27;},</code></pre></div>
+<p>To point a button at your real sign-up, use a non-anchor href such as <code>/signup</code> or <code>https://app.acme.example/signup</code> and handle it in <code>onLink</code>.</p>
+<p>The dashboard in the browser frame is drawn from the <code>visual</code> object (project name, three metrics, seven bars, three tasks). Edit the numbers and names; the layout adapts. If you would rather show a real screenshot, replace the <code>ProductMockup</code> in <code>presentation/hero/views/hero_view.dart</code> with a <code>LandingPhoto</code> inside a <code>CairnMockupBrowser</code>.</p>
+
+<h3>3. Add or remove features</h3>
+<p>Cards are the entries in <code>items</code> in <code>features_remote_data_source.dart</code>:</p>
+<div class="codeblock" data-lang="dart"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>&lt;String, Object?&gt;{
+  &#x27;icon&#x27;: &#x27;notifications&#x27;,
+  &#x27;title&#x27;: &#x27;Smart reminders&#x27;,
+  &#x27;description&#x27;: &#x27;Polite nudges that stop the moment an invoice is paid.&#x27;,
+  &#x27;tag&#x27;: &#x27;New&#x27;,            // optional badge
+},</code></pre></div>
+<ul>
+<li><strong>Six cards</strong> fill the desktop bento pattern (rows of 7+5, 5+7 and 6+6 columns). With a different count the last row simply has fewer cards; edit the <code>pattern</code> in <code>presentation/features/views/features_view.dart</code> to match.</li>
+<li>Tablets get two columns, phones one.</li>
+<li>Spotlights are the image rows. Add one by appending an object to <code>spotlights</code> with its own <code>image</code>; they alternate sides automatically. To remove all of them, set <code>'spotlights': &lt;Object?&gt;[]</code>.</li>
+<li>Steps in <code>how_it_works</code> work the same way; the grid uses up to three columns.</li>
+</ul>
+
+<h3>4. Edit plans and prices</h3>
+<p>In <code>data/pricing/remote/pricing_remote_data_source.dart</code>:</p>
+<div class="codeblock" data-lang="dart"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>&#x27;currency&#x27;: r&#x27;$&#x27;,
+&#x27;yearlyDiscountPercent&#x27;: 20,
+&#x27;plans&#x27;: &lt;Object?&gt;[
+  &lt;String, Object?&gt;{
+    &#x27;id&#x27;: &#x27;team&#x27;,
+    &#x27;name&#x27;: &#x27;Team&#x27;,
+    &#x27;description&#x27;: &#x27;For growing teams that plan together every week.&#x27;,
+    &#x27;monthlyPrice&#x27;: 12,                 // per unit per month, billed monthly
+    &#x27;unit&#x27;: &#x27;per seat / month&#x27;,
+    &#x27;highlighted&#x27;: true,
+    &#x27;badge&#x27;: &#x27;Most popular&#x27;,
+    &#x27;cta&#x27;: &lt;String, Object?&gt;{&#x27;label&#x27;: &#x27;Start free trial&#x27;, &#x27;href&#x27;: &#x27;#waitlist&#x27;},
+    &#x27;featuresHeading&#x27;: &#x27;Everything in Starter, plus&#x27;,
+    &#x27;features&#x27;: &lt;Object?&gt;[&#x27;Unlimited projects&#x27;, &#x27;Automations&#x27;],
+  },
+],</code></pre></div>
+<p>How the numbers come out is the <code>CalculatePrice</code> use case in <code>domain/pricing/use_cases/</code>:</p>
+<div class="tablewrap"><table><thead><tr><th>Plan</th><th>Monthly</th><th>Yearly</th></tr></thead><tbody><tr><td><code>monthlyPrice: 12</code>, 20% off</td><td><code>$12</code> "Billed monthly"</td><td><code>$9.60</code> "Billed $115.20 yearly, save $28.80"</td></tr><tr><td><code>monthlyPrice: 0</code></td><td>"Free"</td><td>"Free"</td></tr><tr><td>no <code>monthlyPrice</code>, <code>priceLabel: "Custom"</code></td><td>"Custom"</td><td>"Custom"</td></tr></tbody></table></div>
+<p>Yearly price per month is <code>monthlyPrice * (100 - discount) / 100</code>, rounded to the cent; the yearly charge is twelve times that. To change the rule (for example "two months free" instead of a percentage), edit <code>calculate_price.dart</code> and its tests in <code>test/domain_test.dart</code>.</p>
+<p>A fourth plan adds a fourth card: on desktop the grid shows up to three columns per row, so a fourth wraps to a second row. Change <code>content.plans.length.clamp(1, 3)</code> in <code>pricing_view.dart</code> to <code>clamp(1, 4)</code> for four across.</p>
+
+<h3>5. Testimonials with photos</h3>
+<ol>
+<li>Put a square portrait (240&nbsp;px is plenty; it is shown at 40) in <code>assets/images/</code>, for example <code>avatar-priya.jpg</code>.</li>
+<li>Add the entry:
+<div class="codeblock" data-lang="dart"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>&lt;String, Object?&gt;{
+  &#x27;quote&#x27;: &#x27;We cut month-end close from five days to two.&#x27;,
+  &#x27;name&#x27;: &#x27;Priya Raman&#x27;,
+  &#x27;role&#x27;: &#x27;Finance Director&#x27;,
+  &#x27;company&#x27;: &#x27;Northfield&#x27;,
+  &#x27;avatar&#x27;: &#x27;assets/images/avatar-priya.jpg&#x27;,
+  &#x27;rating&#x27;: 5,
+},</code></pre></div></li>
+<li>The same avatar path can be reused in <code>hero.proof.avatars</code> and the hero mockup.</li>
+</ol>
+<p>Use real customers' words and photos only with their permission. The bundled portraits are stock photos; the names beside them are invented.</p>
+
+<h3>6. FAQ</h3>
+<div class="codeblock" data-lang="dart"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>&lt;String, Object?&gt;{
+  &#x27;id&#x27;: &#x27;refunds&#x27;,            // unique, used as the accordion value
+  &#x27;question&#x27;: &#x27;Do you offer refunds?&#x27;,
+  &#x27;answer&#x27;: &#x27;Yes, within 30 days of any payment, no questions asked.&#x27;,
+},</code></pre></div>
+<p>Only one answer is open at a time; pass <code>multiple: true</code> to the <code>CairnAccordion</code> in <code>faq_view.dart</code> to allow several.</p>
+
+<h3>7. Navigation links and section ids</h3>
+<p>Navbar links are <code>navLinks</code> in the site file. A link whose <code>href</code> is <code>#id</code> scrolls to the section with that id, and is highlighted while that section is at the top.</p>
+<p>The ids are in <code>common/constants/section_ids.dart</code>; the page order is in <code>presentation/shell/landing_page.dart</code>. To <strong>add a section</strong>:</p>
+<ol>
+<li>Add an id to <code>SectionIds</code> and to <code>SectionIds.all</code> in the position it will have on the page.</li>
+<li>Build a widget for it (a <code>SectionFrame</code> with your content).</li>
+<li>Add <code>keyed(SectionIds.pricingFaq, const MyView())</code> at the same position in <code>LandingPage</code>.</li>
+<li>Link to it with <code>'href': '#your-id'</code>.</li>
+</ol>
+<p>To <strong>remove a section</strong>, delete its line from <code>LandingPage</code>, its id from <code>SectionIds.all</code>, and any links to it. A link to an id that no longer exists does nothing.</p>
+<p>A section's navbar highlight uses the same ids, so the navbar link <code>#how-it-works</code> lights up while the how-it-works section is at the top. Sections that have no navbar link (logos, stats, waitlist) simply leave the previous link lit.</p>
+
+<h3 id="package-content">Changing content in package mode</h3>
+<p>If you depend on the package and cannot edit its files, write your own data source and hand it over with <code>overrides</code>. Reuse the shipped one for everything you do not change:</p>
+<div class="codeblock" data-lang="dart"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>import &#x27;package:cairn_template_landing/cairn_template_landing.dart&#x27;;
+import &#x27;package:get_it/get_it.dart&#x27;;
+
+class AcmeHeroData implements HeroRemoteDataSource {
+  const AcmeHeroData();
+
+  @override
+  Future&lt;JsonMap&gt; fetchHero() async =&gt; &lt;String, Object?&gt;{
+    // The full shape: see the JSON reference below.
+    &#x27;announcement&#x27;: &lt;String, Object?&gt;{&#x27;label&#x27;: &#x27;New&#x27;, &#x27;href&#x27;: &#x27;#features&#x27;},
+    &#x27;headline&#x27;: &#x27;Get paid faster, with no chasing.&#x27;,
+    ...
+  };
+}
+
+LandingApp(
+  overrides: (GetIt locator) =&gt; locator
+    ..unregister&lt;HeroRemoteDataSource&gt;()
+    ..registerLazySingleton&lt;HeroRemoteDataSource&gt;(AcmeHeroData.new),
+)</code></pre></div>
+<p>A trick that avoids retyping a whole file: fetch the demo JSON and change a few keys.</p>
+<div class="codeblock" data-lang="dart"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>class AcmePricing implements PricingRemoteDataSource {
+  const AcmePricing();
+
+  @override
+  Future&lt;JsonMap&gt; fetchPricing() async {
+    final JsonMap demo = await const InMemoryPricingRemoteDataSource().fetchPricing();
+    return &lt;String, Object?&gt;{...demo, &#x27;yearlyDiscountPercent&#x27;: 25, &#x27;currency&#x27;: &#x27;€&#x27;};
+  }
+}</code></pre></div>
+<p>The images in the demo JSON are package assets. Your own assets live in your app; see <a href="#images">Replace images</a>.</p>
+
+
+<h3>JSON shape reference</h3>
+<p>Every file exposes one method returning a decoded JSON map (<code>Map&lt;String, Object?&gt;</code>). A required key that is missing or has the wrong type throws a <code>FormatException</code> that names the key, for example <code>Expected a string at "headline", got null</code>. Optional keys are marked <em>opt</em>. <code>Link</code> means <code>{"label": String, "href": String}</code>; an <code>href</code> starting with <code>#</code> scrolls to that section id, anything else goes to <code>onLink</code>. <code>icon</code> is a name from <a href="#icons">the icon list</a>. <code>asset</code> is a path such as <code>assets/images/team-meeting.jpg</code>.</p>
+
+<h4>site <span class="path">data/site/remote/site_remote_data_source.dart</span></h4><div class="tablewrap"><table><thead><tr><th>Key</th><th>Type</th><th>Notes</th></tr></thead><tbody><tr><td><code>brandName</code></td><td>String</td><td>Navbar, footer, menu sheet title</td></tr><tr><td><code>brandIcon</code></td><td>icon</td><td>The glyph in the logo tile</td></tr><tr><td><code>tagline</code></td><td>String</td><td>Shown under the brand in the menu sheet</td></tr><tr><td><code>navLinks</code></td><td>Link[]</td><td>Navbar and menu sheet, in order</td></tr><tr><td><code>signIn</code></td><td>Link</td><td>Quiet button, hidden in the phone navbar (it is in the menu sheet)</td></tr><tr><td><code>cta</code></td><td>Link</td><td>Primary navbar button</td></tr></tbody></table></div><h4>hero <span class="path">data/hero/remote/hero_remote_data_source.dart</span></h4><div class="tablewrap"><table><thead><tr><th>Key</th><th>Type</th><th>Notes</th></tr></thead><tbody><tr><td><code>announcement</code></td><td>Link</td><td>The pill above the headline</td></tr><tr><td><code>headline</code></td><td>String</td><td>Wraps; about 50 to 70 characters reads best</td></tr><tr><td><code>subcopy</code></td><td>String</td><td></td></tr><tr><td><code>primaryCta</code></td><td>Link</td><td></td></tr><tr><td><code>secondaryCta</code></td><td>Link</td><td></td></tr><tr><td><code>proof</code></td><td>object</td><td><code>text</code> String, <code>rating</code> number 0 to 5, <code>ratingLabel</code> String (screen reader text), <code>avatars</code> asset[]</td></tr><tr><td><code>visual</code></td><td>object</td><td>The mockup: see below</td></tr></tbody></table></div><h4>hero.visual</h4><div class="tablewrap"><table><thead><tr><th>Key</th><th>Type</th><th>Notes</th></tr></thead><tbody><tr><td><code>url</code></td><td>String</td><td>Address bar text</td></tr><tr><td><code>project</code></td><td>String</td><td>Dashboard title</td></tr><tr><td><code>status</code></td><td>String</td><td>Badge next to the title</td></tr><tr><td><code>sidebar</code></td><td>{icon, label, active?}[]</td><td>Hidden below 760&nbsp;px of mockup width</td></tr><tr><td><code>metrics</code></td><td>{label, value, delta}[]</td><td>Three fit best</td></tr><tr><td><code>chartTitle</code></td><td>String</td><td></td></tr><tr><td><code>barLabels</code></td><td>String[]</td><td>One per bar</td></tr><tr><td><code>bars</code></td><td>number[]</td><td>Each from 0 to 1; the tallest is drawn in the primary colour</td></tr><tr><td><code>tasksTitle</code></td><td>String</td><td></td></tr><tr><td><code>tasks</code></td><td>{title, owner: asset, status, progress 0..1}[]</td><td></td></tr><tr><td><code>team</code></td><td>asset[]</td><td>Avatar stack in the header (hidden when narrow)</td></tr></tbody></table></div><h4>logos <span class="path">data/logos/remote/logos_remote_data_source.dart</span></h4><div class="tablewrap"><table><thead><tr><th>Key</th><th>Type</th><th>Notes</th></tr></thead><tbody><tr><td><code>heading</code></td><td>String</td><td></td></tr><tr><td><code>logos</code></td><td>{name, icon, style?}[]</td><td><code>style</code> is one of <code>bold</code>, <code>light</code>, <code>italic</code>, <code>spaced</code>; anything else is bold</td></tr></tbody></table></div><h4>features <span class="path">data/features/remote/features_remote_data_source.dart</span></h4><div class="tablewrap"><table><thead><tr><th>Key</th><th>Type</th><th>Notes</th></tr></thead><tbody><tr><td><code>eyebrow</code></td><td>String</td><td>Small label above the title</td></tr><tr><td><code>title</code></td><td>String</td><td></td></tr><tr><td><code>subtitle</code></td><td>String</td><td></td></tr><tr><td><code>items</code></td><td>{icon, title, description, tag?}[]</td><td>The grid; six fill the bento pattern exactly</td></tr><tr><td><code>spotlights</code></td><td>object[]</td><td><code>eyebrow</code>, <code>title</code>, <code>description</code>, <code>bullets</code> String[], <code>image</code> asset, <code>imageAlt</code> String, <code>cta</code> Link (opt). They alternate sides on desktop.</td></tr></tbody></table></div><h4>how_it_works <span class="path">data/how_it_works/remote/how_it_works_remote_data_source.dart</span></h4><div class="tablewrap"><table><thead><tr><th>Key</th><th>Type</th><th>Notes</th></tr></thead><tbody><tr><td><code>eyebrow</code>, <code>title</code>, <code>subtitle</code></td><td>String</td><td></td></tr><tr><td><code>steps</code></td><td>{icon, title, description}[]</td><td>Numbered automatically; three across on desktop</td></tr></tbody></table></div><h4>stats <span class="path">data/stats/remote/stats_remote_data_source.dart</span></h4><div class="tablewrap"><table><thead><tr><th>Key</th><th>Type</th><th>Notes</th></tr></thead><tbody><tr><td><code>title</code></td><td>String</td><td>Small heading above the strip</td></tr><tr><td><code>stats</code></td><td>{label, value, description}[]</td><td><code>value</code> is shown as written, so format it yourself (<code>12,400</code>, <code>48M</code>). Four fit best; two by two on a phone.</td></tr></tbody></table></div><h4>testimonials <span class="path">data/testimonials/remote/testimonials_remote_data_source.dart</span></h4><div class="tablewrap"><table><thead><tr><th>Key</th><th>Type</th><th>Notes</th></tr></thead><tbody><tr><td><code>eyebrow</code>, <code>title</code>, <code>subtitle</code></td><td>String</td><td></td></tr><tr><td><code>items</code></td><td>{quote, name, role, company, avatar: asset, rating}[]</td><td><code>rating</code> is 0 to 5 in halves (4.5 draws a half star). Multiples of three fill the desktop grid.</td></tr></tbody></table></div><h4>pricing <span class="path">data/pricing/remote/pricing_remote_data_source.dart</span></h4><div class="tablewrap"><table><thead><tr><th>Key</th><th>Type</th><th>Notes</th></tr></thead><tbody><tr><td><code>eyebrow</code>, <code>title</code>, <code>subtitle</code></td><td>String</td><td></td></tr><tr><td><code>currency</code></td><td>String</td><td>Placed before every price, e.g. <code>$</code> or <code>€</code></td></tr><tr><td><code>yearlyDiscountPercent</code></td><td>number</td><td>Whole percent off paid plans when billed yearly. 0 hides the "Save" badge.</td></tr><tr><td><code>monthlyLabel</code>, <code>yearlyLabel</code></td><td>String</td><td>Switch labels</td></tr><tr><td><code>plans</code></td><td>object[]</td><td>See below</td></tr><tr><td><code>compareNote</code></td><td>String</td><td>Sentence under the plans</td></tr><tr><td><code>compare</code></td><td>Link</td><td>Link after the note</td></tr></tbody></table></div><h4>pricing.plans[]</h4><div class="tablewrap"><table><thead><tr><th>Key</th><th>Type</th><th>Notes</th></tr></thead><tbody><tr><td><code>id</code></td><td>String</td><td>Unique</td></tr><tr><td><code>name</code>, <code>description</code></td><td>String</td><td></td></tr><tr><td><code>monthlyPrice</code></td><td>number (opt)</td><td>Price per unit per month when billed monthly. <code>0</code> shows "Free". Omit it for a plan with no list price and the card shows <code>priceLabel</code>.</td></tr><tr><td><code>priceLabel</code></td><td>String (opt)</td><td>Shown instead of a price when <code>monthlyPrice</code> is omitted, e.g. <code>Custom</code></td></tr><tr><td><code>unit</code></td><td>String (opt)</td><td>Beside the price, e.g. <code>per seat / month</code></td></tr><tr><td><code>highlighted</code></td><td>bool (opt)</td><td>Ring and primary button. Mark one plan.</td></tr><tr><td><code>badge</code></td><td>String (opt)</td><td>Pill in the card header, e.g. <code>Most popular</code></td></tr><tr><td><code>cta</code></td><td>Link</td><td>Any <code>{period}</code> in the href becomes <code>monthly</code> or <code>yearly</code></td></tr><tr><td><code>featuresHeading</code></td><td>String</td><td>Heading above the checklist</td></tr><tr><td><code>features</code></td><td>String[]</td><td></td></tr></tbody></table></div><h4>faq <span class="path">data/faq/remote/faq_remote_data_source.dart</span></h4><div class="tablewrap"><table><thead><tr><th>Key</th><th>Type</th><th>Notes</th></tr></thead><tbody><tr><td><code>eyebrow</code>, <code>title</code>, <code>subtitle</code></td><td>String</td><td></td></tr><tr><td><code>items</code></td><td>{id, question, answer}[]</td><td><code>id</code> must be unique</td></tr><tr><td><code>contactText</code></td><td>String</td><td>Sentence before the link</td></tr><tr><td><code>contact</code></td><td>Link</td><td></td></tr></tbody></table></div><h4>waitlist <span class="path">data/waitlist/remote/waitlist_remote_data_source.dart</span></h4><div class="tablewrap"><table><thead><tr><th>Key</th><th>Type</th><th>Notes</th></tr></thead><tbody><tr><td><code>eyebrow</code>, <code>title</code>, <code>subtitle</code></td><td>String</td><td></td></tr><tr><td><code>placeholder</code></td><td>String</td><td>Email field placeholder</td></tr><tr><td><code>buttonLabel</code></td><td>String</td><td></td></tr><tr><td><code>privacyNote</code></td><td>String</td><td>Small print under the form</td></tr><tr><td><code>successTitle</code>, <code>successMessage</code></td><td>String</td><td>Shown in the panel and the toast once the visitor has joined</td></tr></tbody></table></div><p>The signup response is <code>{"position": 1284}</code>; the success panel shows "You are number 1284 in line".</p><h4>footer <span class="path">data/footer/remote/footer_remote_data_source.dart</span></h4><div class="tablewrap"><table><thead><tr><th>Key</th><th>Type</th><th>Notes</th></tr></thead><tbody><tr><td><code>description</code></td><td>String</td><td>Under the brand</td></tr><tr><td><code>columns</code></td><td>{title, links: Link[]}[]</td><td>Three fit best</td></tr><tr><td><code>social</code></td><td>{label, icon, href}[]</td><td><code>label</code> is the accessible name of the icon button</td></tr><tr><td><code>copyright</code></td><td>String</td><td></td></tr><tr><td><code>legal</code></td><td>Link[]</td><td>Privacy, terms</td></tr></tbody></table></div>
+
+<h3 id="icons">Icon names</h3>
+<p>Content refers to glyphs by name; <code>core/presentation/landing_icons.dart</code> maps names to Material icons. An unknown name draws a dot, so a typo is visible but harmless.</p>
+<p><code>anchor</code> <code>arrow_forward</code> <code>bar_chart</code> <code>bolt</code> <code>check</code> <code>code</code> <code>dashboard</code> <code>explore</code> <code>extension</code> <code>folder</code> <code>forest</code> <code>groups</code> <code>hub</code> <code>insights</code> <code>layers</code> <code>lock</code> <code>mail</code> <code>menu</code> <code>notifications</code> <code>public</code> <code>rocket</code> <code>roadmap</code> <code>rss</code> <code>shield</code> <code>speed</code> <code>support</code> <code>sync</code> <code>timeline</code> <code>tune</code> <code>waves</code> <code>wb_sunny</code></p>
+<p>Add one by adding a line to the map: <code>'cloud': Icons.cloud_outlined,</code>.</p>
+</section><section id="images"><h2><a class="anchor" href="#images" aria-hidden="true">#</a>Replace images</h2>
+<p>Nine photographs ship in <code>assets/images/</code> (about 560&nbsp;KB):</p>
+<div class="tablewrap"><table><thead><tr><th>File</th><th>Used for</th><th>Shown at</th></tr></thead><tbody><tr><td><code>team-meeting.jpg</code>, <code>team-review.jpg</code>, <code>team-analytics.jpg</code></td><td>The three feature spotlights</td><td>4:3 on desktop and phone, 16:9 on a tablet; <code>BoxFit.cover</code>, so any aspect ratio works</td></tr><tr><td><code>avatar-*.jpg</code> (six)</td><td>Testimonials, hero social proof, the dashboard mockup</td><td>Circles from 24 to 40&nbsp;px; 240&nbsp;px square is plenty</td></tr></tbody></table></div>
+<h3>Package mode</h3>
+<p>Your images live in <em>your</em> app, but the template resolves paths against its own package. Two options:</p>
+<ol>
+<li><strong>Replace the files inside the package</strong> (keep the names), if you vendor it.</li>
+<li><strong>Use a full-package asset path</strong> from your data override: a path in the JSON is resolved as <code>AssetImage(path, package: LandingPackage.name)</code>. If you copy the template (mode B) and set <code>LandingPackage.name</code> to <code>null</code>, paths resolve in your own app, which is the simplest way to use your own pictures.</li>
+</ol>
+<h3>Copy mode</h3>
+<ol>
+<li>Drop the file in <code>assets/images/</code> (it is already declared as a folder).</li>
+<li>Reference it from the data: <code>'image': 'assets/images/dashboard-shot.png'</code>.</li>
+<li>Write a real <code>imageAlt</code> for spotlights. Avatars take their accessible name from the person's <code>name</code>.</li>
+</ol>
+<h3>Choosing good images</h3>
+<ul>
+<li>Spotlights: photographs with the subject away from the edges; they are cropped to fit. Keep them under about 300&nbsp;KB (1400&nbsp;px wide is enough).</li>
+<li>Avatars: square, face centred, no text or logos.</li>
+<li>Avoid images with readable brand logos or watermarks.</li>
+</ul>
+<p>If an image fails to load (wrong path), the box shows the theme's muted colour instead of a hole or a red error.</p>
+<p>The photos are from <a href="https://www.pexels.com/license/">Pexels</a>; see <code>NOTICE.md</code> for each file's source. Update that file when you swap them.</p>
+</section><section id="waitlist-service"><h2><a class="anchor" href="#waitlist-service" aria-hidden="true">#</a>Wire the waitlist to a real service</h2>
+<p>The form is <code>presentation/waitlist/</code>. It validates with the <code>ValidateEmail</code> use case, submits with <code>JoinWaitlist</code>, and keeps its state in <code>WaitlistCubit</code> (idle, submitting, success, invalid, failure). The only thing that talks to a service is one method:</p>
+<div class="codeblock" data-lang="dart"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>abstract interface class WaitlistRemoteDataSource {
+  Future&lt;JsonMap&gt; fetchWaitlist();          // the copy of the section
+  Future&lt;JsonMap&gt; submit(String email);     // the signup
+}</code></pre></div>
+<p><code>submit</code> returns decoded JSON <code>{"position": 1284}</code>, or throws a <code>WaitlistException</code> whose message is shown to the visitor (inline and in a toast). Any other exception becomes a generic "try again" message. The demo implementation waits 700&nbsp;ms and refuses addresses ending in <code>@fail.example</code> so you can see the error state.</p>
+<p>The recipe is always the same: write a data source, register it with <code>overrides</code> (or in <code>landing_injection.dart</code> in copy mode).</p>
+
+<h3>A. Your own REST endpoint</h3>
+<p>Add <code>http</code> to your app (<code>flutter pub add http</code>), then:</p>
+<div class="codeblock" data-lang="dart"><div class="code-title">rest_waitlist.dart</div><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>import &#x27;dart:convert&#x27;;
+
+import &#x27;package:cairn_template_landing/cairn_template_landing.dart&#x27;;
+import &#x27;package:get_it/get_it.dart&#x27;;
+import &#x27;package:http/http.dart&#x27; as http;
+
+class RestWaitlistRemoteDataSource implements WaitlistRemoteDataSource {
+  RestWaitlistRemoteDataSource(this._client, this._endpoint);
+
+  final http.Client _client;
+  final Uri _endpoint;
+
+  // Keep the demo copy; only the signup changes.
+  final WaitlistRemoteDataSource _copy = InMemoryWaitlistRemoteDataSource();
+
+  @override
+  Future&lt;JsonMap&gt; fetchWaitlist() =&gt; _copy.fetchWaitlist();
+
+  @override
+  Future&lt;JsonMap&gt; submit(String email) async {
+    final http.Response res = await _client
+        .post(
+          _endpoint,
+          headers: &lt;String, String&gt;{&#x27;content-type&#x27;: &#x27;application/json&#x27;},
+          body: jsonEncode(&lt;String, String&gt;{&#x27;email&#x27;: email}),
+        )
+        .timeout(const Duration(seconds: 10));
+
+    if (res.statusCode == 409) {
+      throw const WaitlistException(&#x27;You are already on the list.&#x27;);
+    }
+    if (res.statusCode &gt;= 400) {
+      throw const WaitlistException(
+        &#x27;We could not add you right now. Please try again in a moment.&#x27;,
+      );
+    }
+    // Your API answers {&quot;position&quot;: 1284}.
+    return (jsonDecode(res.body) as Map&lt;String, Object?&gt;);
+  }
+}
+
+// In main():
+final http.Client client = http.Client();
+
+LandingApp(
+  overrides: (GetIt locator) =&gt; locator
+    ..unregister&lt;WaitlistRemoteDataSource&gt;()
+    ..registerLazySingleton&lt;WaitlistRemoteDataSource&gt;(
+      () =&gt; RestWaitlistRemoteDataSource(
+        client,
+        Uri.parse(&#x27;https://api.acme.example/v1/waitlist&#x27;),
+      ),
+    ),
+)</code></pre></div>
+<p>If your API does not return a position, return <code>{'position': 0}</code> and remove the badge in <code>waitlist_form.dart</code> (<code>_Success</code>), or compute the position in the data source.</p>
+<p>The endpoint must allow your site's origin (CORS), or the browser blocks the request.</p>
+
+<h3>B. Firebase (Cloud Firestore)</h3>
+<p>Set up FlutterFire as usual (<code>flutterfire configure</code>, <code>Firebase.initializeApp()</code> before <code>runApp</code>), add <code>cloud_firestore</code>, then:</p>
+<div class="codeblock" data-lang="dart"><div class="code-title">firestore_waitlist.dart</div><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>import &#x27;package:cairn_template_landing/cairn_template_landing.dart&#x27;;
+import &#x27;package:cloud_firestore/cloud_firestore.dart&#x27;;
+
+class FirestoreWaitlistRemoteDataSource implements WaitlistRemoteDataSource {
+  FirestoreWaitlistRemoteDataSource(this._db);
+
+  final FirebaseFirestore _db;
+  final WaitlistRemoteDataSource _copy = InMemoryWaitlistRemoteDataSource();
+
+  @override
+  Future&lt;JsonMap&gt; fetchWaitlist() =&gt; _copy.fetchWaitlist();
+
+  @override
+  Future&lt;JsonMap&gt; submit(String email) async {
+    final String id = email.trim().toLowerCase();
+    final DocumentReference&lt;Map&lt;String, dynamic&gt;&gt; doc =
+        _db.collection(&#x27;waitlist&#x27;).doc(id);
+    try {
+      await _db.runTransaction((Transaction tx) async {
+        if ((await tx.get(doc)).exists) {
+          throw const WaitlistException(&#x27;You are already on the list.&#x27;);
+        }
+        tx.set(doc, &lt;String, Object?&gt;{
+          &#x27;email&#x27;: id,
+          &#x27;createdAt&#x27;: FieldValue.serverTimestamp(),
+        });
+      });
+    } on FirebaseException {
+      throw const WaitlistException(
+        &#x27;We could not add you right now. Please try again in a moment.&#x27;,
+      );
+    }
+    final AggregateQuerySnapshot count =
+        await _db.collection(&#x27;waitlist&#x27;).count().get();
+    return &lt;String, Object?&gt;{&#x27;position&#x27;: count.count ?? 1};
+  }
+}
+
+LandingApp(
+  overrides: (GetIt locator) =&gt; locator
+    ..unregister&lt;WaitlistRemoteDataSource&gt;()
+    ..registerLazySingleton&lt;WaitlistRemoteDataSource&gt;(
+      () =&gt; FirestoreWaitlistRemoteDataSource(FirebaseFirestore.instance),
+    ),
+)</code></pre></div>
+<p>Lock the collection down so visitors can add themselves but never read the list:</p>
+<div class="codeblock" data-lang="text"><div class="code-title">firestore.rules</div><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>rules_version = &#x27;2&#x27;;
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /waitlist/{email} {
+      allow create: if request.resource.data.keys().hasOnly([&#x27;email&#x27;, &#x27;createdAt&#x27;])
+                    &amp;&amp; request.resource.data.email is string
+                    &amp;&amp; request.resource.data.email.size() &lt; 255;
+      allow read, update, delete: if false;
+    }
+  }
+}</code></pre></div>
+<p>With these rules the <code>get</code> inside the transaction and the <code>count()</code> query are refused. Either allow <code>get</code> (leaks which emails exist) or move the duplicate check and the position into a Cloud Function and use option A. For a simple list, drop the transaction and use <code>doc.set(...)</code> with <code>SetOptions(merge: true)</code> and return <code>{'position': 0}</code>.</p>
+
+<h3>C. Mailchimp (or any email provider)</h3>
+<p><strong>Never put a Mailchimp API key in a Flutter app</strong>: it ships to every visitor. Put a tiny server in front and use option A against it. For example a Cloud Function or serverless handler:</p>
+<div class="codeblock" data-lang="js"><div class="code-title">server/waitlist.js</div><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>// Node.js, e.g. a Cloud Function or Netlify function
+export async function handler(req) {
+  const { email } = JSON.parse(req.body);
+  const dc = process.env.MAILCHIMP_DC;            // e.g. &quot;us21&quot;
+  const res = await fetch(
+    `https://${dc}.api.mailchimp.com/3.0/lists/${process.env.MAILCHIMP_LIST}/members`,
+    {
+      method: &#x27;POST&#x27;,
+      headers: {
+        &#x27;content-type&#x27;: &#x27;application/json&#x27;,
+        authorization: `Bearer ${process.env.MAILCHIMP_KEY}`,
+      },
+      body: JSON.stringify({ email_address: email, status: &#x27;pending&#x27; }), // double opt-in
+    },
+  );
+  if (res.status === 400) {
+    const body = await res.json();
+    if (body.title === &#x27;Member Exists&#x27;) return { statusCode: 409, body: &#x27;{}&#x27; };
+  }
+  if (!res.ok) return { statusCode: 502, body: &#x27;{}&#x27; };
+  return { statusCode: 200, body: JSON.stringify({ position: 0 }) };
+}</code></pre></div>
+<p>The Flutter side is exactly the <code>RestWaitlistRemoteDataSource</code> above, pointing at that function. ConvertKit, Loops, Buttondown and similar services have the same shape: a server-side call with a secret, a small endpoint for the app.</p>
+<p>Because <code>status: 'pending'</code> makes Mailchimp send a confirmation email, the success message in the JSON ("Check your inbox for a confirmation email") is accurate. If you subscribe people directly, change <code>successMessage</code>.</p>
+
+<h3>Other changes to the form</h3>
+<ul>
+<li><strong>Validation rule</strong>: <code>domain/waitlist/use_cases/validate_email.dart</code>. It is deliberately lenient (one <code>@</code>, no spaces, a dot in the domain). Tests are in <code>test/domain_test.dart</code>.</li>
+<li><strong>Extra fields</strong> (name, company): add a field to <code>_Fields</code> in <code>waitlist_form.dart</code>, pass it through <code>WaitlistCubit.submit</code>, <code>JoinWaitlist</code> and <code>WaitlistRepository.join</code>, and send it from your data source.</li>
+<li><strong>Toast</strong>: the listener in <code>waitlist_view.dart</code> fires on success and on a service failure. Validation errors are inline only.</li>
+</ul>
+</section><section id="stripe"><h2><a class="anchor" href="#stripe" aria-hidden="true">#</a>Wire pricing buttons to Stripe</h2>
+<p>Each plan's button is a <code>Link</code> in the pricing JSON. Anything that does not start with <code>#</code> reaches <code>onLink</code>, so a checkout is a link plus a few lines to open it.</p>
+
+<h3>Option 1: Stripe Payment Links (no server)</h3>
+<ol>
+<li>In the Stripe Dashboard create a Payment Link per price: Team monthly, Team yearly, Scale monthly, Scale yearly.</li>
+<li>Put them in the plans. Use the <code>{period}</code> token to carry the billing choice, and let your own redirect page pick the link:
+<div class="codeblock" data-lang="dart"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>&#x27;cta&#x27;: &lt;String, Object?&gt;{
+  &#x27;label&#x27;: &#x27;Start free trial&#x27;,
+  &#x27;href&#x27;: &#x27;https://acme.example/checkout?plan=team&amp;period={period}&#x27;,
+},</code></pre></div>
+The page replaces <code>{period}</code> with <code>monthly</code> or <code>yearly</code> from the visitor's current toggle, then hands the result to <code>onLink</code>.</li>
+<li>Open it in <code>onLink</code> with <code>url_launcher</code> (<code>flutter pub add url_launcher</code>):
+<div class="codeblock" data-lang="dart"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>import &#x27;package:url_launcher/url_launcher.dart&#x27;;
+
+const Map&lt;String, String&gt; paymentLinks = &lt;String, String&gt;{
+  &#x27;team:monthly&#x27;: &#x27;https://buy.stripe.com/test_team_monthly&#x27;,
+  &#x27;team:yearly&#x27;: &#x27;https://buy.stripe.com/test_team_yearly&#x27;,
+  &#x27;scale:monthly&#x27;: &#x27;https://buy.stripe.com/test_scale_monthly&#x27;,
+  &#x27;scale:yearly&#x27;: &#x27;https://buy.stripe.com/test_scale_yearly&#x27;,
+};
+
+Future&lt;void&gt; handleLink(String href) async {
+  final Uri uri = Uri.parse(href);
+
+  if (uri.host == &#x27;acme.example&#x27; &amp;&amp; uri.path == &#x27;/checkout&#x27;) {
+    final String? link =
+        paymentLinks[&#x27;${uri.queryParameters[&#x27;plan&#x27;]}:${uri.queryParameters[&#x27;period&#x27;]}&#x27;];
+    if (link != null) await launchUrl(Uri.parse(link), webOnlyWindowName: &#x27;_self&#x27;);
+    return;
+  }
+  if (const &lt;String&gt;[&#x27;http&#x27;, &#x27;https&#x27;, &#x27;mailto&#x27;].contains(uri.scheme)) {
+    await launchUrl(uri, webOnlyWindowName: &#x27;_self&#x27;);
+  }
+}
+
+// LandingApp(onLink: handleLink)</code></pre></div></li>
+</ol>
+<p>Skip the middleman if you prefer: put the Stripe URL straight in <code>href</code> and add a second plan per period, or write your own pricing data source (see <a href="#package-content">package mode</a>) that emits a different <code>href</code> per period.</p>
+
+<h3>Option 2: Checkout Sessions from your server</h3>
+<p>Better when you need seats, coupons or a customer record. The <code>href</code> is your endpoint; it creates a session and redirects:</p>
+<div class="codeblock" data-lang="js"><div class="code-title">server/checkout.js</div><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>// Node.js with stripe
+app.get(&#x27;/checkout&#x27;, async (req, res) =&gt; {
+  const prices = {
+    &#x27;team:monthly&#x27;: &#x27;price_123&#x27;,  &#x27;team:yearly&#x27;: &#x27;price_124&#x27;,
+    &#x27;scale:monthly&#x27;: &#x27;price_125&#x27;, &#x27;scale:yearly&#x27;: &#x27;price_126&#x27;,
+  };
+  const price = prices[`${req.query.plan}:${req.query.period}`];
+  if (!price) return res.status(400).send(&#x27;Unknown plan&#x27;);
+
+  const session = await stripe.checkout.sessions.create({
+    mode: &#x27;subscription&#x27;,
+    line_items: [{ price, quantity: 1, adjustable_quantity: { enabled: true, minimum: 1 } }],
+    subscription_data: { trial_period_days: 14 },
+    success_url: &#x27;https://acme.example/welcome&#x27;,
+    cancel_url: &#x27;https://acme.example/#pricing&#x27;,
+  });
+  res.redirect(303, session.url);
+});</code></pre></div>
+<p>On the page, <code>'href': 'https://api.acme.example/checkout?plan=team&amp;period={period}'</code> and <code>launchUrl(uri, webOnlyWindowName: '_self')</code> are all it takes.</p>
+
+<h3>Keeping prices in one place</h3>
+<p>The numbers on the page and the numbers in Stripe must agree. The page shows <code>monthlyPrice</code> and a percentage discount; Stripe has real prices. Either generate the pricing JSON from your Stripe prices on the server (write a <code>PricingRemoteDataSource</code> that fetches it), or check them against each other in a test.</p>
+</section><section id="theming"><h2><a class="anchor" href="#theming" aria-hidden="true">#</a>Branding and theming</h2>
+<p>The template contains no hard-coded colours (apart from Cairn's black overlay behind sheets). Every colour, radius and text style comes from <code>CairnTheme</code>, so a theme change re-skins the whole page.</p>
+<h3>Colours</h3>
+<p><code>CairnTheme.light</code> and <code>CairnTheme.dark</code> are the defaults. Override any token with <code>copyWith</code>:</p>
+<div class="codeblock" data-lang="dart"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>import &#x27;package:cairn_ui/cairn_ui.dart&#x27;;
+import &#x27;package:flutter/material.dart&#x27;;
+
+const Color brand = Color(0xFF4F46E5);   // indigo
+
+final CairnTheme light = CairnTheme.light.copyWith(
+  primary: brand,
+  primaryForeground: Colors.white,
+  ring: brand,
+);
+final CairnTheme dark = CairnTheme.dark.copyWith(
+  primary: const Color(0xFF818CF8),
+  primaryForeground: const Color(0xFF0B0B1A),
+  ring: const Color(0xFF818CF8),
+);
+
+MaterialApp(
+  theme: CairnTheme.materialTheme(light),
+  darkTheme: CairnTheme.materialTheme(dark),
+  ...
+)</code></pre></div>
+<p>What <code>primary</code> colours on this page: the main buttons, the logo tile, the number circles in "How it works", the checkmarks in the spotlights, the highlighted plan's ring, the tallest bar in the mockup. Change it once and all follow. Backgrounds come from <code>background</code>, <code>card</code>, <code>muted</code> and <code>border</code>; text from <code>foreground</code> and <code>mutedForeground</code>. Star ratings use Cairn's warning tone.</p>
+<h3>Fonts</h3>
+<p>Set <code>fontFamily</code> (and optionally <code>fontFamilyFallback</code>) on the theme, as in <a href="#mount">Mount it</a>. Every text style in the template goes through <code>theme.textStyle(...)</code> so it picks the font up.</p>
+<h3>Radius</h3>
+<p><code>CairnTheme.copyWith(radius: 14)</code> scales every corner (cards, buttons, inputs, images) together; <code>radius: 0</code> gives a sharp-cornered look.</p>
+<h3>Layout constants</h3>
+<table>
+<tbody>
+<tr><td>Max content width</td><td><code>LandingLayout.maxContentWidth</code> (1120) in <code>core/presentation/layout.dart</code></td></tr>
+<tr><td>Breakpoints</td><td><code>LandingLayout.breakpointFor</code>: compact under 640, medium under 1024, expanded above</td></tr>
+<tr><td>Navbar collapses into a menu</td><td><code>LandingLayout.navCollapseWidth</code> (1000)</td></tr>
+<tr><td>Section spacing</td><td><code>SectionFrame</code>: 56, 80, 96 px top and bottom by breakpoint; side gutter 20 or 32</td></tr>
+<tr><td>Entrance animation</td><td><code>Reveal</code>: 500&nbsp;ms (<code>CairnMotion.d500</code>) fade and 20&nbsp;px lift, once, when first scrolled into view; skipped when the system asks for reduced motion</td></tr>
+</tbody>
+</table>
+<h3>Dark mode</h3>
+<p>Follows <code>MaterialApp.themeMode</code>. To force it: <code>themeMode: ThemeMode.dark</code>. To give visitors a switch, hold a <code>ValueNotifier&lt;ThemeMode&gt;</code> above <code>MaterialApp</code> and add a button (for instance in the navbar widget) that flips it.</p>
+</section><section id="go-router"><h2><a class="anchor" href="#go-router" aria-hidden="true">#</a>Swap in-template navigation for go_router</h2>
+<p>The template keeps its own navigation so it runs in any app: <code>LandingNavigationCubit</code> holds intent (<code>goTo</code>, <code>activate</code>) and <code>LandingShell</code> performs the scroll. If your app already has a router you usually keep all of that and only connect the three seams: where non-anchor links go, which section to open on arrival, and what to do when the visible section changes.</p>
+<div class="codeblock" data-lang="dart"><div class="code-title">router.dart</div><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>import &#x27;package:cairn_template_landing/cairn_template_landing.dart&#x27;;
+import &#x27;package:flutter/material.dart&#x27;;
+import &#x27;package:flutter/services.dart&#x27;;
+import &#x27;package:go_router/go_router.dart&#x27;;
+import &#x27;package:url_launcher/url_launcher.dart&#x27;;
+
+final GoRouter router = GoRouter(
+  routes: &lt;RouteBase&gt;[
+    GoRoute(
+      path: &#x27;/&#x27;,
+      builder: (BuildContext context, GoRouterState state) =&gt; Scaffold(
+        body: LandingApp(
+          // /#pricing arrives as the URL fragment.
+          initialSection: state.uri.fragment.isEmpty ? null : state.uri.fragment,
+          onLink: (String href) =&gt; _open(context, href),
+          onSectionChanged: (String id) {
+            // Optional: keep the address bar in step without adding history.
+            SystemNavigator.routeInformationUpdated(
+              uri: Uri(path: &#x27;/&#x27;, fragment: id),
+              replace: true,
+            );
+          },
+        ),
+      ),
+    ),
+    GoRoute(path: &#x27;/sign-in&#x27;, builder: (_, __) =&gt; const SignInPage()),
+    GoRoute(path: &#x27;/privacy&#x27;, builder: (_, __) =&gt; const PrivacyPage()),
+  ],
+);
+
+void _open(BuildContext context, String href) {
+  final Uri uri = Uri.parse(href);
+  if (uri.hasScheme) {
+    launchUrl(uri, webOnlyWindowName: &#x27;_self&#x27;);   // https:, mailto:
+  } else {
+    context.go(href);                             // /sign-in, /privacy, ...
+  }
+}
+
+MaterialApp.router(routerConfig: router, ...)</code></pre></div>
+<h3>Real routes per section (<code>/pricing</code>)</h3>
+<p>If you want <code>/pricing</code> to be a shareable URL that opens the landing page scrolled to pricing:</p>
+<div class="codeblock" data-lang="dart"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>GoRoute(
+  path: &#x27;/:section(features|how-it-works|testimonials|pricing|faq|waitlist)&#x27;,
+  pageBuilder: (BuildContext context, GoRouterState state) =&gt; NoTransitionPage&lt;void&gt;(
+    key: const ValueKey&lt;String&gt;(&#x27;landing&#x27;),     // same key: the page is reused
+    child: Scaffold(
+      body: LandingApp(
+        initialSection: state.pathParameters[&#x27;section&#x27;],
+        onLink: (String href) =&gt; _open(context, href),
+      ),
+    ),
+  ),
+),</code></pre></div>
+<p>Two caveats. <code>initialSection</code> is applied once, when the page first builds, so navigating between <code>/pricing</code> and <code>/faq</code> inside the same page instance will not re-scroll; for that, rebuild the page (give it a <code>ValueKey</code> of the section) or call <code>goTo</code> yourself. And the 600&nbsp;ms wait before scrolling assumes content loads quickly; with a slow backend raise <code>_initialScrollDelay</code> in <code>landing_shell.dart</code>.</p>
+
+<h3>Replacing the cubit entirely</h3>
+<p>If you want the router to own scrolling too, delete <code>LandingNavigationCubit</code> and in <code>landing_shell.dart</code> replace the <code>BlocListener</code> that calls <code>_scrollTo</code> with a listener on your router state. The sections themselves have no navigation dependency: they only call <code>LandingActions.of(context).open(href)</code>.</p>
+</section><section id="deploy"><h2><a class="anchor" href="#deploy" aria-hidden="true">#</a>SEO and deploy notes for Flutter web</h2>
+<h3>Build</h3>
+<div class="codeblock" data-lang="shell"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>flutter build web --release
+# served from a sub-path, e.g. https://example.com/kestrel/
+flutter build web --release --base-href /kestrel/</code></pre></div>
+<p><code>--base-href</code> must start and end with <code>/</code>. It rewrites <code>&lt;base href&gt;</code> in <code>build/web/index.html</code>; all asset URLs (including the template's images) are relative to it.</p>
+
+<h3>One page, so a single fallback</h3>
+<p>The page has one route, but if you use path URLs (<code>/pricing</code> with go_router) the server must return <code>index.html</code> for unknown paths:</p>
+<div class="codeblock" data-lang="text"><div class="code-title">nginx</div><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code># nginx
+location / {
+  try_files $uri $uri/ /index.html;
+}</code></pre></div>
+<div class="codeblock" data-lang="json"><div class="code-title">Firebase Hosting</div><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>// firebase.json
+{
+  &quot;hosting&quot;: {
+    &quot;public&quot;: &quot;build/web&quot;,
+    &quot;rewrites&quot;: [{ &quot;source&quot;: &quot;**&quot;, &quot;destination&quot;: &quot;/index.html&quot; }]
+  }
+}</code></pre></div>
+<div class="codeblock" data-lang="text"><div class="code-title">Netlify</div><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code># Netlify: web/_redirects (copied into build/web)
+/*    /index.html   200</code></pre></div>
+<p>On GitHub Pages copy <code>index.html</code> to <code>404.html</code> after building. Keep static, cacheable files (images, <code>main.dart.js</code>) with long cache headers; they are fingerprinted by Flutter's service worker.</p>
+
+<h3>Meta tags</h3>
+<p>Search and social previews read your static <code>web/index.html</code>, not the Flutter canvas. Edit the <code>&lt;head&gt;</code>:</p>
+<div class="codeblock" data-lang="html"><div class="code-title">web/index.html</div><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>&lt;title&gt;Kestrel: plan work your whole team can see&lt;/title&gt;
+&lt;meta name=&quot;description&quot; content=&quot;Kestrel brings roadmaps, tasks and reporting into one calm workspace.&quot;&gt;
+&lt;link rel=&quot;canonical&quot; href=&quot;https://kestrel.example/&quot;&gt;
+
+&lt;meta property=&quot;og:type&quot; content=&quot;website&quot;&gt;
+&lt;meta property=&quot;og:title&quot; content=&quot;Kestrel: plan work your whole team can see&quot;&gt;
+&lt;meta property=&quot;og:description&quot; content=&quot;Roadmaps, tasks and reporting in one calm workspace.&quot;&gt;
+&lt;meta property=&quot;og:image&quot; content=&quot;https://kestrel.example/og.png&quot;&gt;   &lt;!-- 1200x630 --&gt;
+&lt;meta property=&quot;og:url&quot; content=&quot;https://kestrel.example/&quot;&gt;
+&lt;meta name=&quot;twitter:card&quot; content=&quot;summary_large_image&quot;&gt;
+
+&lt;meta name=&quot;theme-color&quot; content=&quot;#ffffff&quot; media=&quot;(prefers-color-scheme: light)&quot;&gt;
+&lt;meta name=&quot;theme-color&quot; content=&quot;#0a0a0a&quot; media=&quot;(prefers-color-scheme: dark)&quot;&gt;
+&lt;link rel=&quot;icon&quot; href=&quot;favicon.png&quot;&gt;</code></pre></div>
+<p>Social crawlers do not run JavaScript, so the <code>og:image</code> must be a normal absolute URL to a file you host.</p>
+
+<h3>Crawlability, honestly</h3>
+<p>A Flutter web app draws to a canvas. Google can index some Flutter pages, but you should not rely on it for a marketing site. If organic search matters:</p>
+<ul>
+<li>Put a short, real HTML description in <code>web/index.html</code> inside <code>&lt;noscript&gt;</code> (and in a visually hidden element), including the headline, the main features and the pricing in text.</li>
+<li>Consider a plain-HTML landing page on the root domain and this Flutter page as the app's own marketing view, or pre-render with a service.</li>
+<li>Keep a <code>sitemap.xml</code> and <code>robots.txt</code> in <code>web/</code>.</li>
+</ul>
+<p>The widgets expose proper semantics (headings, buttons, labelled rating and progress) so assistive technology works; call <code>SemanticsBinding.instance.ensureSemantics()</code> in <code>main()</code> if you want the accessibility tree built from the first frame instead of when a screen reader asks.</p>
+
+<h3>Analytics</h3>
+<p>Add the tag in <code>web/index.html</code> (Google Analytics 4 shown):</p>
+<div class="codeblock" data-lang="html"><div class="code-title">web/index.html</div><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>&lt;script async src=&quot;https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag(&#x27;js&#x27;, new Date());
+  gtag(&#x27;config&#x27;, &#x27;G-XXXXXXXXXX&#x27;);
+&lt;/script&gt;</code></pre></div>
+<p>Then report events from the two callbacks the page gives you:</p>
+<div class="codeblock" data-lang="dart"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>import &#x27;dart:js_interop&#x27;;
+
+@JS(&#x27;gtag&#x27;)
+external void _gtag(String command, String name, JSObject params);
+
+void track(String name, Map&lt;String, String&gt; params) =&gt;
+    _gtag(&#x27;event&#x27;, name, params.jsify()! as JSObject);
+
+LandingApp(
+  onLink: (String href) {
+    track(&#x27;click&#x27;, &lt;String, String&gt;{&#x27;href&#x27;: href});
+    handleLink(href);
+  },
+  onSectionChanged: (String id) =&gt;
+      track(&#x27;section_view&#x27;, &lt;String, String&gt;{&#x27;section&#x27;: id}),
+)</code></pre></div>
+<p><code>onLink</code> does not fire for <code>#</code> anchors (the template handles those), so to count those too call <code>track</code> from <code>onSectionChanged</code> or wrap the data. For a waitlist conversion, track in your data source after a successful <code>submit</code>.</p>
+<p>If you use cookies or similar, add your consent banner before loading the tag.</p>
+
+<h3>Performance</h3>
+<ul>
+<li>Use the default renderer settings of your Flutter version; the page has no heavy effects. Images are the main weight: about 560&nbsp;KB for the bundled nine.</li>
+<li>The page builds every section up front (it is one scroll), which is fine at this size.</li>
+<li>Defer non-critical scripts, and serve images through a CDN.</li>
+</ul>
+</section><section id="testing"><h2><a class="anchor" href="#testing" aria-hidden="true">#</a>Testing</h2>
+<div class="codeblock" data-lang="shell"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>cd templates/landing
+flutter pub get
+dart format .
+flutter analyze --fatal-infos --fatal-warnings
+flutter test</code></pre></div>
+<p>The suite has three kinds of test:</p>
+<div class="tablewrap"><table><thead><tr><th>File</th><th>What it covers</th></tr></thead><tbody><tr><td><code>test/domain_test.dart</code></td><td>Pricing calculation (monthly, yearly, discount, rounding, free, custom), price formatting, email validation, the signup use case with fake repositories, the JSON reader and every mapper over the bundled content</td></tr><tr><td><code>test/session_test.dart</code></td><td>Cubits through the real container with no widgets: singletons versus screen view models, <code>ContentCubit</code>, navigation, <code>PricingCubit</code>, <code>WaitlistCubit</code></td></tr><tr><td><code>test/landing_app_test.dart</code></td><td><code>LandingApp</code> mounted at 390, 768 and 1280 px: every section lays out without errors, pricing toggle, FAQ, waitlist (invalid, valid, refused), plus nav scrolling, the phone menu, initial section, <code>overrides</code>, dark mode</td></tr></tbody></table></div>
+<h3>Rules for widget tests here</h3>
+<ul>
+<li><strong>Never <code>pumpAndSettle</code>.</strong> Cairn has repeating animations (spinners, indeterminate progress), so the tree never settles and the call times out. Pump fixed durations; <code>test/support/pump_landing.dart</code> has a <code>settle(tester, milliseconds)</code> helper.</li>
+<li><strong><code>AnimatedSwitcher</code> keeps the old child</strong> for its duration. After changing the billing period, pump about 600&nbsp;ms before expecting the old price to be gone.</li>
+<li><strong>Let toasts expire.</strong> A <code>CairnToast</code> has a four-second timer; pump past it (<code>settle(tester, 5000)</code>) at the end of the test or Flutter reports a pending timer.</li>
+<li><strong>Load a real font.</strong> Flutter's default test font (Ahem) has square glyphs that are much wider than real text, which creates overflows that never happen on a device. The helper loads Geist from the repository's <code>fonts/</code> folder when it can find it; point it at your own font file if you copy the template.</li>
+<li><strong>Set the viewport.</strong> <code>tester.view.physicalSize = Size(390, 900); tester.view.devicePixelRatio = 1;</code> and reset it with <code>addTearDown(tester.view.reset)</code>.</li>
+<li>Scroll before tapping: <code>tester.ensureVisible(finder)</code> stops at the edge, which can be under the sticky navbar. The tests scroll a further 250&nbsp;px back.</li>
+</ul>
+<h3>A test of your own content</h3>
+<div class="codeblock" data-lang="dart"><button class="copy" type="button" aria-label="Copy code">Copy</button><pre><code>testWidgets(&#x27;shows my headline&#x27;, (WidgetTester tester) async {
+  await pumpLanding(
+    tester,
+    width: 390,
+    overrides: (GetIt locator) =&gt; locator
+      ..unregister&lt;HeroRemoteDataSource&gt;()
+      ..registerLazySingleton&lt;HeroRemoteDataSource&gt;(AcmeHeroData.new),
+  );
+  expect(find.text(&#x27;Get paid faster, with no chasing.&#x27;), findsOneWidget);
+});</code></pre></div>
+<h3>Screenshots</h3>
+<p>To eyeball layouts, wrap the app in a <code>RepaintBoundary</code>, call <code>boundary.toImage()</code> inside <code>tester.runAsync</code>, write the PNG to a scratch folder, and load fonts (<code>FontLoader</code>) and images (<code>precacheImage</code>) in <code>runAsync</code> first. Note that the test renderer does not blur box shadows, so drop shadows look like hard bands there; they are soft in a real build.</p>
+</section><section id="troubleshooting"><h2><a class="anchor" href="#troubleshooting" aria-hidden="true">#</a>Troubleshooting and FAQ</h2>
+<dl>
+<dt>Images do not show (copy mode)</dt>
+<dd>Set <code>LandingPackage.name</code> to <code>null</code> and declare <code>assets/images/</code> in your pubspec. In package mode, paths resolve as <code>packages/cairn_template_landing/...</code>; a typo shows a muted box instead of an error.</dd>
+
+<dt>Icons are rectangles or missing in release or in tests</dt>
+<dd>The page uses Material icons: keep <code>uses-material-design: true</code>. In widget tests, load the <code>MaterialIcons</code> font if you take screenshots; assertions do not need it.</dd>
+
+<dt><code>FormatException: Expected a string at "headline", got null</code></dt>
+<dd>The content JSON is missing or mistypes a required key. The message names the key; compare with the <a href="#content">JSON reference</a>. The error appears in the section's cubit as a failed load and the section shows a "Could not load this section. Retry" button.</dd>
+
+<dt>A navbar link does nothing</dt>
+<dd>The <code>href</code> must be <code>#</code> plus an id from <code>SectionIds.all</code>, and that id must be wrapped with <code>keyed(...)</code> in <code>landing_page.dart</code>. Other hrefs go to <code>onLink</code>, which does nothing if you did not pass one.</dd>
+
+<dt>The page scrolls but the highlighted link is one behind</dt>
+<dd>A section counts as active once its top is within 120&nbsp;px of the top of the page. Change <code>_activationOffset</code> in <code>landing_shell.dart</code>. The last sections (waitlist, footer) may never reach the top because the page ends first.</dd>
+
+<dt>Menu sheet or toast does not appear</dt>
+<dd>The sheet needs a <code>Navigator</code> above the page (use <code>MaterialApp</code>); the toast needs the page's own <code>CairnToaster</code>, which <code>LandingShell</code> provides. If you wrap <code>LandingApp</code> in something that clips or hides overlays, the toast can be clipped.</dd>
+
+<dt>Overflow errors on a phone</dt>
+<dd>Long unbroken strings (an email address in a title, a very long headline word) can overflow. All copy wraps, but a single word wider than the screen cannot. Shorten it, or set a smaller size in the view.</dd>
+
+<dt><code>pumpAndSettle timed out</code> in my tests</dt>
+<dd>See <a href="#testing">Testing</a>: Cairn has repeating animations. Pump fixed durations.</dd>
+
+<dt>"A Timer is still pending" at the end of a test</dt>
+<dd>A toast timer (4&nbsp;s) or the demo signup delay is still running. Pump past it, or register a zero-latency data source: <code>InMemoryWaitlistRemoteDataSource(latency: Duration.zero)</code>.</dd>
+
+<dt>"No LandingScope above this context"</dt>
+<dd>A widget from the template was built outside <code>LandingApp</code>. Only <code>LandingApp</code> creates the container; mount that, not individual views.</dd>
+
+<dt>Can I use only some sections?</dt>
+<dd>Yes: remove the others from <code>LandingPage</code> (copy mode). Sections are independent; only the navbar and footer depend on the site info.</dd>
+
+<dt>Can I add a language switch?</dt>
+<dd>Write a data source per language and swap it with <code>overrides</code> (rebuild the page with a different <code>Key</code> when the language changes). All visible text except a few accessibility labels ("Open menu", "Billing", error messages in <code>ValidateEmail</code>) comes from the data.</dd>
+
+<dt>Why does the page reload content when I rotate the phone?</dt>
+<dd>It should not: content is held by cubits owned by each section's view model. If a parent rebuilds <code>LandingApp</code> with a new key, everything starts over by design.</dd>
+
+<dt>How do I make the hero a split layout with the text on the left?</dt>
+<dd>Edit <code>presentation/hero/views/hero_view.dart</code>: replace the centred <code>Column</code> with a <code>Row</code> of the copy and the mockup at <code>viewport.isExpanded</code>. The content model does not change.</dd>
+</dl>
+</section><section id="migration"><h2><a class="anchor" href="#migration" aria-hidden="true">#</a>Migration notes: upgrading cairn_ui</h2>
+<p>The template pins <code>cairn_ui: ^0.2.0</code>. Cairn is pre-1.0, so a minor version can change an API. Before you raise the constraint:</p>
+<ol>
+<li>Read the <code>cairn_ui</code> changelog for renamed or removed parameters.</li>
+<li>Bump the version, run <code>flutter pub upgrade cairn_ui</code>, then <code>flutter analyze</code>. Renames show up as errors in the files listed below.</li>
+<li>Run <code>flutter test</code> and look at the page at 390 and 1280&nbsp;px, light and dark.</li>
+</ol>
+<h3>What the template uses</h3>
+<div class="tablewrap"><table><thead><tr><th>Component</th><th>Where</th><th>Watch for</th></tr></thead><tbody><tr><td><code>CairnTheme</code> (<code>of</code>, <code>copyWith</code>, <code>materialTheme</code>, tokens, <code>radiusScale</code>, <code>textStyle</code>, <code>defaultTextStyle</code>)</td><td>everywhere</td><td>Token renames; <code>radiusScale</code> member names</td></tr><tr><td><code>CairnTypography</code>, <code>CairnSpacing</code>, <code>CairnMotion</code>, <code>CairnShadows</code></td><td>everywhere</td><td>Scale steps; <code>trackingTight</code></td></tr><tr><td><code>CairnNavbar</code></td><td>shell/landing_navbar.dart</td><td><code>start</code>, <code>end</code>, <code>height</code></td></tr><tr><td><code>CairnButton</code>, <code>CairnButton.icon</code></td><td>navbar, hero, pricing, waitlist, footer</td><td>Variants and sizes; <code>expand</code>; <code>leading</code> and <code>trailing</code></td></tr><tr><td><code>CairnLink</code></td><td>brand, FAQ, footer, pricing note</td><td>Its text style merges over the child</td></tr><tr><td><code>CairnSheet</code>, <code>showCairnSheet</code></td><td>phone menu</td><td><code>content</code> and <code>footer</code> slots</td></tr><tr><td><code>CairnBadge</code></td><td>eyebrows, pills, statuses</td><td><code>label</code>, <code>trailing</code>, variants</td></tr><tr><td><code>CairnCard</code>, <code>CairnCardHeader</code>, <code>CairnCardContent</code></td><td>features, steps, testimonials, pricing</td><td>Slot padding; <code>gap</code></td></tr><tr><td><code>CairnAvatar</code>, <code>CairnAvatarGroup</code></td><td>proof, testimonials, mockup</td><td><code>image</code> as an <code>ImageProvider</code></td></tr><tr><td><code>CairnRating</code></td><td>proof, testimonials</td><td><code>allowHalf</code>, <code>semanticLabel</code></td></tr><tr><td><code>CairnMockupBrowser</code>, <code>CairnProgress</code></td><td>hero</td><td></td></tr><tr><td><code>CairnStats</code>, <code>CairnStat</code></td><td>numbers band</td><td>Slots are widgets, not strings</td></tr><tr><td><code>CairnSwitch</code></td><td>pricing</td><td><code>semanticLabel</code></td></tr><tr><td><code>CairnAccordion</code>, <code>CairnAccordionItem</code></td><td>FAQ</td><td>Controlled: you hold the <code>expanded</code> set</td></tr><tr><td><code>CairnInput</code>, <code>CairnSpinner</code></td><td>waitlist</td><td><code>hasError</code>, <code>leading</code></td></tr><tr><td><code>CairnToaster</code>, <code>CairnToast.show</code></td><td>shell, waitlist</td><td>The toaster must be an ancestor of the caller</td></tr><tr><td><code>CairnSeparator</code>, <code>CairnIcon</code>, <code>CairnTone</code>, <code>CairnToneColors</code></td><td>footer, pricing, mockup, waitlist</td><td>Icon names; tone colour resolution</td></tr></tbody></table></div>
+<h3>Upgrading the template itself</h3>
+<p>If you copied the template and edited it, treat a new template version as a diff: compare the new <code>lib/</code> against the version you copied, and port the changes you want. The seams that make this painless are the data sources (your content), <code>landing_injection.dart</code> (your registrations), and the barrel. Keep your content in your own data sources (via <code>overrides</code>) rather than in edited copies of the <code>InMemory</code> ones, and an upgrade is a version bump.</p>
+<h3>Version of this document</h3>
+<p>Written for <code>cairn_template_landing</code> 1.0.0 and <code>cairn_ui</code> 0.2.x.</p>
+</section>
+<footer class="page">Photographs from Pexels, used under the Pexels licence (see NOTICE.md). Kestrel and every company in the demo are fictional.</footer>
+</main>
+</div>
+<script>
+(function () {
+  // Copy buttons.
+  document.querySelectorAll('.codeblock').forEach(function (block) {
+    var btn = block.querySelector('.copy');
+    var code = block.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function () {
+      var text = code.textContent;
+      var done = function () {
+        btn.textContent = 'Copied';
+        btn.classList.add('done');
+        setTimeout(function () { btn.textContent = 'Copy'; btn.classList.remove('done'); }, 1400);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else { fallback(); }
+      function fallback() {
+        var ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) { btn.textContent = 'Press Ctrl+C'; }
+        document.body.removeChild(ta);
+      }
+    });
+  });
+
+  // Highlight the TOC entry of the section in view.
+  var links = Array.prototype.slice.call(document.querySelectorAll('nav.toc a'));
+  var map = {};
+  links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+  var sections = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); }).filter(Boolean);
+  function update() {
+    var current = sections[0];
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].getBoundingClientRect().top <= 120) current = sections[i];
+    }
+    links.forEach(function (a) { a.classList.remove('active'); a.removeAttribute('aria-current'); });
+    if (current && map[current.id]) { map[current.id].classList.add('active'); map[current.id].setAttribute('aria-current', 'true'); }
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
+</body>
+</html>

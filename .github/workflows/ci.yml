@@ -38,6 +38,22 @@ jobs:
       - name: Test
         run: flutter test --reporter expanded
 
+      # Each template is its own package with its own pubspec, analysis and
+      # tests; the root analyzer excludes templates/.
+      - name: Templates (analyze and test)
+        run: |
+          for pkg in templates/*/; do
+            echo "::group::$pkg"
+            (cd "$pkg" && flutter pub get && flutter analyze --fatal-infos --fatal-warnings && flutter test)
+            echo "::endgroup::"
+          done
+
+      # The served copies of the template docs must match their sources.
+      - name: Template docs are in sync
+        run: |
+          ./tool/sync_template_docs.sh
+          git diff --exit-code web/template-docs
+
   build:
     name: Build web
     runs-on: ubuntu-latest

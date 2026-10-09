@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../data/components_catalog.dart';
 import '../data/docs_catalog.dart';
+import '../data/templates_catalog.dart';
 import '../pages/blocks_page.dart';
 import '../pages/charts_page.dart';
 import '../pages/component_detail_page.dart';
@@ -101,6 +102,25 @@ GoRouter buildRouter({String initialLocation = Routes.home}) {
               'Templates',
               const SitePage(child: TemplatesPage()),
             ),
+          ),
+          GoRoute(
+            path: '/templates/:slug',
+            pageBuilder: (BuildContext context, GoRouterState state) {
+              final String slug = state.pathParameters['slug'] ?? '';
+              final TemplateEntry? entry = findTemplate(slug);
+              if (entry == null) {
+                return _page(
+                  state,
+                  'Not found',
+                  SitePage(child: NotFoundPage(location: state.uri.path)),
+                );
+              }
+              return _page(
+                state,
+                '${entry.name} template',
+                SitePage(child: TemplatesPage(initialSlug: slug)),
+              );
+            },
           ),
           GoRoute(
             path: Routes.charts,

@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard template — documentation</title>
+<meta name="description" content="How to install, customise, connect to a backend and migrate the Cairn dashboard template.">
+<style>
+:root{--bg:#fff;--fg:#0a0a0a;--muted:#6b6b6b;--border:#e5e5e5;--card:#fafafa;--code:#f4f4f5;--accent:#0a0a0a;--accent-fg:#fafafa;--note:#eef6ff;--note-b:#bcd9f7;--warn:#fff7e6;--warn-b:#f2d18b;--ok:#ecfbf1;--ok-b:#a8e2bd}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0a0a0a;--fg:#fafafa;--muted:#a1a1a1;--border:#262626;--card:#111;--code:#171717;--accent:#fafafa;--accent-fg:#0a0a0a;--note:#0e1a2b;--note-b:#1f3a5c;--warn:#2a2007;--warn-b:#5c4710;--ok:#0b2316;--ok-b:#1c5233}}
+:root[data-theme=dark]{--bg:#0a0a0a;--fg:#fafafa;--muted:#a1a1a1;--border:#262626;--card:#111;--code:#171717;--accent:#fafafa;--accent-fg:#0a0a0a;--note:#0e1a2b;--note-b:#1f3a5c;--warn:#2a2007;--warn-b:#5c4710;--ok:#0b2316;--ok-b:#1c5233}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:inherit;text-decoration-color:var(--muted);text-underline-offset:3px}a:hover{text-decoration-color:currentColor}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);max-width:1180px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:28px 20px;border-right:1px solid var(--border);font-size:14px}
+nav.toc .brand{font-weight:650;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+nav.toc ol{list-style:none;margin:0;padding:0}nav.toc li{margin:2px 0}
+nav.toc a{display:block;padding:5px 10px;border-radius:8px;text-decoration:none;color:var(--muted)}
+nav.toc a:hover,nav.toc a.active{background:var(--card);color:var(--fg)}
+nav.toc ol ol{margin-left:12px}
+main{padding:48px 40px 96px;max-width:860px}
+h1{font-size:2.2rem;line-height:1.15;margin:0 0 8px;letter-spacing:-.02em}
+h2{font-size:1.5rem;margin:56px 0 12px;padding-top:24px;border-top:1px solid var(--border);letter-spacing:-.01em}
+h2:first-of-type{border-top:0}h3{font-size:1.1rem;margin:28px 0 8px}
+p,li{color:var(--fg)}.lead{color:var(--muted);font-size:1.1rem;margin:0 0 24px}
+code{font:13.5px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);padding:2px 6px;border-radius:6px}
+pre{position:relative;background:var(--code);border:1px solid var(--border);border-radius:12px;padding:16px 18px;overflow:auto;margin:14px 0}
+pre code{background:none;padding:0;font-size:13px;line-height:1.6;white-space:pre}
+.copy{position:absolute;top:8px;right:8px;border:1px solid var(--border);background:var(--bg);color:var(--muted);border-radius:8px;font-size:12px;padding:3px 9px;cursor:pointer}
+.copy:hover{color:var(--fg)}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+th{font-weight:600;background:var(--card)}
+.callout{border:1px solid;border-radius:12px;padding:12px 16px;margin:16px 0}.callout p{margin:4px 0}
+.callout.note{background:var(--note);border-color:var(--note-b)}.callout.warn{background:var(--warn);border-color:var(--warn-b)}.callout.ok{background:var(--ok);border-color:var(--ok-b)}
+.callout strong:first-child{display:block;margin-bottom:2px}
+.tree{white-space:pre;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.pill{display:inline-block;border:1px solid var(--border);border-radius:999px;padding:1px 10px;font-size:12px;color:var(--muted)}
+.steps{counter-reset:s;list-style:none;padding:0}.steps>li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.steps>li:before{content:counter(s);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-fg);display:grid;place-items:center;font-size:13px;font-weight:600}
+button.theme{border:1px solid var(--border);background:var(--bg);color:var(--fg);border-radius:8px;padding:3px 8px;cursor:pointer;font-size:12px}
+@media (max-width:900px){.layout{display:block}nav.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border)}main{padding:28px 20px 64px}}
+@media print{nav.toc,.copy,button.theme{display:none}.layout{display:block}main{max-width:none;padding:0}pre{white-space:pre-wrap}a{text-decoration:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Contents">
+  <div class="brand"><span>Dashboard template</span><button class="theme" id="theme" type="button" aria-label="Toggle theme">Theme</button></div>
+  <ol>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#requirements">Requirements</a></li>
+    <li><a href="#install">Install</a></li>
+    <li><a href="#mount">Mount it</a></li>
+    <li><a href="#content">Change the data</a>
+      <ol><li><a href="#shapes">JSON shapes</a></li><li><a href="#add-kpi">Add a KPI</a></li><li><a href="#add-page">Add a page</a></li></ol></li>
+    <li><a href="#brand">Brand &amp; theme</a></li>
+    <li><a href="#charts">Charts</a></li>
+    <li><a href="#backend">Connect a backend</a></li>
+    <li><a href="#navigation">Use go_router</a></li>
+    <li><a href="#responsive">Responsive behaviour</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#deploy">Deploy</a></li>
+    <li><a href="#migrate">Migration</a></li>
+    <li><a href="#faq">Troubleshooting</a></li>
+  </ol>
+</nav>
+<main>
+<h1>Dashboard template</h1>
+<p class="lead">An analytics dashboard built only from <code>cairn_ui</code> and <code>fl_chart</code>. This guide takes you from <em>copy it in</em> to <em>shipping it with your own data</em>.</p>
+
+<h2 id="overview">Overview</h2>
+<p>The template is a Flutter package, <code>cairn_template_dashboard</code>, that exposes one widget: <code>DashboardApp</code>. It has a sidebar, a top bar with a period picker (7 days, 30 days, 12 months), and three pages:</p>
+<ul>
+<li><strong>Overview</strong> – four KPI cards with trend badges, a revenue chart against the previous period and the five newest orders.</li>
+<li><strong>Analytics</strong> – a traffic donut, device bars, a visitors line chart and a conversion gauge.</li>
+<li><strong>Orders</strong> – a status filter plus Cairn&rsquo;s data table with search, sorting and pagination.</li>
+</ul>
+<p>It is organised as <strong>clean architecture by layer, then by feature</strong>, with <code>flutter_bloc</code> for state and <code>get_it</code> for dependency injection. Nothing is generated.</p>
+<pre class="tree">lib/
+├─ dashboard_app.dart              entry widget
+├─ core/
+│  ├─ infrastructure/di/           get_it registration
+│  └─ presentation/                charts theme, navigation, ViewModel
+├─ common/                         brand constants, formatting, chart scale
+├─ data/&lt;feature&gt;/                 remote data sources + repositories
+├─ domain/&lt;feature&gt;/               models, mappers, repository interfaces, use cases
+└─ presentation/&lt;feature&gt;/         bloc, view models, views, widgets (+ shell/)</pre>
+<div class="callout note"><strong>The one rule to remember</strong><p>Dependencies point inwards: presentation → domain ← data. To change where numbers come from you touch <code>data/</code> and one line of DI. To change how they look you touch <code>presentation/</code>.</p></div>
+
+<h2 id="requirements">Requirements</h2>
+<table>
+<tr><th>Tool</th><th>Version</th></tr>
+<tr><td>Flutter</td><td>3.44 or newer (Dart 3.12)</td></tr>
+<tr><td><code>cairn_ui</code></td><td>^0.2.0</td></tr>
+<tr><td><code>fl_chart</code></td><td>^1.2.0</td></tr>
+<tr><td><code>flutter_bloc</code>, <code>get_it</code>, <code>equatable</code></td><td>pulled in by the package</td></tr>
+</table>
+
+<h2 id="install">Install</h2>
+<h3>A. As a package (recommended)</h3>
+<p>Keeping it a package means you can pull in fixes later with a version bump.</p>
+<pre><button class="copy">Copy</button><code># pubspec.yaml
+dependencies:
+  cairn_ui: ^0.2.0
+  cairn_template_dashboard:
+    git:
+      url: https://github.com/rlphjyson/cairn_site.git
+      path: templates/dashboard
+      ref: main            # pin a tag or commit for production</code></pre>
+<p>Or, from a local checkout: <code>path: ../cairn_site/templates/dashboard</code>.</p>
+<h3>B. Copy the source into your app</h3>
+<ol class="steps">
+<li>Copy <code>templates/dashboard/lib/</code> into <code>lib/dashboard/</code> in your app.</li>
+<li>Add <code>cairn_ui</code>, <code>fl_chart</code>, <code>flutter_bloc</code>, <code>get_it</code> and <code>equatable</code> to your <code>pubspec.yaml</code>.</li>
+<li>Rewrite the <code>package:cairn_template_dashboard/…</code> imports to your app&rsquo;s package name (a find-and-replace). Files inside the template use relative imports, so only your own references change.</li>
+<li>Delete <code>cairn_template_dashboard.dart</code> if you do not want the barrel.</li>
+</ol>
+<div class="callout ok"><strong>No assets to copy</strong><p>The dashboard uses no images and no bundled fonts, so there is nothing to declare in <code>pubspec.yaml</code> beyond the dependencies.</p></div>
+
+<h2 id="mount">Mount it</h2>
+<p>The template reads colours, radii and type from <code>CairnTheme</code>, so the host app must provide one.</p>
+<pre><button class="copy">Copy</button><code>import 'package:cairn_template_dashboard/cairn_template_dashboard.dart';
+import 'package:cairn_ui/cairn_ui.dart';
+import 'package:flutter/material.dart';
+
+void main() => runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Acme Analytics',
+      theme: CairnTheme.materialTheme(CairnTheme.light),
+      darkTheme: CairnTheme.materialTheme(CairnTheme.dark),
+      home: const Scaffold(body: DashboardApp()),
+    );
+  }
+}</code></pre>
+<p><code>DashboardApp</code> fills whatever space its parent gives it, so put it in a <code>Scaffold</code> body, an <code>Expanded</code>, or a fixed-height box. Each instance creates its own dependency container and disposes it, so two dashboards on one screen never share state.</p>
+
+<h2 id="content">Change the data</h2>
+<p>Everything on screen comes from three <em>remote data sources</em> in <code>lib/data/&lt;feature&gt;/remote/</code>. Today they are in-memory stand-ins that return decoded JSON, exactly what an HTTP client would hand you. That makes them the one place to replace.</p>
+<table>
+<tr><th>File</th><th>Serves</th></tr>
+<tr><td><code>data/overview/remote/overview_remote_data_source.dart</code></td><td>KPIs and the revenue series</td></tr>
+<tr><td><code>data/analytics/remote/analytics_remote_data_source.dart</code></td><td>Traffic, devices, visits, conversion</td></tr>
+<tr><td><code>data/orders/remote/orders_remote_data_source.dart</code></td><td>Orders</td></tr>
+</table>
+<h3 id="shapes">JSON shapes</h3>
+<p>Mappers in <code>domain/&lt;feature&gt;/mappers/</code> read these keys. The period is passed as <code>week</code>, <code>month</code> or <code>year</code>.</p>
+<table>
+<tr><th>Object</th><th>Fields</th></tr>
+<tr><td>KPI</td><td><code>id</code>, <code>label</code>, <code>value</code> (number), <code>unit</code> (<code>currency</code> | <code>count</code> | <code>percent</code>), <code>delta</code> (percent vs previous period), optional <code>lowerIsBetter</code> (bool)</td></tr>
+<tr><td>Revenue point</td><td><code>label</code>, <code>current</code>, <code>previous</code></td></tr>
+<tr><td>Traffic source</td><td><code>label</code>, <code>share</code> (percent)</td></tr>
+<tr><td>Device</td><td><code>label</code>, <code>sessions</code></td></tr>
+<tr><td>Visits point</td><td><code>label</code>, <code>visitors</code>, <code>returning</code></td></tr>
+<tr><td>Conversion</td><td><code>rate</code>, <code>target</code> (both percent)</td></tr>
+<tr><td>Order</td><td><code>id</code>, <code>customer</code>, <code>email</code>, <code>status</code> (<code>paid</code> | <code>pending</code> | <code>failed</code> | <code>refunded</code>), <code>amount</code>, <code>date</code> (ISO-8601)</td></tr>
+</table>
+<div class="callout note"><strong>Chart labels</strong><p>A chart draws one label per point, so the number of points is up to you. The demo uses 7 for a week, 6 for a month and 12 for a year.</p></div>
+<h3>Quick edit without a backend</h3>
+<p>Open the in-memory data source and change the literals. For example, to rename the first KPI and change its value:</p>
+<pre><button class="copy">Copy</button><code>// data/overview/remote/overview_remote_data_source.dart
+&lt;String, Object?&gt;{
+  'id': 'mrr',
+  'label': 'Monthly recurring revenue',
+  'value': 48210.0,
+  'unit': 'currency',
+  'delta': 6.4,
+},</code></pre>
+<h3 id="add-kpi">Add a KPI</h3>
+<ol class="steps">
+<li>Add another map to the list returned by <code>fetchKpis</code>.</li>
+<li>That is all: <code>KpiCard</code>s are built from whatever the list contains. The grid reflows to 4, 2 or 1 per row.</li>
+<li>Use <code>unit: 'percent'</code> for rates and set <code>lowerIsBetter: true</code> where a falling number is good news (the demo does this for the refund rate).</li>
+</ol>
+<h3 id="add-page">Add a page</h3>
+<p>Say you want a <strong>Customers</strong> page.</p>
+<ol class="steps">
+<li>Create the feature in each layer: <code>domain/customers/{models,mappers,repositories,use_cases}</code>, <code>data/customers/{remote,repositories}</code>, <code>presentation/customers/{bloc,view_models,views,widgets}</code>. Copy the <code>orders</code> feature and rename.</li>
+<li>Register the data source, repository, use cases and a <code>CustomersViewModel</code> in <code>core/infrastructure/di/dashboard_injection.dart</code> (follow the <code>OrdersViewModel</code> lines).</li>
+<li>Add <code>customers('Customers')</code> to the <code>DashboardPage</code> enum in <code>core/presentation/navigation/dashboard_navigation_cubit.dart</code>.</li>
+<li>Add a case to the <code>switch</code> in <code>presentation/shell/dashboard_shell.dart</code> and an icon in <code>presentation/shell/sidebar.dart</code>.</li>
+</ol>
+<p>The compiler guides you: <code>DashboardPage</code> is switched exhaustively, so a missing case is an error, not a blank page.</p>
+
+<h2 id="brand">Brand &amp; theme</h2>
+<h3>Names</h3>
+<p>The product name, user name, role and avatar initials live in one file:</p>
+<pre><button class="copy">Copy</button><code>// lib/common/constants/dashboard_brand.dart
+abstract final class DashboardBrand {
+  static const String name = 'Acme Analytics';
+  static const String userName = 'Ralph B.';
+  static const String userRole = 'Owner';
+  static const String userInitials = 'RB';
+}</code></pre>
+<p>To replace the logo tile, edit the <code>Container</code> at the top of <code>presentation/shell/sidebar.dart</code>; an <code>Image.asset</code> works there.</p>
+<h3>Colours, radius, type</h3>
+<p>Everything resolves through <code>CairnTheme</code>; there are no hard-coded colours. Change them where you build the theme:</p>
+<pre><button class="copy">Copy</button><code>final CairnTheme brand = CairnTheme.light.copyWith(
+  primary: const Color(0xFF4F46E5),
+  primaryForeground: const Color(0xFFFFFFFF),
+  radius: 6,            // every corner rescales from this one number
+  fontFamily: 'Inter',
+);
+
+MaterialApp(theme: CairnTheme.materialTheme(brand), ...);</code></pre>
+<p>Dark mode is a second <code>CairnTheme</code> (<code>CairnTheme.dark.copyWith(...)</code>) passed as <code>darkTheme</code>.</p>
+
+<h2 id="charts">Charts</h2>
+<p>All charts use <code>fl_chart</code>, restyled by <code>core/presentation/charts/chart_theme.dart</code>: grid lines, axis labels, tooltips and series colours all come from Cairn tokens. The five series colours are <code>CairnColors.chart1…chart5</code>; to use your own palette, edit <code>ChartTheme.series</code> (one function).</p>
+<table>
+<tr><th>Chart</th><th>Widget</th><th>Library type</th></tr>
+<tr><td>Revenue (area + dashed comparison)</td><td><code>presentation/overview/widgets/revenue_chart.dart</code></td><td><code>LineChart</code></td></tr>
+<tr><td>Traffic donut</td><td><code>presentation/analytics/widgets/traffic_donut.dart</code></td><td><code>PieChart</code></td></tr>
+<tr><td>Devices</td><td><code>presentation/analytics/widgets/device_bars.dart</code></td><td><code>BarChart</code></td></tr>
+<tr><td>Visitors</td><td><code>presentation/analytics/widgets/visits_line.dart</code></td><td><code>LineChart</code></td></tr>
+<tr><td>Conversion gauge</td><td><code>presentation/analytics/widgets/conversion_gauge.dart</code></td><td><code>PieChart</code></td></tr>
+</table>
+<p>Axis maxima come from <code>niceCeil</code> in <code>common/utils/chart_scale.dart</code>, which rounds up to 1, 2, 2.5, 5 or 10 times a power of ten so grid lines land on readable numbers whatever your data is.</p>
+<p>Currency formatting (<code>$31,200</code>, <code>2.5k</code>, <code>+12.5%</code>) is in <code>common/utils/format.dart</code>; change <code>DashboardFormat.currency</code> for euros, rupees or locale-aware output with <code>intl</code>.</p>
+
+<h2 id="backend">Connect a backend</h2>
+<p>Implement the same interface the in-memory source does, then swap one DI line. Here is a REST version of the orders source using <code>package:http</code>:</p>
+<pre><button class="copy">Copy</button><code>// lib/data/orders/remote/http_orders_remote_data_source.dart
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+
+import 'orders_remote_data_source.dart';
+
+class HttpOrdersRemoteDataSource implements OrdersRemoteDataSource {
+  HttpOrdersRemoteDataSource(this._client, {required this.baseUrl, this.token});
+
+  final http.Client _client;
+  final String baseUrl;
+  final String? token;
+
+  @override
+  Future&lt;List&lt;Map&lt;String, Object?&gt;&gt;&gt; fetchOrders() async {
+    final http.Response res = await _client.get(
+      Uri.parse('$baseUrl/orders'),
+      headers: &lt;String, String&gt;{
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+    if (res.statusCode != 200) {
+      throw http.ClientException('Orders failed: ${res.statusCode}');
+    }
+    return (jsonDecode(res.body) as List&lt;Object?&gt;)
+        .cast&lt;Map&lt;String, Object?&gt;&gt;();
+  }
+}</code></pre>
+<p>Register it in <code>core/infrastructure/di/dashboard_injection.dart</code> in place of the in-memory one:</p>
+<pre><button class="copy">Copy</button><code>g.registerLazySingleton&lt;OrdersRemoteDataSource&gt;(
+  () =&gt; HttpOrdersRemoteDataSource(
+    http.Client(),
+    baseUrl: 'https://api.example.com',
+  ),
+);</code></pre>
+<div class="callout ok"><strong>Errors and loading are handled</strong><p>If a data source throws, each cubit keeps whatever it already showed and sets <code>failed: true</code>; on a first load the page shows an <code>ErrorPanel</code> (a destructive <code>CairnAlert</code> with a <em>Try again</em> button). Loading shows a <code>CairnSpinner</code>. To surface the actual message, add a field to the state in the cubit&rsquo;s <code>catch</code> block and pass it to <code>ErrorPanel(message: …)</code>.</p></div>
+<p>If your API names fields differently, change the <strong>mapper</strong> (<code>domain/&lt;feature&gt;/mappers</code>), not the views. If it returns a different period vocabulary, translate in the repository (<code>period.name</code> is the only place the period leaves the app).</p>
+
+<h2 id="navigation">Use go_router instead</h2>
+<p>The template has its own tiny navigation cubit so it runs in any app. In a real product you probably want URLs.</p>
+<ol class="steps">
+<li>Add <code>go_router</code> and define one route per <code>DashboardPage</code>.</li>
+<li>In <code>sidebar.dart</code> and the compact <code>_PageSwitcher</code> in <code>dashboard_shell.dart</code>, replace <code>context.read&lt;DashboardNavigationCubit&gt;().select(p)</code> with <code>context.go('/${p.name}')</code> and read the active page from the router.</li>
+<li>Render the page from the route&rsquo;s builder instead of the <code>switch</code> in <code>DashboardShell</code>; keep the shell as a <code>ShellRoute</code> so the sidebar persists.</li>
+</ol>
+<pre><button class="copy">Copy</button><code>ShellRoute(
+  builder: (context, state, child) =&gt; DashboardFrame(child: child),
+  routes: [
+    GoRoute(path: '/overview',  builder: (_, __) =&gt; const OverviewView()),
+    GoRoute(path: '/analytics', builder: (_, __) =&gt; const AnalyticsView()),
+    GoRoute(path: '/orders',    builder: (_, __) =&gt; const OrdersView()),
+  ],
+)</code></pre>
+<p>Every view already works standalone: they read the period from <code>PeriodCubit</code> and resolve their own view model.</p>
+
+<h2 id="responsive">Responsive behaviour</h2>
+<table>
+<tr><th>Width</th><th>Behaviour</th></tr>
+<tr><td>&ge; 860</td><td>Four KPIs per row; revenue and recent orders side by side</td></tr>
+<tr><td>&ge; 760</td><td>Sidebar visible</td></tr>
+<tr><td>&lt; 760</td><td>Sidebar replaced by page buttons under the top bar</td></tr>
+<tr><td>&lt; 760 (orders)</td><td>The table keeps a 720px minimum width and scrolls sideways</td></tr>
+<tr><td>&lt; 380 (donut card)</td><td>Legend moves below the donut</td></tr>
+</table>
+<p>Breakpoints are plain numbers in the shell and view files, so they are easy to find with search.</p>
+
+<h2 id="testing">Testing</h2>
+<pre><button class="copy">Copy</button><code>cd templates/dashboard
+flutter pub get
+flutter analyze --fatal-infos --fatal-warnings
+flutter test</code></pre>
+<p>The suite has three layers: <strong>domain</strong> (formatting, axis scale, filters, KPI rules), <strong>session</strong> (cubits through the real container, no widgets) and <strong>widget</strong> tests that mount <code>DashboardApp</code> at 1200, 900 and 390 pixels. Use small <code>tester.pump(Duration)</code> steps, never <code>pumpAndSettle</code>: Cairn has repeating animations, so it would never return.</p>
+<p>When you replace a data source, keep the in-memory one for tests and register it in a test container.</p>
+
+<h2 id="deploy">Deploy (Flutter web)</h2>
+<ul>
+<li><code>flutter build web --release</code>. If you host under a sub-path, add <code>--base-href /your-path/</code>.</li>
+<li>Single-page apps need a fallback so refreshes do not 404. On GitHub Pages copy <code>index.html</code> to <code>404.html</code>; on Netlify/Firebase add a rewrite to <code>/index.html</code>.</li>
+<li>Charts and tables are drawn with the canvas renderer; for large order sets, page on the server and pass one page at a time to <code>CairnDataTable</code>.</li>
+</ul>
+
+<h2 id="migrate">Migration notes</h2>
+<table>
+<tr><th>When you…</th><th>Do this</th></tr>
+<tr><td>Upgrade <code>cairn_ui</code> to a new minor</td><td>Bump the constraint, run <code>flutter analyze</code>. Components added in a minor never break this template; read the library&rsquo;s CHANGELOG for renames.</td></tr>
+<tr><td>Move from copied source to the package</td><td>Delete your copy, add the dependency, change imports back to <code>package:cairn_template_dashboard/…</code>, move your edits (usually only data sources and <code>DashboardBrand</code>) into your own wrapper.</td></tr>
+<tr><td>Pull template updates into a copy</td><td>Diff <code>templates/dashboard/lib</code> between your last sync tag and the new one; because dependencies point inwards, changes are almost always inside a single layer.</td></tr>
+<tr><td>Change state management</td><td>Cubits are plain streams of immutable states. Views only call <code>vm.cubit.method()</code> and read <code>state</code>, so Riverpod or Provider can replace <code>BlocBuilder</code> view by view.</td></tr>
+</table>
+
+<h2 id="faq">Troubleshooting</h2>
+<h3>“No DashboardScope above this context”</h3>
+<p>You built a view or <code>ViewModelBuilder</code> outside <code>DashboardApp</code>. Mount <code>DashboardApp</code> (it provides the scope) or wrap your tree in a <code>DashboardScope</code> with a locator from <code>createDashboardLocator()</code>.</p>
+<h3>Everything is black/white and unstyled</h3>
+<p>The host app has no <code>CairnTheme</code>. Use <code>CairnTheme.materialTheme(...)</code> or add <code>CairnTheme.light</code> to <code>ThemeData.extensions</code>.</p>
+<h3>“RenderFlex overflowed” in tests</h3>
+<p>Flutter&rsquo;s test font is wide. Load your real font in <code>test/flutter_test_config.dart</code> (the template does this for Geist when it finds it) and set <code>fontFamily</code> on the test theme.</p>
+<h3>Charts jump when the period changes</h3>
+<p>They do not by default: each screen keeps the old figures until the new ones arrive, then <code>fl_chart</code> animates between them. If you see a flash, check that your cubit does not emit a loading state with empty lists.</p>
+<h3>Where do I report a bug?</h3>
+<p>Open an issue on the <a href="https://github.com/rlphjyson/cairn_site/issues">cairn_site repository</a> with the Flutter and <code>cairn_ui</code> versions.</p>
+</main>
+</div>
+<script>
+(function(){
+  document.querySelectorAll('pre').forEach(function(pre){
+    var b=pre.querySelector('.copy'); if(!b) return;
+    b.addEventListener('click',function(){
+      var code=pre.querySelector('code').innerText;
+      var done=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1200)};
+      if(navigator.clipboard){navigator.clipboard.writeText(code).then(done,done)}else{done()}
+    });
+  });
+  var links=[].slice.call(document.querySelectorAll('nav.toc a'));
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){links.forEach(function(a){a.classList.remove('active')});var a=map[e.target.id];if(a)a.classList.add('active')}
+  })},{rootMargin:'-20% 0px -70% 0px'});
+  document.querySelectorAll('h2[id],h3[id]').forEach(function(h){io.observe(h)});
+  var root=document.documentElement, key='tpl-theme';
+  try{var s=localStorage.getItem(key);if(s)root.setAttribute('data-theme',s)}catch(e){}
+  document.getElementById('theme').addEventListener('click',function(){
+    var dark=root.getAttribute('data-theme')?root.getAttribute('data-theme')==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+    var next=dark?'light':'dark';root.setAttribute('data-theme',next);try{localStorage.setItem(key,next)}catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

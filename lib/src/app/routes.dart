@@ -23,6 +23,9 @@ abstract final class Routes {
   /// Whole-app templates.
   static const String templates = '/templates';
 
+  /// One template, by slug.
+  static String template(String slug) => '/templates/$slug';
+
   /// The charts showcase.
   static const String charts = '/charts';
 

@@ -1,68 +1,104 @@
 import 'package:cairn_site/src/app/routes.dart';
-import 'package:cairn_site/src/templates/shop/shop_app.dart';
+import 'package:cairn_site/src/data/templates_catalog.dart';
+import 'package:cairn_site/src/pages/templates_page.dart';
+import 'package:cairn_template_blog/cairn_template_blog.dart';
+import 'package:cairn_template_dashboard/cairn_template_dashboard.dart';
+import 'package:cairn_template_docs/cairn_template_docs.dart';
+import 'package:cairn_template_landing/cairn_template_landing.dart';
+import 'package:cairn_template_shop/cairn_template_shop.dart';
 import 'package:cairn_ui/cairn_ui.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'site_harness.dart';
 
-/// A label inside the phone's dock, not the page's captions of the same name.
-Finder _dock(String label) =>
-    find.descendant(of: find.byType(CairnDock), matching: find.text(label));
-
-/// Pumps in small steps: a single long pump jumps the clock but leaves an
-/// AnimatedSwitcher's outgoing child mounted until the next frame.
+/// Pumps in small steps: Cairn has repeating animations, so pumpAndSettle
+/// would never return.
 Future<void> _settle(WidgetTester tester) async {
-  for (int i = 0; i < 8; i++) {
+  for (int i = 0; i < 10; i++) {
     await tester.pump(const Duration(milliseconds: 100));
   }
 }
 
+/// The templates have their own thorough suites under `templates/<name>/test`;
+/// these tests only check that the site mounts each one and links to it.
 void main() {
-  group('e-commerce template', () {
-    testWidgets('is served at /templates', (WidgetTester tester) async {
+  group('templates page', () {
+    testWidgets('opens on the first template', (WidgetTester tester) async {
       await pumpSite(tester, Routes.templates);
+      await _settle(tester);
+      expect(find.byType(TemplatesPage), findsOneWidget);
       expect(find.byType(ShopApp), findsOneWidget);
       expect(find.text('Cairn MCP server'), findsOneWidget);
+      expect(find.text('Paid templates'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('browse, add to cart and check out', (
-      WidgetTester tester,
-    ) async {
+    testWidgets('the picker lists every template', (WidgetTester tester) async {
+      final SemanticsHandle semantics = tester.ensureSemantics();
       await pumpSite(tester, Routes.templates);
-
-      // Filter, then open a product.
-      await tester.tap(find.text('Audio').first);
       await _settle(tester);
-      expect(find.text('Court Low Sneaker'), findsNothing);
-      await tester.tap(find.text('Monitor Pro Over-ear'));
-      await _settle(tester);
-      expect(find.text('Add to cart'), findsOneWidget);
-
-      await tester.tap(find.text('Add to cart'));
-      await _settle(tester);
-      expect(find.text('Add another (1)'), findsOneWidget);
-
-      // Cart.
-      await tester.tap(_dock('Cart'));
-      await _settle(tester);
-      expect(find.text('Checkout'), findsOneWidget);
-      expect(find.text(r'$249'), findsWidgets);
-
-      await tester.tap(find.text('Checkout'));
-      await _settle(tester);
-      expect(find.text('Order placed'), findsWidgets);
-      expect(tester.takeException(), isNull);
+      for (final TemplateEntry t in templateCatalog) {
+        expect(
+          find.bySemanticsLabel(RegExp('^${t.name} template, ${t.kind.label}')),
+          findsOneWidget,
+          reason: t.slug,
+        );
+      }
+      semantics.dispose();
     });
 
-    testWidgets('saved tab lists the hearted product', (
+    const Map<String, Type> apps = <String, Type>{
+      'shop': ShopApp,
+      'dashboard': DashboardApp,
+      'blog': BlogApp,
+      'docs': DocsApp,
+      'landing': LandingApp,
+    };
+    for (final MapEntry<String, Type> e in apps.entries) {
+      testWidgets('/templates/${e.key} mounts its template', (
+        WidgetTester tester,
+      ) async {
+        await pumpSite(
+          tester,
+          Routes.template(e.key),
+          surface: const Size(1440, 2600),
+        );
+        await _settle(tester);
+        // The template's own frame; the landing page adds a second browser
+        // inside its hero.
+        expect(
+          find.byType(CairnMockupBrowser).evaluate().length +
+              find.byType(CairnMockupPhone).evaluate().length,
+          greaterThanOrEqualTo(1),
+        );
+        expect(
+          find.byWidgetPredicate((Widget w) => w.runtimeType == e.value),
+          findsOneWidget,
+        );
+        expect(tester.takeException(), isNull);
+      });
+    }
+
+    testWidgets('choosing a template swaps the preview', (
       WidgetTester tester,
     ) async {
-      await pumpSite(tester, Routes.templates);
-      await tester.tap(_dock('Saved'));
+      final SemanticsHandle semantics = tester.ensureSemantics();
+      await pumpSite(tester, Routes.templates, surface: const Size(1440, 2600));
       await _settle(tester);
-      expect(find.text('Classic White Low'), findsOneWidget);
+      await tester.tap(
+        find.bySemanticsLabel(RegExp('^Dashboard template, Web')),
+      );
+      await _settle(tester);
+      expect(find.byType(ShopApp), findsNothing);
+      expect(find.byType(DashboardApp), findsOneWidget);
       expect(tester.takeException(), isNull);
+      semantics.dispose();
+    });
+
+    testWidgets('an unknown template is a 404', (WidgetTester tester) async {
+      await pumpSite(tester, '/templates/nope');
+      expect(find.byType(TemplatesPage), findsNothing);
     });
   });
 }

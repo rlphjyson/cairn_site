@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cairn templates — documentation</title>
+<meta name="description" content="Step-by-step guides for the Cairn Flutter templates: install, change the content, theme, connect a backend and migrate.">
+<style>
+:root{--bg:#fff;--fg:#0a0a0a;--muted:#6b6b6b;--border:#e5e5e5;--card:#fafafa}
+@media (prefers-color-scheme:dark){:root{--bg:#0a0a0a;--fg:#fafafa;--muted:#a1a1a1;--border:#262626;--card:#111}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:860px;margin:0 auto;padding:64px 24px 96px}
+h1{font-size:2.2rem;line-height:1.15;margin:0 0 8px;letter-spacing:-.02em}
+.lead{color:var(--muted);font-size:1.1rem;margin:0 0 32px}
+ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+a.card{display:block;text-decoration:none;color:inherit;border:1px solid var(--border);background:var(--card);border-radius:14px;padding:18px 20px}
+a.card:hover{border-color:var(--fg)}
+a.card strong{display:block;font-size:1.05rem}
+a.card span{color:var(--muted);font-size:.95rem}
+.pill{float:right;border:1px solid var(--border);border-radius:999px;padding:1px 10px;font-size:12px;color:var(--muted)}
+footer{margin-top:40px;color:var(--muted);font-size:.9rem}
+a{color:inherit}
+</style>
+</head>
+<body>
+<main>
+<h1>Template documentation</h1>
+<p class="lead">Every Cairn template is its own Flutter package with its own assets, tests and a tutorial. Pick one to learn how to install it, change the content, theme it, connect a real backend and migrate.</p>
+<ul>
+<li><a class="card" href="shop/"><span class="pill">Mobile</span><strong>E-commerce</strong><span>Storefront, product pages, cart with promo codes, a four-step checkout and order history.</span></a></li>
+<li><a class="card" href="dashboard/"><span class="pill">Web</span><strong>Dashboard</strong><span>KPIs, area, bar, line, donut and radial charts, and a sortable orders table.</span></a></li>
+<li><a class="card" href="blog/"><span class="pill">Web</span><strong>Blog</strong><span>Featured post, search, categories, pagination, rich posts and a newsletter form.</span></a></li>
+<li><a class="card" href="docs/"><span class="pill">Web</span><strong>Documentation</strong><span>Sidebar, versions, command-palette search, an on-this-page rail and typed content blocks.</span></a></li>
+<li><a class="card" href="landing/"><span class="pill">Web</span><strong>SaaS landing</strong><span>Hero, features, testimonials, monthly/yearly pricing, FAQ and a waitlist.</span></a></li>
+</ul>
+<footer>Part of <a href="../">Cairn UI</a>. Photographs from Pexels, used under the Pexels licence.</footer>
+</main>
+</body>
+</html>

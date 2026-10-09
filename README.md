@@ -53,8 +53,9 @@ fixed upstream with a regression test.
 | `/docs/*` | Eight documentation pages with a sticky sidebar, an "On this page" rail with working anchors, and copyable code blocks |
 | `/components` | All 65 component modules — 70 cards, because five widgets ship inside a sibling's file — each a live, interactive preview |
 | `/components/:slug` | One component: a preview where **every rendered instance is clickable** and reveals its own exact snippet, the quick-start example, the design note, prev/next |
-| `/blocks` | Five composed screens: login, dashboard shell, settings, pricing, team roster — plus a "Templates — coming soon" note for the planned Flutter web and mobile templates |
-| `/templates` | A live, clickable sample mobile storefront (search, filter, save, cart, checkout) in a phone frame, built only from Cairn components, plus the roadmap |
+| `/blocks` | Five composed screens: login, dashboard shell, settings, pricing, team roster |
+| `/templates`, `/templates/:slug` | Five live, clickable whole-app templates — an e-commerce app (phone frame), a dashboard, a blog, a documentation site and a SaaS landing page (browser frame) — each with screenshots, architecture notes and a link to its HTML tutorial, plus the roadmap |
+| `/template-docs/*` | The HTML documentation for each template (static files copied from `templates/<name>/doc/`) |
 | `/charts` | Seven chart shapes on Cairn's token palette, and an honest note about why they are not Cairn components |
 | `/directory` | Every module, widget, block and doc page in one sortable table |
 | `/typeset` | The type scale as a live style guide, with three rhythm knobs over a prose specimen |
@@ -141,6 +142,37 @@ adapter, and the Charts page says all of this out loud.
 drawn with a `CustomPainter` on Lucide's 24×24 grid, matching what Cairn does
 internally. The site ships no image assets at all.
 
+## Templates
+
+`templates/` holds five standalone Flutter packages, each with its own
+`pubspec.yaml`, `assets/`, `test/`, `README.md` and `doc/index.html` tutorial:
+
+| Package | Template |
+| --- | --- |
+| `templates/shop` | Mobile e-commerce: storefront, product pages, cart, checkout, orders |
+| `templates/dashboard` | Analytics dashboard with charts and an orders table |
+| `templates/blog` | Blog with search, categories, rich posts and a newsletter |
+| `templates/docs` | Documentation site with versions, a search palette and typed blocks |
+| `templates/landing` | SaaS landing page with pricing and a waitlist |
+
+All five use clean architecture with the layers at the top of `lib/`
+(`core`, `common`, `data/<feature>`, `domain/<feature>`,
+`presentation/<feature>`), `flutter_bloc` and `get_it`, and need nothing but
+`cairn_ui` (the dashboard adds `fl_chart`). The site mounts them by path
+dependency. The root analyzer skips `templates/`; each package is analysed and
+tested on its own (CI loops over them).
+
+```bash
+for t in templates/*/; do (cd "$t" && flutter pub get && flutter analyze && flutter test); done
+
+# After editing a template's doc/ folder:
+./tool/sync_template_docs.sh
+
+# After changing how a template looks, regenerate the gallery screenshots:
+CAPTURE_SCREENSHOTS=1 FLUTTER_ROOT=<flutter sdk> \
+  flutter test test/capture_template_screenshots_test.dart
+```
+
 ## Licence
 
 MIT — see [LICENSE](LICENSE). Third-party attribution is in
@@ -150,9 +182,8 @@ MIT — see [LICENSE](LICENSE). Third-party attribution is in
 
 Planned, not built. Nothing in the `cairn_ui` package depends on any of it.
 
-- **Web templates** — landing page, dashboard, docs shell and auth screens.
-- **More mobile templates** — onboarding, settings and chat, alongside the
-  e-commerce storefront that exists today.
+- **More templates** — authentication screens, a chat app, onboarding and
+  settings, alongside the five that exist today.
 - **Paid templates** — Cairn Site will sell its templates. Payments, licensing
   and delivery are to be set up later; the e-commerce template is a free
   preview until then.

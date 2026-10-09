@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blog template documentation</title>
+<meta name="description" content="Install, mount, customise and extend the cairn_template_blog Flutter template.">
+<style>
+:root {
+  --bg: #ffffff; --fg: #0a0a0a; --muted: #f5f5f5; --muted-fg: #525252;
+  --border: #e5e5e5; --card: #ffffff; --code-bg: #f7f7f8; --accent: #171717;
+  --accent-fg: #fafafa; --ok: #15803d; --warn: #b45309; --info: #1d4ed8;
+  --ok-bg: #f0fdf4; --warn-bg: #fffbeb; --info-bg: #eff6ff;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0a0a0a; --fg: #fafafa; --muted: #171717; --muted-fg: #a3a3a3;
+    --border: #262626; --card: #111111; --code-bg: #141414; --accent: #fafafa;
+    --accent-fg: #0a0a0a; --ok: #4ade80; --warn: #fbbf24; --info: #93c5fd;
+    --ok-bg: #0c1f14; --warn-bg: #221a08; --info-bg: #0d1a33;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.65 var(--sans); -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration-color: var(--muted-fg); text-underline-offset: 3px; }
+a:hover { text-decoration-color: currentColor; }
+.layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); max-width: 1180px; margin: 0 auto; }
+nav.toc { position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto; padding: 32px 20px 32px 24px; border-right: 1px solid var(--border); font-size: 14px; }
+nav.toc .brand { font-weight: 700; letter-spacing: -0.02em; font-size: 15px; margin: 0 0 4px; }
+nav.toc .sub { color: var(--muted-fg); margin: 0 0 20px; font-size: 13px; }
+nav.toc ol { list-style: none; margin: 0; padding: 0; }
+nav.toc li a { display: block; padding: 5px 10px; margin: 1px 0; border-radius: 6px; text-decoration: none; color: var(--muted-fg); }
+nav.toc li a:hover { background: var(--muted); color: var(--fg); }
+nav.toc li a.active { background: var(--muted); color: var(--fg); font-weight: 600; }
+main { padding: 48px 40px 96px; min-width: 0; }
+h1 { font-size: 40px; line-height: 1.1; letter-spacing: -0.03em; margin: 0 0 12px; }
+h2 { font-size: 26px; letter-spacing: -0.02em; margin: 64px 0 12px; padding-top: 24px; border-top: 1px solid var(--border); }
+h2:first-of-type { border-top: 0; }
+h3 { font-size: 18px; margin: 32px 0 8px; letter-spacing: -0.01em; }
+p, li { max-width: 74ch; }
+.lead { font-size: 18px; color: var(--muted-fg); max-width: 62ch; }
+code { font-family: var(--mono); font-size: 0.88em; background: var(--muted); padding: 0.12em 0.4em; border-radius: 5px; }
+pre { position: relative; background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; overflow-x: auto; margin: 16px 0; }
+pre code { background: none; padding: 0; font-size: 13px; line-height: 1.6; display: block; white-space: pre; }
+pre .copy { position: absolute; top: 8px; right: 8px; font: 12px var(--sans); padding: 3px 9px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--muted-fg); cursor: pointer; }
+pre .copy:hover, pre .copy:focus-visible { color: var(--fg); outline: 2px solid var(--muted-fg); }
+.file { display: inline-block; font: 12px var(--mono); color: var(--muted-fg); margin: 16px 0 -8px; }
+table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 14px; display: block; overflow-x: auto; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { font-weight: 600; background: var(--muted); white-space: nowrap; }
+.callout { border: 1px solid var(--border); border-left-width: 4px; border-radius: 8px; padding: 12px 16px; margin: 20px 0; background: var(--muted); }
+.callout strong { display: block; margin-bottom: 2px; }
+.callout p { margin: 0; }
+.callout.ok { border-left-color: var(--ok); background: var(--ok-bg); }
+.callout.warn { border-left-color: var(--warn); background: var(--warn-bg); }
+.callout.info { border-left-color: var(--info); background: var(--info-bg); }
+.pill { display: inline-block; font-size: 12px; padding: 1px 9px; border: 1px solid var(--border); border-radius: 999px; color: var(--muted-fg); margin-right: 6px; }
+details { border: 1px solid var(--border); border-radius: 8px; padding: 0 16px; margin: 10px 0; }
+details summary { cursor: pointer; font-weight: 600; padding: 12px 0; }
+details[open] summary { border-bottom: 1px solid var(--border); margin-bottom: 12px; }
+ol.steps { counter-reset: step; list-style: none; padding: 0; }
+ol.steps > li { counter-increment: step; position: relative; padding-left: 40px; margin: 18px 0; }
+ol.steps > li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: var(--accent-fg); font-size: 13px; font-weight: 700; display: grid; place-items: center; }
+.tree { white-space: pre; }
+@media (max-width: 860px) {
+  .layout { grid-template-columns: 1fr; }
+  nav.toc { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--border); padding: 20px 16px; }
+  nav.toc ol { columns: 2; }
+  main { padding: 28px 16px 64px; }
+  h1 { font-size: 32px; }
+}
+@media print {
+  .layout { display: block; max-width: none; }
+  nav.toc, pre .copy { display: none; }
+  main { padding: 0; }
+  body { background: #fff; color: #000; font-size: 11pt; }
+  pre { white-space: pre-wrap; break-inside: avoid; border-color: #bbb; background: #f6f6f6; }
+  pre code { white-space: pre-wrap; }
+  h2 { break-after: avoid; }
+  a { text-decoration: none; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Table of contents">
+  <p class="brand">Blog template</p>
+  <p class="sub">cairn_template_blog 1.0</p>
+  <ol>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#requirements">Requirements</a></li>
+    <li><a href="#install">Install</a></li>
+    <li><a href="#mount">Mount it</a></li>
+    <li><a href="#content">Update the content</a></li>
+    <li><a href="#branding">Branding and theming</a></li>
+    <li><a href="#backend">Connect a real backend</a></li>
+    <li><a href="#router">Use go_router</a></li>
+    <li><a href="#deploy">SEO and deployment</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#faq">Troubleshooting and FAQ</a></li>
+    <li><a href="#migration">Migration notes</a></li>
+  </ol>
+</nav>
+<main>
+
+<h1>Blog template</h1>
+<p class="lead">A production-ready blog for Flutter, built only from <code>cairn_ui</code>. This page is the whole manual: how to install it, mount it, put your own content in it, connect a real backend and keep it up to date. It is one file with no external requests, so it works offline and prints cleanly.</p>
+
+<h2 id="overview">Overview</h2>
+<p>The template is a standalone package, <code>cairn_template_blog</code>, with one entry widget, <code>BlogApp</code>. It has four features:</p>
+<ul>
+  <li><strong>Posts (home).</strong> A sticky navbar with live search, a featured post, category chips, a grid of post cards (six per page) with <code>CairnPagination</code>, and loading, empty and error states.</li>
+  <li><strong>Post detail.</strong> Breadcrumb, headline, author line, cover, a body rendered from content blocks (heading, paragraph, quote, bullet list, code, image with caption), tags, a copy-link button that toasts, an author card, related posts and a way back.</li>
+  <li><strong>Authors (About).</strong> The people who write, with a bio and post count each.</li>
+  <li><strong>Newsletter.</strong> A validated sign-up form on the home page and in the footer, with submitting, success and error states.</li>
+</ul>
+<p>It is responsive to its own width (one column under 640 logical pixels, two under 1024, three above), works in light and dark through <code>CairnTheme</code>, and uses no hard-coded colours except overlays on photos.</p>
+
+<h3>How it is organised</h3>
+<pre><button class="copy">Copy</button><code>lib/
+  blog_app.dart                 BlogApp, the entry widget
+  cairn_template_blog.dart      barrel
+  core/
+    infrastructure/di/          blog_injection.dart: the get_it container
+    presentation/               navigation cubit, view model, shared widgets
+  common/                       constants (brand, config, package name), utils
+  data/&lt;feature&gt;/
+    remote/                     data source interface + InMemory stand-in
+    repositories/               implementations of the domain interfaces
+  domain/&lt;feature&gt;/
+    models/ mappers/ repositories/ use_cases/
+  presentation/
+    feed/ post/ authors/ newsletter/   bloc, view_models, views, widgets
+    shell/                      providers, navbar, footer, frame</code></pre>
+<p>Dependencies point inwards: presentation depends on domain, data depends on domain, and domain depends on nothing but Dart. Views never touch the container; screen-scoped cubits come from a <code>ViewModelBuilder</code>, session cubits from <code>context.read</code>. There is no code generation.</p>
+
+<h3>Cairn components used</h3>
+<p><code>CairnNavbar</code>, <code>CairnInput</code>, <code>CairnButton</code>, <code>CairnBadge</code>, <code>CairnAvatar</code>, <code>CairnHero</code>, <code>CairnCard</code>, <code>CairnPagination</code>, <code>CairnBreadcrumb</code>, <code>CairnSeparator</code>, <code>CairnSkeleton</code>, <code>CairnSpinner</code>, <code>CairnEmpty</code>, <code>CairnAlert</code>, <code>CairnLink</code>, <code>CairnStat</code>, <code>CairnToaster</code> and <code>CairnToast</code>, plus Cairn tokens (<code>CairnTheme</code>, <code>CairnSpacing</code>, <code>CairnTypography</code>, <code>CairnMotion</code>, <code>CairnShadows</code>) and a few Material <code>Icon</code> glyphs Cairn does not have.</p>
+
+<h2 id="requirements">Requirements</h2>
+<table>
+  <tr><th>Requirement</th><th>Version</th></tr>
+  <tr><td>Dart SDK</td><td><code>^3.12.0</code> (the template uses sealed classes and pattern matching)</td></tr>
+  <tr><td>Flutter</td><td>a stable release that ships that Dart SDK</td></tr>
+  <tr><td><code>cairn_ui</code></td><td><code>^0.2.0</code></td></tr>
+  <tr><td><code>flutter_bloc</code></td><td><code>^9.1.1</code></td></tr>
+  <tr><td><code>get_it</code></td><td><code>^9.3.0</code></td></tr>
+  <tr><td><code>equatable</code></td><td><code>^2.1.0</code></td></tr>
+</table>
+<p>Nothing else is needed. It uses no router, no <code>intl</code> and no HTTP package; you add one only if you connect a backend.</p>
+
+<h2 id="install">Install</h2>
+<h3>Option A: as a package</h3>
+<p>Keep the folder where it is, or copy <code>templates/blog</code> anywhere, and depend on it by path or git. The images travel with the package.</p>
+<span class="file">pubspec.yaml</span>
+<pre><button class="copy">Copy</button><code>dependencies:
+  cairn_ui: ^0.2.0
+  cairn_template_blog:
+    path: ../templates/blog
+  # or from git:
+  # cairn_template_blog:
+  #   git:
+  #     url: https://github.com/your-org/your-repo.git
+  #     path: templates/blog</code></pre>
+<p>Run <code>flutter pub get</code>. Nothing else to declare: the package lists <code>assets/images/</code> itself, and images resolve through <code>BlogPackage.name</code>.</p>
+
+<h3>Option B: copy the source into your app</h3>
+<p>Choose this if you want to edit the template freely, for example to use <code>go_router</code> (see below).</p>
+<ol class="steps">
+  <li>Copy <code>lib/</code> into your app, for example to <code>lib/blog/</code>, and <code>assets/images/</code> to your app's <code>assets/images/</code>. Rewrite the package imports (<code>package:cairn_template_blog/...</code>) to your app's package name if you use any.</li>
+  <li>Add the dependencies from the table above to your <code>pubspec.yaml</code>.</li>
+  <li>Declare the images:
+<pre><button class="copy">Copy</button><code>flutter:
+  assets:
+    - assets/images/</code></pre></li>
+  <li>Tell the template the images belong to your app, not to a package:
+<span class="file">lib/blog/common/constants/blog_package.dart</span>
+<pre><button class="copy">Copy</button><code>abstract final class BlogPackage {
+  static const String? name = null;
+}</code></pre></li>
+  <li>Mount <code>BlogApp</code> as shown next.</li>
+</ol>
+<div class="callout warn"><strong>Why the package name matters</strong><p>With <code>name = 'cairn_template_blog'</code> an asset path such as <code>assets/images/cover-laptop-code.jpg</code> is loaded as <code>packages/cairn_template_blog/assets/images/...</code>. If you copy the files into your app and leave that value, every bundled photograph shows the grey fallback box.</p></div>
+
+<h2 id="mount">Mount it</h2>
+<p>The template reads colours, radii and type from <code>CairnTheme</code>, so the host app must provide one. <code>BlogApp</code> fills the space its parent gives it and measures that space, not the screen, so it also works inside a panel. It brings its own <code>CairnToaster</code> and <code>Material</code>, and creates (and disposes) its own <code>GetIt</code> container, so two copies never share state.</p>
+<span class="file">lib/main.dart</span>
+<pre><button class="copy">Copy</button><code>import 'package:cairn_template_blog/cairn_template_blog.dart';
+import 'package:cairn_ui/cairn_ui.dart';
+import 'package:flutter/material.dart';
+
+void main() => runApp(const MyBlog());
+
+class MyBlog extends StatelessWidget {
+  const MyBlog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Fieldnotes',
+      debugShowCheckedModeBanner: false,
+      theme: CairnTheme.materialTheme(CairnTheme.light),
+      darkTheme: CairnTheme.materialTheme(CairnTheme.dark),
+      themeMode: ThemeMode.system,
+      home: const Scaffold(body: BlogApp()),
+    );
+  }
+}</code></pre>
+<p><code>BlogApp</code> accepts three optional data sources, used in the backend section below: <code>postsDataSource</code>, <code>authorsDataSource</code> and <code>newsletterDataSource</code>.</p>
+<div class="callout info"><strong>Run it</strong><p><code>flutter run -d chrome</code> (or any device). Try the search box, the category chips, page 2, an article, "Copy link", the About page and the footer form. An address ending in <code>@error.test</code> shows the form's error state.</p></div>
+
+<h2 id="content">Update the content</h2>
+<p>All sample content lives in one file, <code>lib/data/posts/remote/blog_seed.dart</code>, as the decoded JSON a CMS would return. It is read by two small classes, <code>InMemoryPostsRemoteDataSource</code> and <code>InMemoryAuthorsRemoteDataSource</code>. To use your own content you either edit that file or, better, replace those classes (see "Connect a real backend"). The shapes below are the contract either way.</p>
+
+<h3>Author fields</h3>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Required</th><th>Notes</th></tr>
+  <tr><td><code>id</code></td><td>string</td><td>yes</td><td>Stable; posts refer to it.</td></tr>
+  <tr><td><code>name</code></td><td>string</td><td>yes</td><td>Shown on cards, matched by search.</td></tr>
+  <tr><td><code>role</code></td><td>string</td><td>yes</td><td>Job title.</td></tr>
+  <tr><td><code>bio</code></td><td>string</td><td>yes</td><td>One or two sentences.</td></tr>
+  <tr><td><code>avatar</code></td><td>string</td><td>yes</td><td>Asset path or <code>http(s)</code> URL. Square, face centred, 400 px or more.</td></tr>
+</table>
+
+<h3>Post fields</h3>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Required</th><th>Notes</th></tr>
+  <tr><td><code>id</code></td><td>string</td><td>yes</td><td>Unique slug, e.g. <code>my-first-post</code>.</td></tr>
+  <tr><td><code>title</code></td><td>string</td><td>yes</td><td>Cards show two lines, then an ellipsis.</td></tr>
+  <tr><td><code>excerpt</code></td><td>string</td><td>yes</td><td>Cards show three lines; the article shows it as a lead.</td></tr>
+  <tr><td><code>category</code></td><td>string</td><td>yes</td><td>One per post. Categories are derived from the posts: a new name becomes a new chip.</td></tr>
+  <tr><td><code>tags</code></td><td>string[]</td><td>no</td><td>Searchable, and used to rank related posts.</td></tr>
+  <tr><td><code>author</code></td><td>string</td><td>yes</td><td>An author <code>id</code>. An unknown id makes the mapper throw.</td></tr>
+  <tr><td><code>publishedAt</code></td><td>string</td><td>yes</td><td>ISO 8601, e.g. <code>2026-09-18T09:00:00</code>. Posts are listed newest first.</td></tr>
+  <tr><td><code>cover</code></td><td>string</td><td>yes</td><td>Asset path or URL. Landscape; see the image notes below.</td></tr>
+  <tr><td><code>coverAlt</code></td><td>string</td><td>no</td><td>Screen-reader description; defaults to the title.</td></tr>
+  <tr><td><code>featured</code></td><td>bool</td><td>no</td><td>The newest featured post fills the hero; with none flagged, the newest post does.</td></tr>
+  <tr><td><code>readingMinutes</code></td><td>int</td><td>no</td><td>Computed from the body at 200 words a minute (code and images excluded) when absent.</td></tr>
+  <tr><td><code>body</code></td><td>block[]</td><td>yes</td><td>See below.</td></tr>
+</table>
+
+<h3>Body blocks</h3>
+<table>
+  <tr><th><code>type</code></th><th>Fields</th><th>Renders as</th></tr>
+  <tr><td><code>heading</code></td><td><code>text</code>, <code>level</code> (2 or 3, default 2)</td><td>A section or subsection heading.</td></tr>
+  <tr><td><code>paragraph</code></td><td><code>text</code></td><td>Body text.</td></tr>
+  <tr><td><code>quote</code></td><td><code>text</code>, <code>cite</code> (optional)</td><td>A pull quote with a rule on the left.</td></tr>
+  <tr><td><code>list</code></td><td><code>items</code> (non-empty string array)</td><td>Bullets.</td></tr>
+  <tr><td><code>code</code></td><td><code>code</code>, <code>language</code> (optional label)</td><td>A scrollable listing with a copy button.</td></tr>
+  <tr><td><code>image</code></td><td><code>src</code>, <code>caption</code>, <code>alt</code> (both optional)</td><td>A 16:9 image with a caption.</td></tr>
+</table>
+<p>An unknown <code>type</code>, or a missing required field, throws a <code>FormatException</code> naming the problem. The home page then shows its error state rather than half a post.</p>
+
+<h3>Add a post</h3>
+<ol class="steps">
+  <li>Add the cover image to <code>assets/images/</code> (or use a URL).</li>
+  <li>Append an object to <code>seedPosts</code> in <code>blog_seed.dart</code>:
+<pre><button class="copy">Copy</button><code>&lt;String, Object?&gt;{
+  'id': 'shipping-our-first-release',
+  'title': 'Shipping our first release',
+  'excerpt': 'What we cut, what we kept and what we would do again.',
+  'category': 'Product',
+  'tags': &lt;String&gt;['release', 'planning'],
+  'author': 'priya-nair',
+  'publishedAt': '2026-10-02T09:00:00',
+  'cover': 'assets/images/my-cover.jpg',
+  'coverAlt': 'A team celebrating around a laptop',
+  'body': &lt;Map&lt;String, Object?&gt;&gt;[
+    {'type': 'paragraph', 'text': 'We shipped on a Tuesday.'},
+    {'type': 'heading', 'level': 2, 'text': 'What we cut'},
+    {'type': 'list', 'items': &lt;String&gt;['Dark launch', 'Export']},
+    {'type': 'code', 'language': 'bash', 'code': 'flutter build web'},
+  ],
+},</code></pre></li>
+  <li>Hot reload. It appears first in the list (or in the hero, if you add <code>'featured': true</code>), the category chips update by themselves, and the page count follows.</li>
+</ol>
+
+<h3>Add an author</h3>
+<ol class="steps">
+  <li>Add a square portrait to <code>assets/images/</code>.</li>
+  <li>Append to <code>seedAuthors</code>:
+<pre><button class="copy">Copy</button><code>&lt;String, Object?&gt;{
+  'id': 'sam-okafor',
+  'name': 'Sam Okafor',
+  'role': 'Designer',
+  'bio': 'Sam designs the things you click.',
+  'avatar': 'assets/images/author-sam.jpg',
+},</code></pre></li>
+  <li>Refer to <code>sam-okafor</code> from a post's <code>author</code> field. The About page lists every author, including ones with no posts yet ("0 posts").</li>
+</ol>
+
+<h3>Images</h3>
+<ul>
+  <li><strong>Cover:</strong> landscape, 1000 px wide or more (1600 px for the featured post). Cards crop to 16:10, the desktop hero to 4:3 and the article to 2:1, always centred, so keep the subject near the middle.</li>
+  <li><strong>Avatar:</strong> square, crop to the face yourself; it is shown as a circle.</li>
+  <li><strong>Budget:</strong> the sample set is about 1.6 MB. Prefer JPEG at quality 80 or WebP, and avoid shipping originals.</li>
+  <li><strong>Licensing:</strong> the bundled photographs are Pexels samples (see <code>NOTICE.md</code>). Replace them before you publish.</li>
+  <li>Any <code>cover</code>, <code>avatar</code> or <code>src</code> starting with <code>http://</code> or <code>https://</code> is fetched over the network instead of read from assets. On Flutter web the image host must allow CORS.</li>
+</ul>
+
+<h3>Categories and tags</h3>
+<p>There is no category table. The chips are the distinct <code>category</code> values of the loaded posts, ordered by how many posts each has and then alphabetically. Rename a category by editing the posts. Tags are free-form and appear as <code>#tag</code> links under an article; clicking one searches for it.</p>
+
+<h3>Copy, limits and the link base</h3>
+<table>
+  <tr><th>File</th><th>What it holds</th></tr>
+  <tr><td><code>lib/common/constants/blog_brand.dart</code></td><td><code>BlogBrand.name</code>, <code>mark</code>, <code>tagline</code>, <code>eyebrow</code>, <code>headline</code>, <code>lead</code>, <code>aboutLead</code>, <code>copyright</code>, and <code>postBaseUrl</code>, the base of the links "Copy link" copies (<code>&lt;postBaseUrl&gt;/&lt;post id&gt;</code>).</td></tr>
+  <tr><td><code>lib/common/constants/blog_config.dart</code></td><td><code>pageSize</code> (6), <code>relatedCount</code> (3), <code>maxContentWidth</code> (1200), <code>articleWidth</code> (720), <code>wordsPerMinute</code> (200).</td></tr>
+</table>
+
+<h2 id="branding">Branding and theming</h2>
+<h3>Colours, radius and type</h3>
+<p>Every colour in the template comes from <code>CairnTheme</code>. Change the look by changing the theme you give <code>MaterialApp</code>; no template file needs editing.</p>
+<pre><button class="copy">Copy</button><code>final CairnTheme light = CairnTheme.light.copyWith(
+  primary: const Color(0xFF0F766E),          // buttons, logo mark, active chip
+  primaryForeground: const Color(0xFFFFFFFF),
+  radius: 12,                                // base radius, scales every corner
+  fontFamily: 'Inter',
+  fontFamilyFallback: const &lt;String&gt;['system-ui', 'sans-serif'],
+);
+final CairnTheme dark = CairnTheme.dark.copyWith(
+  primary: const Color(0xFF2DD4BF),
+  primaryForeground: const Color(0xFF042F2E),
+  radius: 12,
+  fontFamily: 'Inter',
+);
+
+MaterialApp(
+  theme: CairnTheme.materialTheme(light),
+  darkTheme: CairnTheme.materialTheme(dark),
+  home: const Scaffold(body: BlogApp()),
+);</code></pre>
+<p>Check contrast when you change <code>primary</code>: it is used as a fill behind <code>primaryForeground</code> text, and as the link colour.</p>
+
+<h3>Fonts</h3>
+<p>Declare the family in your app's <code>pubspec.yaml</code> and name it in <code>fontFamily</code>:</p>
+<pre><button class="copy">Copy</button><code>flutter:
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: fonts/Inter-Regular.ttf
+        - asset: fonts/Inter-Medium.ttf
+          weight: 500
+        - asset: fonts/Inter-SemiBold.ttf
+          weight: 600
+        - asset: fonts/Inter-Bold.ttf
+          weight: 700</code></pre>
+<p>The template uses weights 400, 500, 600 and 700. Code listings use a monospace stack (<code>SFMono-Regular, Menlo, Consolas, Liberation Mono, monospace</code>) set in <code>post_body.dart</code>.</p>
+
+<h3>Logo, name and copy</h3>
+<p>The logo is a rounded square with a single letter, drawn in <code>blog_navbar.dart</code> (<code>_Brand</code>). Change <code>BlogBrand.name</code> and <code>BlogBrand.mark</code> and it follows. For a real logo, replace the <code>Container</code> in <code>_Brand</code> with an <code>Image.asset</code> or an <code>SvgPicture</code>.</p>
+
+<h3>Nav links and footer links</h3>
+<p>The navbar has two links (Blog and About) in <code>BlogNavbar</code>; the footer's "Explore" and "Topics" columns are in <code>blog_footer.dart</code>. Topics come from the categories, so they stay in step with your content.</p>
+
+<h2 id="backend">Connect a real backend</h2>
+<p>The data layer is built so that this is the only change you make. Three interfaces return decoded JSON, and the mappers turn it into models:</p>
+<table>
+  <tr><th>Interface</th><th>Method</th><th>Returns</th></tr>
+  <tr><td><code>PostsRemoteDataSource</code></td><td><code>fetchPosts()</code></td><td><code>Future&lt;List&lt;Map&lt;String, Object?&gt;&gt;&gt;</code>, shaped like the post table above</td></tr>
+  <tr><td><code>AuthorsRemoteDataSource</code></td><td><code>fetchAuthors()</code></td><td>the same for authors</td></tr>
+  <tr><td><code>NewsletterRemoteDataSource</code></td><td><code>subscribe(String email)</code></td><td><code>{"status": "subscribed"}</code>, <code>{"status": "already_subscribed"}</code> or <code>{"error": "message"}</code></td></tr>
+</table>
+<p>The in-memory classes are the only implementations the template ships. Throwing from a data source makes the screen show its error state with a retry button.</p>
+
+<h3>A REST implementation</h3>
+<p>Add the <code>http</code> package (<code>flutter pub add http</code>), then:</p>
+<span class="file">lib/cms/rest_data_sources.dart</span>
+<pre><button class="copy">Copy</button><code>import 'dart:convert';
+
+import 'package:cairn_template_blog/cairn_template_blog.dart';
+import 'package:http/http.dart' as http;
+
+/// Reads posts and authors from a JSON API:
+///   GET {base}/posts    -> [ {id, title, ...}, ... ]
+///   GET {base}/authors  -> [ {id, name, ...}, ... ]
+class RestPostsDataSource implements PostsRemoteDataSource {
+  RestPostsDataSource(this._client, this._base);
+
+  final http.Client _client;
+  final Uri _base;
+
+  @override
+  Future&lt;List&lt;Map&lt;String, Object?&gt;&gt;&gt; fetchPosts() =&gt;
+      _getList(_client, _base.resolve('posts'));
+}
+
+class RestAuthorsDataSource implements AuthorsRemoteDataSource {
+  RestAuthorsDataSource(this._client, this._base);
+
+  final http.Client _client;
+  final Uri _base;
+
+  @override
+  Future&lt;List&lt;Map&lt;String, Object?&gt;&gt;&gt; fetchAuthors() =&gt;
+      _getList(_client, _base.resolve('authors'));
+}
+
+class RestNewsletterDataSource implements NewsletterRemoteDataSource {
+  RestNewsletterDataSource(this._client, this._base);
+
+  final http.Client _client;
+  final Uri _base;
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; subscribe(String email) async {
+    final http.Response response = await _client.post(
+      _base.resolve('subscribers'),
+      headers: const &lt;String, String&gt;{'content-type': 'application/json'},
+      body: jsonEncode(&lt;String, String&gt;{'email': email}),
+    );
+    if (response.statusCode == 409) {
+      return const &lt;String, Object?&gt;{'status': 'already_subscribed'};
+    }
+    if (response.statusCode &gt;= 400) {
+      return const &lt;String, Object?&gt;{
+        'error': 'We could not save your subscription. Try again soon.',
+      };
+    }
+    return const &lt;String, Object?&gt;{'status': 'subscribed'};
+  }
+}
+
+Future&lt;List&lt;Map&lt;String, Object?&gt;&gt;&gt; _getList(http.Client client, Uri url) async {
+  final http.Response response = await client.get(url);
+  if (response.statusCode != 200) {
+    throw http.ClientException('HTTP ${response.statusCode}', url);
+  }
+  final List&lt;Object?&gt; decoded = jsonDecode(response.body) as List&lt;Object?&gt;;
+  return &lt;Map&lt;String, Object?&gt;&gt;[
+    for (final Object? item in decoded)
+      (item! as Map&lt;Object?, Object?&gt;).cast&lt;String, Object?&gt;(),
+  ];
+}</code></pre>
+
+<h3>Register it</h3>
+<p><strong>Easy way:</strong> pass the data sources to the widget. No template file changes.</p>
+<pre><button class="copy">Copy</button><code>final http.Client client = http.Client();
+final Uri api = Uri.parse('https://api.example.com/v1/');
+
+BlogApp(
+  postsDataSource: RestPostsDataSource(client, api),
+  authorsDataSource: RestAuthorsDataSource(client, api),
+  newsletterDataSource: RestNewsletterDataSource(client, api),
+)</code></pre>
+<p><strong>In the container:</strong> if you copied the source, replace the three registrations at the top of <code>createBlogLocator</code> in <code>lib/core/infrastructure/di/blog_injection.dart</code>:</p>
+<pre><button class="copy">Copy</button><code>g
+  ..registerLazySingleton&lt;PostsRemoteDataSource&gt;(
+    () =&gt; RestPostsDataSource(http.Client(), Uri.parse('https://api.example.com/v1/')),
+  )
+  ..registerLazySingleton&lt;AuthorsRemoteDataSource&gt;(
+    () =&gt; RestAuthorsDataSource(http.Client(), Uri.parse('https://api.example.com/v1/')),
+  )
+  ..registerLazySingleton&lt;NewsletterRemoteDataSource&gt;(
+    () =&gt; RestNewsletterDataSource(http.Client(), Uri.parse('https://api.example.com/v1/')),
+  );</code></pre>
+
+<h3>If your JSON has a different shape</h3>
+<p>Prefer to adapt inside the data source: fetch, then rename keys so the result matches the tables above. If the shape is very different, extend <code>PostMapper</code> (<code>lib/domain/posts/mappers/post_mapper.dart</code>); it is the single place JSON becomes a <code>Post</code>, and its tests (<code>test/domain_test.dart</code>) show what it guarantees. Rich text from a CMS (Markdown, Portable Text, HTML) should be converted to the block list in the data source or in a mapper; the renderer only knows blocks.</p>
+
+<h3>Firebase (Cloud Firestore)</h3>
+<pre><button class="copy">Copy</button><code>import 'package:cloud_firestore/cloud_firestore.dart';
+
+class FirestorePostsDataSource implements PostsRemoteDataSource {
+  FirestorePostsDataSource(this._db);
+
+  final FirebaseFirestore _db;
+
+  @override
+  Future&lt;List&lt;Map&lt;String, Object?&gt;&gt;&gt; fetchPosts() async {
+    final QuerySnapshot&lt;Map&lt;String, dynamic&gt;&gt; snap =
+        await _db.collection('posts').orderBy('publishedAt', descending: true).get();
+    return &lt;Map&lt;String, Object?&gt;&gt;[
+      for (final QueryDocumentSnapshot&lt;Map&lt;String, dynamic&gt;&gt; doc in snap.docs)
+        &lt;String, Object?&gt;{
+          ...doc.data(),
+          'id': doc.id,
+          // The mapper expects an ISO string, Firestore stores a Timestamp.
+          'publishedAt': (doc['publishedAt'] as Timestamp)
+              .toDate()
+              .toIso8601String(),
+        },
+    ];
+  }
+}</code></pre>
+<p>Write the authors source the same way over an <code>authors</code> collection. Store the body as an array of maps using the block shapes above.</p>
+
+<h3>Server-side search and paging</h3>
+<p>The template loads every post and filters and pages in memory (<code>QueryPosts</code>), which is right up to a few hundred posts. For more, replace <code>QueryPosts</code> and <code>PostsFeedCubit</code> with versions that call your API per query. The views only read <code>PostsFeedState</code>, so they do not change.</p>
+
+<h2 id="router">Use go_router instead of the built-in navigation</h2>
+<p>The template navigates with <code>BlogNavigationCubit</code> (home, post(id), about) so that it runs inside any app without a router. For deep links and real URLs (<code>/post/my-first-post</code>) swap it for <code>go_router</code>. Do this on the copied source (Option B). The views stay as they are; you change three things.</p>
+
+<ol class="steps">
+  <li><strong>Make the shell take a child.</strong> In <code>presentation/shell/blog_shell.dart</code> give <code>BlogShell</code> a <code>child</code> and delete the private <code>_Page</code> widget:
+<pre><button class="copy">Copy</button><code>class BlogShell extends StatefulWidget {
+  const BlogShell({super.key, required this.child});
+
+  final Widget child;
+  // ...
+
+// in the Column that held `const _Page()`:
+children: &lt;Widget&gt;[
+  widget.child,
+  BlogFooter(onBackToTop: () =&gt; _toTop(animate: true)),
+],</code></pre>
+  Replace the <code>BlocListener&lt;BlogNavigationCubit, BlogRoute&gt;</code> that scrolls to the top with a call to <code>_toTop()</code> from a <code>RouterDelegate</code> listener or from each route's <code>pageBuilder</code>.</li>
+  <li><strong>Keep the cubit's API, change what it does.</strong> The views call <code>openHome</code>, <code>openPost</code>, <code>openAbout</code> and <code>back</code> on the cubit. Subclass it so those calls drive the router:
+<pre><button class="copy">Copy</button><code>import 'package:go_router/go_router.dart';
+
+class RouterNavigationCubit extends BlogNavigationCubit {
+  RouterNavigationCubit(this.router);
+
+  final GoRouter router;
+
+  @override
+  void openHome() =&gt; router.go('/');
+
+  @override
+  void openPost(String id) =&gt; router.push('/post/$id');
+
+  @override
+  void openAbout() =&gt; router.push('/about');
+
+  @override
+  void back() =&gt; router.canPop() ? router.pop() : router.go('/');
+}</code></pre>
+  Register it in <code>blog_injection.dart</code> in place of <code>BlogNavigationCubit.new</code>, passing the router (create the router first and hand it to <code>createBlogLocator</code>). Because the cubit's state no longer changes, make the navbar's active link read the location instead: in <code>_NavLink</code> usage in <code>blog_navbar.dart</code>, compute <code>active</code> from <code>GoRouterState.of(context).uri.path</code>.</li>
+  <li><strong>Declare the routes and mount with <code>MaterialApp.router</code>.</strong>
+<pre><button class="copy">Copy</button><code>final GetIt locator = createBlogLocator();
+late final GoRouter router = GoRouter(
+  routes: &lt;RouteBase&gt;[
+    ShellRoute(
+      builder: (BuildContext c, GoRouterState s, Widget child) =&gt;
+          BlogShell(child: child),
+      routes: &lt;RouteBase&gt;[
+        GoRoute(path: '/', builder: (c, s) =&gt; const FeedView()),
+        GoRoute(
+          path: '/post/:id',
+          builder: (c, s) =&gt; PostDetailView(
+            key: ValueKey&lt;String&gt;(s.pathParameters['id']!),
+            postId: s.pathParameters['id']!,
+          ),
+        ),
+        GoRoute(path: '/about', builder: (c, s) =&gt; const AboutView()),
+      ],
+    ),
+  ],
+);
+
+MaterialApp.router(
+  routerConfig: router,
+  theme: CairnTheme.materialTheme(CairnTheme.light),
+  darkTheme: CairnTheme.materialTheme(CairnTheme.dark),
+  builder: (BuildContext context, Widget? child) =&gt; BlogScope(
+    locator: locator,
+    child: BlogProviders(
+      locator: locator,
+      child: CairnToaster(child: child ?? const SizedBox.shrink()),
+    ),
+  ),
+);</code></pre></li>
+</ol>
+<div class="callout info"><strong>Why the key on the post route</strong><p><code>PostDetailView</code> loads its post once when it is created. Keying it by id makes a related-post click create a fresh view model instead of reusing the old one.</p></div>
+<p>With path URLs, call <code>usePathUrlStrategy()</code> from <code>flutter_web_plugins</code> before <code>runApp</code> (see the deployment section).</p>
+
+<h2 id="deploy">SEO and deployment notes for Flutter web</h2>
+<h3>Build</h3>
+<pre><button class="copy">Copy</button><code>flutter build web --release --tree-shake-icons
+# serving from a sub-path such as https://example.com/blog/
+flutter build web --release --base-href /blog/</code></pre>
+<ul>
+  <li><strong>Base href.</strong> <code>--base-href</code> must start and end with a slash and match where you serve the app. Without it, assets 404 on any non-root path. You can also edit <code>&lt;base href="/"&gt;</code> in <code>web/index.html</code> by hand.</li>
+  <li><strong>Path URLs and the 404 fallback.</strong> With <code>usePathUrlStrategy()</code> (or <code>go_router</code> without the hash), a visitor can open <code>/post/my-post</code> directly, and the server must answer with <code>index.html</code> for any path that is not a file. Examples: Firebase Hosting <code>"rewrites": [{"source": "**", "destination": "/index.html"}]</code>; Netlify <code>/*  /index.html  200</code> in <code>_redirects</code>; nginx <code>try_files $uri /index.html;</code>; GitHub Pages: copy <code>index.html</code> to <code>404.html</code>.</li>
+  <li><strong>Meta tags.</strong> Flutter renders to a canvas, so crawlers and link-preview bots see only what is in <code>web/index.html</code>. Put a good <code>&lt;title&gt;</code>, <code>&lt;meta name="description"&gt;</code>, <code>og:title</code>, <code>og:description</code>, <code>og:image</code> and a favicon there. They apply to every URL.</li>
+  <li><strong>Per-post titles.</strong> Set the tab title when an article opens with <code>SystemChrome.setApplicationSwitcherDescription(ApplicationSwitcherDescription(label: post.title, primaryColor: 0xFF000000))</code>. This changes <code>document.title</code>; it does not change what crawlers see.</li>
+  <li><strong>Per-post previews and indexing.</strong> If search traffic or link previews matter, Flutter alone is not enough. Generate a small static HTML file per post at build time (title, description, Open Graph tags, a link into the app, and the text), publish a <code>sitemap.xml</code>, and have the server serve those files to bots. A static-site generator or an edge function that injects meta tags into <code>index.html</code> both work.</li>
+  <li><strong>Caching.</strong> Serve <code>main.dart.js</code> and assets with long cache lifetimes (they are fingerprinted by the service worker manifest) and <code>index.html</code> with <code>no-cache</code>.</li>
+  <li><strong>Remote images.</strong> If covers are URLs on another host, that host must send CORS headers for the canvas renderer to draw them.</li>
+</ul>
+
+<h2 id="testing">Testing</h2>
+<pre><button class="copy">Copy</button><code>flutter pub get
+dart format .
+flutter analyze --fatal-infos --fatal-warnings
+flutter test</code></pre>
+<table>
+  <tr><th>File</th><th>What it covers</th></tr>
+  <tr><td><code>test/domain_test.dart</code></td><td>Seed content integrity; <code>QueryPosts</code> (filter, search, pagination, clamping); <code>GetRelatedPosts</code>, <code>GetFeaturedPost</code>, <code>GetCategories</code>; the mappers; <code>ValidateEmail</code>; formatters. All through the real container, with no widgets.</td></tr>
+  <tr><td><code>test/session_test.dart</code></td><td>The cubits through the container: navigation history, the feed's filters and pages, article loading, authors, the newsletter's idle, submitting, success and failure states, and the scope rules (session cubits are singletons, screen cubits are not).</td></tr>
+  <tr><td><code>test/blog_app_test.dart</code></td><td>Mounts <code>BlogApp</code> at 390, 768 and 1280 logical pixels and drives search, category filter, pagination, opening a post, copy link, going back, About, and subscribing; also the loading, error and dark states and the sticky footer.</td></tr>
+</table>
+<h3>Writing your own widget tests</h3>
+<ul>
+  <li>Pass a fake data source to <code>BlogApp</code> to control the content or force an error (<code>BlogApp(postsDataSource: FailingPosts())</code>).</li>
+  <li>Set the window with <code>tester.view.physicalSize</code> and <code>devicePixelRatio = 1</code>.</li>
+  <li><strong>Do not use <code>pumpAndSettle</code>.</strong> Cairn's skeletons and spinners animate forever, so it never settles. Pump in small steps, <code>await tester.pump(const Duration(milliseconds: 100))</code> a few times. An <code>AnimatedSwitcher</code>'s outgoing child stays mounted until a couple of pumps after the page changes.</li>
+  <li>Use a real font in layout tests. <code>flutter test</code> renders every glyph as the same wide box unless a font is registered, which makes a row that fits for real overflow in the test. <code>test/flutter_test_config.dart</code> loads Geist when it can find it; pass <code>fontFamily: 'Geist'</code> on your <code>CairnTheme</code> too.</li>
+  <li>Scroll before tapping with <code>await tester.ensureVisible(finder)</code>; everything below the first screen is built but off screen.</li>
+</ul>
+
+<h2 id="faq">Troubleshooting and FAQ</h2>
+<details><summary>Photos show a grey box with an image icon</summary>
+<p>The asset did not load. If you copied the source into your app, set <code>BlogPackage.name</code> to <code>null</code> and declare <code>assets/images/</code> in your <code>pubspec.yaml</code>. If you use the package, check the path in the JSON matches a file (<code>assets/images/&lt;name&gt;</code>, case-sensitive) and restart the app: new assets need a full restart, not a hot reload.</p></details>
+<details><summary>"No BlogScope above this context"</summary>
+<p>A view was built outside <code>BlogApp</code>. Screens resolve their view models from the container that <code>BlogApp</code> creates; if you build views yourself (for example with <code>go_router</code>), wrap them in <code>BlogScope</code> and <code>BlogProviders</code> as shown in the router section.</p></details>
+<details><summary>Toasts do not appear</summary>
+<p><code>CairnToast.show</code> finds the nearest <code>CairnToaster</code>. <code>BlogApp</code> includes one. If you assemble the shell yourself, put a <code>CairnToaster</code> above it.</p></details>
+<details><summary>The home page shows "We could not load the posts"</summary>
+<p>Your data source threw, or the mapper rejected the JSON (unknown author id, missing <code>title</code>, an unknown block type). Run the mapper in a test against your JSON, or print the error in your data source; the exception names the field.</p></details>
+<details><summary>A new category or post does not show</summary>
+<p>Posts are loaded once per mounted <code>BlogApp</code>. Hot reload does not re-run the seed's loading; use hot restart. With a real backend, call <code>PostsFeedCubit.load()</code> to refresh.</p></details>
+<details><summary>Fonts look different from the screenshots</summary>
+<p>The screenshots use Geist, the typeface Cairn's own tests use. Without a <code>fontFamily</code> on your <code>CairnTheme</code> text uses the platform's default.</p></details>
+<details><summary>Text overflows in my widget tests but not on a device</summary>
+<p>Placeholder test fonts. See the testing section: register a font and set it on the theme.</p></details>
+<details><summary>Search on a phone: where is the box?</summary>
+<p>Under 640 logical pixels the field folds behind the magnifier icon in the navbar and opens in a row under it. It stays open while there is a query.</p></details>
+<details><summary>Can I have more than one category per post?</summary>
+<p>Not out of the box: <code>Post.category</code> is a single string. Use tags for the rest, or change the model, <code>PostMapper</code> and <code>QueryPosts</code>.</p></details>
+<details><summary>Can the article body use Markdown or HTML?</summary>
+<p>The renderer draws blocks, not markup. Convert in your data source or mapper. That keeps the widgets small and the rendering consistent in light and dark.</p></details>
+<details><summary>Does it run on mobile and desktop?</summary>
+<p>Yes. Nothing is web-specific; the layout follows the width it is given.</p></details>
+
+<h2 id="migration">Migration notes</h2>
+<h3>Upgrading <code>cairn_ui</code></h3>
+<ol class="steps">
+  <li>Read the <code>cairn_ui</code> changelog for the new version, looking at the components listed under "Cairn components used".</li>
+  <li>Bump the constraint (<code>cairn_ui: ^0.3.0</code>, for example) and run <code>flutter pub upgrade cairn_ui</code>.</li>
+  <li>Run <code>flutter analyze</code>. Renamed constructors and parameters show up as compile errors in the files below.</li>
+  <li>Run <code>flutter test</code>. The widget tests catch layout regressions at the three widths. Look at the app in light and dark.</li>
+</ol>
+<h3>What a <code>cairn_ui</code> change breaks</h3>
+<table>
+  <tr><th>Change in <code>cairn_ui</code></th><th>Where the template is affected</th></tr>
+  <tr><td><code>CairnButton</code> parameters (<code>variant</code>, <code>size</code>, <code>leading</code>, <code>semanticLabel</code>, <code>CairnButton.icon</code>)</td><td>Chips (<code>category_filter.dart</code>), navbar, forms, article actions</td></tr>
+  <tr><td><code>CairnInput</code> parameters (<code>hasError</code>, <code>leading</code>, <code>trailing</code>, <code>semanticLabel</code>, <code>onChanged</code>)</td><td><code>blog_navbar.dart</code> (<code>SearchField</code>), <code>newsletter_form.dart</code></td></tr>
+  <tr><td><code>CairnPagination</code> (<code>page</code>, <code>pageCount</code>, <code>onChanged</code>, <code>showLabels</code>)</td><td><code>feed_view.dart</code></td></tr>
+  <tr><td><code>CairnNavbar</code> (<code>start</code>, <code>end</code>, <code>bordered</code>, <code>color</code>)</td><td><code>blog_navbar.dart</code></td></tr>
+  <tr><td><code>CairnToast</code> / <code>CairnToaster</code></td><td><code>blog_app.dart</code>, <code>newsletter_form.dart</code>, <code>post_detail_view.dart</code>, <code>post_body.dart</code></td></tr>
+  <tr><td><code>CairnTheme</code> fields or <code>materialTheme</code></td><td>Everywhere: all colours and radii are read from it. <code>blogText</code> in <code>core/presentation/blog_text.dart</code> is the one place text styles are built.</td></tr>
+  <tr><td><code>CairnAvatar</code>, <code>CairnBadge</code>, <code>CairnHero</code>, <code>CairnStat</code>, <code>CairnEmpty</code>, <code>CairnAlert</code>, <code>CairnSkeleton</code>, <code>CairnBreadcrumb</code></td><td><code>post_meta.dart</code>, cards, <code>feed_view.dart</code>, <code>about_view.dart</code>, <code>feed_states.dart</code>, <code>post_detail_view.dart</code></td></tr>
+</table>
+<h3>Upgrading the template itself</h3>
+<ul>
+  <li>As a path or git package: update and run the tests. Public API is <code>BlogApp</code>, the three data source interfaces, <code>BlogBrand</code>, <code>BlogConfig</code> and <code>BlogPackage</code>. Anything else is internal and may change in a minor release.</li>
+  <li>As copied source: diff <code>lib/</code> against the new version. The files you will have edited are <code>blog_seed.dart</code> (replace or delete), <code>blog_brand.dart</code>, <code>blog_config.dart</code>, <code>blog_package.dart</code> and <code>blog_injection.dart</code>; merge the rest.</li>
+  <li><strong>Breaking for you</strong> means: a change to the JSON contract (a new required field), the interfaces of the data sources, or the constructor of <code>BlogApp</code>. These are called out in the release notes and will bump the major version.</li>
+</ul>
+
+<p style="margin-top:64px;color:var(--muted-fg);font-size:14px">Photographs are from Pexels and are sample content; see <code>NOTICE.md</code>.</p>
+</main>
+</div>
+<script>
+(function () {
+  // Copy buttons on every code block.
+  document.querySelectorAll('pre .copy').forEach(function (btn) {
+    btn.type = 'button';
+    btn.setAttribute('aria-label', 'Copy code to the clipboard');
+    btn.addEventListener('click', function () {
+      var code = btn.parentElement.querySelector('code');
+      var text = code ? code.innerText : '';
+      function done() {
+        btn.textContent = 'Copied';
+        setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else { fallback(); }
+      function fallback() {
+        var ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) {}
+        document.body.removeChild(ta);
+      }
+    });
+  });
+
+  // Highlight the current section in the table of contents.
+  var links = Array.prototype.slice.call(document.querySelectorAll('nav.toc a'));
+  var byId = {};
+  links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+  var sections = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); })
+    .filter(Boolean);
+  function update() {
+    var current = sections[0];
+    sections.forEach(function (s) { if (s.getBoundingClientRect().top <= 120) current = s; });
+    links.forEach(function (a) { a.classList.remove('active'); });
+    if (current && byId[current.id]) byId[current.id].classList.add('active');
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
+</body>
+</html>

@@ -1,6 +1,9 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
+  # Each template is its own package and is analysed there.
+  exclude:
+    - templates/**
   language:
     strict-casts: true
     strict-inference: true

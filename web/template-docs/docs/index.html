@@ -1,0 +1,1000 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Documentation template: guide and tutorial</title>
+<meta name="description" content="Install, mount, edit and deploy the Cairn documentation template.">
+<style>
+:root{--bg:#fff;--fg:#0a0a0a;--muted:#6b6b6b;--border:#e5e5e5;--card:#fafafa;--code:#f5f5f5;--accent:#171717;--link:#0a0a0a;
+--note:#f5f5f5;--tip:#f3f8f4;--warn:#fdf3f3;--warnb:#e5b4b4;--tipb:#b9d6bf;--kw:#6f2db8;--str:#1d6b3d;--num:#8a4b08;
+--font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
+@media (prefers-color-scheme:dark){:root{--bg:#0a0a0a;--fg:#fafafa;--muted:#a3a3a3;--border:#262626;--card:#111;--code:#141414;--accent:#fafafa;--link:#fafafa;
+--note:#161616;--tip:#0f1a12;--warn:#1c0f0f;--warnb:#5a2a2a;--tipb:#244a2e;--kw:#c9a0f5;--str:#7fd6a3;--num:#e8c07a}}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 var(--font);-webkit-font-smoothing:antialiased}
+.layout{display:grid;grid-template-columns:280px minmax(0,1fr);max-width:1240px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:32px 20px 32px 24px;border-right:1px solid var(--border);font-size:14px}
+nav.toc .brand{font-weight:650;font-size:15px;margin:0 0 4px}nav.toc .sub{color:var(--muted);margin:0 0 20px;font-size:13px}
+nav.toc ul{list-style:none;margin:0;padding:0}nav.toc>ol,nav.toc>ul{margin:0;padding:0;list-style:none}
+nav.toc li{margin:0}nav.toc a{display:block;padding:5px 10px;border-radius:6px;color:var(--muted);text-decoration:none;line-height:1.4}
+nav.toc a:hover{color:var(--fg);background:var(--card)}nav.toc a.active{color:var(--fg);background:var(--code);font-weight:600}
+nav.toc ul ul{margin:0 0 6px 10px;border-left:1px solid var(--border);padding-left:6px}nav.toc ul ul a{font-size:13px;padding:3px 10px}
+main{padding:48px 40px 96px;min-width:0;max-width:860px}
+h1{font-size:40px;line-height:1.1;letter-spacing:-.03em;margin:0 0 12px}
+.lead{color:var(--muted);font-size:19px;line-height:1.55;margin:0 0 28px;max-width:640px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 40px}.meta span{font-size:12px;border:1px solid var(--border);border-radius:999px;padding:2px 10px;color:var(--muted)}
+h2{font-size:28px;line-height:1.25;letter-spacing:-.02em;margin:72px 0 16px;padding-top:32px;border-top:1px solid var(--border);position:relative}
+section:first-of-type h2{margin-top:32px}
+h3{font-size:20px;line-height:1.35;margin:40px 0 12px;letter-spacing:-.01em;scroll-margin-top:24px}
+p,ul,ol,dl,table,figure,.callout,pre{margin:0 0 20px}ul,ol{padding-left:24px}li{margin:6px 0}
+a{color:var(--link);text-decoration-color:var(--muted);text-underline-offset:3px}
+a.anchor{position:absolute;left:-26px;color:var(--muted);text-decoration:none;opacity:0;font-weight:400}h2:hover a.anchor{opacity:1}
+code{font-family:var(--mono);font-size:.88em;background:var(--code);padding:.12em .4em;border-radius:5px}
+pre code{background:none;padding:0;font-size:13px;line-height:1.7}
+pre{background:var(--code);border:1px solid var(--border);border-radius:10px;padding:16px;overflow:auto}
+figure.code{border:1px solid var(--border);border-radius:10px;background:var(--code);overflow:hidden}
+figure.code figcaption{display:flex;align-items:center;justify-content:space-between;padding:6px 8px 6px 16px;border-bottom:1px solid var(--border);font:12px var(--mono);color:var(--muted)}
+figure.code pre{border:0;border-radius:0;margin:0;background:none}
+button.copy{font:12px var(--font);color:var(--muted);background:transparent;border:1px solid var(--border);border-radius:6px;padding:3px 10px;cursor:pointer}
+button.copy:hover{color:var(--fg);background:var(--card)}button.copy:focus-visible,nav.toc a:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+pre.diagram{font-size:13px}
+table{border-collapse:collapse;width:100%;font-size:14.5px;display:block;overflow-x:auto}
+th,td{text-align:left;vertical-align:top;padding:10px 14px;border-bottom:1px solid var(--border)}th{font-weight:600;background:var(--card);white-space:nowrap}
+tr:last-child td{border-bottom:0}table{border:1px solid var(--border);border-radius:10px}
+.callout{border:1px solid var(--border);border-radius:10px;padding:14px 18px;background:var(--note);font-size:15px}.callout.tip{background:var(--tip);border-color:var(--tipb)}
+.callout.warning{background:var(--warn);border-color:var(--warnb)}
+dt{font-weight:600;margin-top:24px}dd{margin:4px 0 0;color:var(--muted)}dd code{color:var(--fg)}
+kbd{font:12px var(--mono);border:1px solid var(--border);border-bottom-width:2px;border-radius:5px;padding:1px 6px;background:var(--card)}
+footer{margin-top:72px;padding-top:24px;border-top:1px solid var(--border);color:var(--muted);font-size:14px}
+.menu{display:none}
+@media (max-width:900px){.layout{display:block}nav.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border);padding:20px}
+nav.toc .links{display:none}nav.toc.open .links{display:block}.menu{display:inline-block;margin-top:8px;font:14px var(--font);border:1px solid var(--border);background:var(--card);color:var(--fg);border-radius:8px;padding:6px 14px}
+main{padding:32px 20px 72px}h1{font-size:32px}h2{font-size:24px}a.anchor{display:none}}
+@media print{nav.toc,button.copy,.menu{display:none!important}.layout{display:block}main{max-width:none;padding:0}
+figure.code,pre,table,.callout{break-inside:avoid}h2{break-before:auto;border-top:0}a{text-decoration:none}body{background:#fff;color:#000;font-size:11pt}
+:root{--bg:#fff;--fg:#000;--muted:#444;--border:#ccc;--card:#f6f6f6;--code:#f4f4f4;--note:#f6f6f6;--tip:#f6f6f6;--warn:#f6f6f6}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Contents">
+<p class="brand">Documentation template</p>
+<p class="sub">cairn_template_docs 1.0.0</p>
+<button class="menu" type="button" aria-expanded="false">Contents</button>
+<div class="links"><ul><li><a href="#overview">Overview and architecture</a><ul><li><a href="#overview-layers">The layers</a></li><li><a href="#overview-flow">How a page gets on screen</a></li><li><a href="#overview-rules">The rules</a></li></ul></li><li><a href="#requirements">Requirements</a></li><li><a href="#install">Install</a><ul><li><a href="#install-path">Path dependency</a></li><li><a href="#install-git">Git dependency</a></li><li><a href="#install-copy">Copying the code</a></li></ul></li><li><a href="#mount">Mount it</a><ul><li><a href="#mount-params">DocsApp parameters</a></li><li><a href="#mount-embed">Embedding</a></li></ul></li><li><a href="#content">Update the content</a><ul><li><a href="#content-section">Add a section</a></li><li><a href="#content-page">Add a page</a></li><li><a href="#content-blocks">Block reference</a></li><li><a href="#content-versions">Versions</a></li><li><a href="#content-search">Search</a></li><li><a href="#content-constants">Brand, links, layout</a></li></ul></li><li><a href="#markdown">Load content from Markdown or a CMS</a><ul><li><a href="#markdown-files">Markdown files</a></li><li><a href="#markdown-cms">A CMS or API</a></li></ul></li><li><a href="#theming">Branding and theming</a><ul><li><a href="#theming-theme">Theme, fonts, radius</a></li><li><a href="#theming-brand">Brand name and logo</a></li><li><a href="#theming-syntax">Code colours</a></li><li><a href="#theming-measure">Typography</a></li></ul></li><li><a href="#router">Use go_router with deep links</a><ul><li><a href="#router-how">How the two stay in step</a></li><li><a href="#router-replace">Replacing the cubit</a></li></ul></li><li><a href="#deploy">Deploy and SEO for Flutter web</a><ul><li><a href="#deploy-build">Build</a></li><li><a href="#deploy-fallback">404 fallback</a></li><li><a href="#deploy-seo">SEO</a></li><li><a href="#deploy-perf">Performance</a></li></ul></li><li><a href="#testing">Testing</a><ul><li><a href="#testing-harness">Writing a widget test</a></li><li><a href="#testing-content">Testing your content</a></li></ul></li><li><a href="#faq">Troubleshooting and FAQ</a></li><li><a href="#migration">Migration notes</a><ul><li><a href="#migration-cairn">Upgrading cairn_ui</a></li><li><a href="#migration-content">Changing the content format</a></li><li><a href="#migration-version">Template versions</a></li></ul></li></ul></div>
+</nav>
+<main>
+<h1>Documentation template</h1>
+<p class="lead">A documentation site built only from <code>cairn_ui</code>: sidebar, versions, command-palette search,
+typed content blocks and an on-this-page rail. This guide takes you from installing it to deploying your own docs.</p>
+<div class="meta"><span>Flutter web, mobile and desktop</span><span>cairn_ui ^0.2.0</span><span>flutter_bloc + get_it</span><span>Works offline</span></div>
+<section id="overview"><h2><a class="anchor" href="#overview" aria-label="Link to this section">#</a>1. Overview and architecture</h2>
+<p>The documentation template is a complete docs site as one Flutter package. A top bar carries the brand, a
+version selector and a search button that opens a command palette. A sidebar lists collapsible sections of pages
+and turns into a drawer below 900 px. The article area renders typed content blocks (headings, paragraphs with
+inline markup, code with a copy button, callouts, tabs, steps, tables and lists), an <em>On this page</em> rail
+follows the scroll above 1100 px, and previous / next links close every page.</p>
+<p>It is built only from <code>cairn_ui</code> components and tokens, so it follows your <code>CairnTheme</code> in
+light and dark with no colour of its own. The sample content documents a fictional &ldquo;Acme SDK&rdquo; with four
+sections and thirteen pages in two versions; replacing it is the main thing you will do.</p>
+
+<h3 id="overview-layers">The layers</h3>
+<pre class="diagram"><code>  presentation/                       what the reader sees
+  &#9474;  docs/      bloc, view_models, views, widgets   (article, blocks, toc rail, pager)
+  &#9474;  search/    SearchCubit, command palette
+  &#9474;  sidebar/   SidebarCubit, page tree
+  &#9474;  shell/     providers, top bar, responsive frame
+  &#9474;                       &#9474; depends on
+  &#9660;                       &#9660;
+  domain/                             plain Dart, no Flutter
+     docs/      models, mappers (JSON -&gt; models), repositories (interface), use_cases
+     search/    models, use_cases
+  &#9650;
+  &#9474; implements
+  data/
+     docs/remote/       DocsRemoteDataSource + in-memory content  &lt;-- replace this
+     docs/repositories/ DocsRepositoryImpl (maps JSON, caches a version)
+
+  core/    DI container, DocsNavigationCubit, ViewModel, DocsScope, DocsHost
+  common/  constants (brand, links, layout), utils (inline markup, slugify, dates)</code></pre>
+
+<h3 id="overview-flow">How a page gets on screen</h3>
+<ol>
+<li><code>DocsApp</code> builds its own <code>GetIt</code> container and asks <code>DocsCubit</code> to load the version
+in <code>DocsNavigationCubit</code>.</li>
+<li><code>DocsCubit</code> calls the <code>GetVersions</code> and <code>GetDocsSite</code> use cases. The repository
+fetches decoded JSON from the data source and hands it to <code>DocsMapper</code>, which returns a
+<code>DocsSite</code>: the sidebar tree plus every page as typed <code>DocBlock</code>s.</li>
+<li><code>DocsProviders</code> sees the new site and tells <code>SearchCubit</code> to index it.</li>
+<li><code>DocPageView</code> looks up the open page and mounts it with a <code>DocPageViewModel</code>, which owns the
+scroll controller, the heading keys and the cubit that tracks the active heading.</li>
+</ol>
+
+<h3 id="overview-rules">The rules</h3>
+<ul>
+<li>Dependencies point inwards: presentation and data depend on domain, domain depends on nothing.</li>
+<li>Views never touch the container. Screen-scoped state comes from <code>ViewModelBuilder&lt;T&gt;</code>;
+session cubits are read with <code>context.read</code>.</li>
+<li>Session cubits (navigation, docs, search, sidebar) are lazy singletons that only the container closes. Screen
+cubits (the table-of-contents cursor) are owned and closed by a view model.</li>
+<li>No code generation. Registrations are written out in <code>core/infrastructure/di/docs_injection.dart</code>.</li>
+<li>The template has its own navigation, so it runs inside any host and has no router dependency.</li>
+</ul>
+</section>
+<section id="requirements"><h2><a class="anchor" href="#requirements" aria-label="Link to this section">#</a>2. Requirements</h2>
+<table>
+<thead><tr><th>Need</th><th>Version</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Flutter</td><td>3.27 or newer</td><td>Dart SDK <code>^3.12.0</code> as pinned in the template&rsquo;s pubspec; lower it to match your project if you copy the code.</td></tr>
+<tr><td><code>cairn_ui</code></td><td><code>^0.2.0</code></td><td>Components and tokens. Tested against 0.2.0.</td></tr>
+<tr><td><code>flutter_bloc</code></td><td><code>^9.1.1</code></td><td>Cubits and providers.</td></tr>
+<tr><td><code>get_it</code></td><td><code>^9.3.0</code></td><td>The container. One instance per mounted <code>DocsApp</code>.</td></tr>
+<tr><td><code>equatable</code></td><td><code>^2.1.0</code></td><td>Value equality for models and states.</td></tr>
+</tbody></table>
+<p>Nothing else: no router, no HTTP client, no Markdown package, no code generation. Add those yourself only if you
+choose the content sources described below.</p>
+<div class="callout note"><strong>Fonts.</strong> The template reads its font from <code>CairnTheme.fontFamily</code>.
+The Cairn site bundles Geist; you can use any family. Declare it in your app&rsquo;s <code>pubspec.yaml</code> and
+pass it through <code>copyWith</code> (see <a href="#theming">Branding and theming</a>).</div>
+</section>
+<section id="install"><h2><a class="anchor" href="#install" aria-label="Link to this section">#</a>3. Install</h2>
+<p>Pick one of three ways. All of them end with <code>import 'package:cairn_template_docs/cairn_template_docs.dart'</code>
+or, if you copied the code, an import of your own <code>docs_app.dart</code>.</p>
+<h3 id="install-path">As a path dependency</h3>
+<p>Best when the template lives in the same repository as your app, for example under <code>templates/docs</code>.</p>
+<figure class="code"><figcaption><span>pubspec.yaml</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>dependencies:
+  cairn_template_docs:
+    path: templates/docs
+  cairn_ui: ^0.2.0</code></pre></figure>
+<h3 id="install-git">As a git dependency</h3>
+<figure class="code"><figcaption><span>pubspec.yaml</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>dependencies:
+  cairn_template_docs:
+    git:
+      url: https://github.com/your-org/your-repo.git
+      path: templates/docs
+      ref: main</code></pre></figure>
+<p>Then run <code>flutter pub get</code>.</p>
+<h3 id="install-copy">By copying lib/ and assets/</h3>
+<p>Best when you want to own and edit the code, which is the point of a template.</p>
+<ol>
+<li>Copy <code>lib/</code> into your app, for example to <code>lib/docs/</code>. Rewrite the
+<code>package:cairn_template_docs/</code> imports (the only ones are in your own code; inside the template every
+import is relative) and delete <code>cairn_template_docs.dart</code> if you do not want the barrel.</li>
+<li>Copy <code>assets/</code> if you added any. The template ships none; if you add images, declare them in your
+app&rsquo;s <code>pubspec.yaml</code> and pass <code>package: null</code> to <code>Image.asset</code> (see
+<code>DocsPackage</code>).</li>
+<li>Add the dependencies to your <code>pubspec.yaml</code>:</li>
+</ol>
+<figure class="code"><figcaption><span>pubspec.yaml</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>dependencies:
+  cairn_ui: ^0.2.0
+  equatable: ^2.1.0
+  flutter_bloc: ^9.1.1
+  get_it: ^9.3.0</code></pre></figure>
+<div class="callout tip"><strong>Tip.</strong> Copy the <code>test/</code> folder too. It is the quickest way to know
+you broke nothing while you edit.</div>
+</section>
+<section id="mount"><h2><a class="anchor" href="#mount" aria-label="Link to this section">#</a>4. Mount it</h2>
+<p>A complete <code>main.dart</code>. The template takes its colours from the ambient <code>CairnTheme</code>, which
+<code>CairnTheme.materialTheme</code> registers as a theme extension, so build your <code>MaterialApp</code> theme
+that way.</p>
+<figure class="code"><figcaption><span>lib/main.dart</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>import 'package:cairn_template_docs/cairn_template_docs.dart';
+import 'package:cairn_ui/cairn_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+void main() =&gt; runApp(const AcmeDocs());
+
+class AcmeDocs extends StatelessWidget {
+  const AcmeDocs({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Acme SDK documentation',
+      themeMode: ThemeMode.system,
+      theme: CairnTheme.materialTheme(
+        CairnTheme.light.copyWith(fontFamily: 'Geist'),
+      ),
+      darkTheme: CairnTheme.materialTheme(
+        CairnTheme.dark.copyWith(fontFamily: 'Geist'),
+      ),
+      home: Scaffold(
+        body: DocsApp(
+          // Optional: open external links for real. Without it the URL is
+          // copied to the clipboard and a toast says so.
+          onOpenExternal: (String url) =&gt; launchUrl(Uri.parse(url)),
+        ),
+      ),
+    );
+  }
+}</code></pre></figure>
+<p><code>url_launcher</code> is your dependency, not the template&rsquo;s; leave <code>onOpenExternal</code> out until
+you add it.</p>
+<h3 id="mount-params">DocsApp parameters</h3>
+<table>
+<thead><tr><th>Parameter</th><th>Type</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td><code>initialLocation</code></td><td><code>DocsLocation</code></td><td>Where to start: <code>versionId</code>, <code>pageSlug</code>, optional <code>headingId</code>. Changing it later navigates there.</td></tr>
+<tr><td><code>onLocationChanged</code></td><td><code>ValueChanged&lt;DocsLocation&gt;?</code></td><td>Called when the reader changes version, page or heading. Use it to keep a URL in sync.</td></tr>
+<tr><td><code>onOpenExternal</code></td><td><code>void Function(String url)?</code></td><td>Opens <code>http</code>, <code>https</code> and <code>mailto</code> links. Default: copy and toast.</td></tr>
+<tr><td><code>remote</code></td><td><code>DocsRemoteDataSource?</code></td><td>Where content comes from. Default: the in-memory Acme SDK content.</td></tr>
+</tbody></table>
+<h3 id="mount-embed">Embedding it in a bigger layout</h3>
+<p><code>DocsApp</code> sizes itself to its parent and makes every responsive decision from its own width, not the
+window&rsquo;s. Put it in an <code>Expanded</code>, a card or a phone mock-up and it adapts: fixed sidebar from 900 px,
+table-of-contents rail from 1100 px, drawer and compact top bar below.</p>
+<div class="callout note"><strong>Toasts.</strong> <code>DocsApp</code> installs its own <code>CairnToaster</code>
+inside its frame, so the copy confirmation works without any host setup. If your app already has one above the
+navigator, the nearest one wins.</div>
+</section>
+<section id="content"><h2><a class="anchor" href="#content" aria-label="Link to this section">#</a>5. Update the content</h2>
+<p>All content is plain JSON-shaped Dart (maps and lists) under <code>lib/data/docs/remote/content/</code>:</p>
+<table>
+<thead><tr><th>File</th><th>Holds</th></tr></thead>
+<tbody>
+<tr><td><code>docs_manifest.dart</code></td><td>The version list and each version&rsquo;s sidebar tree.</td></tr>
+<tr><td><code>v2_start_pages.dart</code>, <code>v2_guides_pages.dart</code>, <code>v2_reference_pages.dart</code></td><td>The pages of version 2.0.</td></tr>
+<tr><td><code>v1_pages.dart</code></td><td>The pages of version 1.x.</td></tr>
+</tbody></table>
+<p>The in-memory data source in <code>docs_remote_data_source.dart</code> stitches them together. The mapper in
+<code>domain/docs/mappers/docs_mapper.dart</code> turns them into models, and it is strict on purpose: a typo throws a
+<code>FormatException</code> that names the page and the block, and the app shows it as an error state with a retry
+button.</p>
+
+<h3 id="content-section">Add a section</h3>
+<ol>
+<li>Open <code>docs_manifest.dart</code> and add a map to the version&rsquo;s sidebar list:</li>
+</ol>
+<figure class="code"><figcaption><span>content/docs_manifest.dart</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>const List&lt;Map&lt;String, dynamic&gt;&gt; v2Sidebar = &lt;Map&lt;String, dynamic&gt;&gt;[
+  // ...existing sections...
+  &lt;String, dynamic&gt;{
+    'id': 'deployment',          // stable id; remembers collapsed state
+    'title': 'Deployment',       // the sidebar heading
+    'items': &lt;dynamic&gt;['docker', 'kubernetes'],   // page slugs, in order
+  },
+];</code></pre></figure>
+<ol start="2"><li>Add the pages it lists (next step). A slug with no page makes the mapper throw
+<code>Section "deployment" lists "docker", which has no page in v2.0</code>, which is what you want to see.</li></ol>
+<p>The order of sections and items is the reading order, and it is the order of the previous / next links, which
+cross section boundaries.</p>
+
+<h3 id="content-page">Add a page</h3>
+<p>Append a map to one of the page lists (or create a new list and spread it into the data source):</p>
+<figure class="code"><figcaption><span>content/v2_guides_pages.dart</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>&lt;String, dynamic&gt;{
+  'slug': 'docker',                       // unique within a version, URL-safe
+  'title': 'Docker',
+  'description': 'Run your service in a container.',   // under the title, and searchable
+  'updated': '2026-03-20',                // ISO date; shown in the "Updated" badge
+  'blocks': &lt;Map&lt;String, dynamic&gt;&gt;[
+    &lt;String, dynamic&gt;{
+      'type': 'paragraph',
+      'text': 'Build the **image** once and run it anywhere.',
+    },
+    &lt;String, dynamic&gt;{'type': 'heading', 'level': 2, 'text': 'Build the image'},
+    &lt;String, dynamic&gt;{
+      'type': 'code',
+      'language': 'bash',
+      'code': 'docker build -t acme-app .',
+    },
+  ],
+},</code></pre></figure>
+<p>Then list <code>'docker'</code> in a sidebar section. A sidebar item can also be
+<code>{'slug': 'docker', 'title': 'Docker deploys'}</code> to show a different title in the sidebar than on the
+page.</p>
+<div class="callout tip"><strong>Tip.</strong> In a Dart string, write <code>\$</code> for a literal dollar sign and use
+<code>'''</code> multi-line strings for code. The seed pages show both.</div>
+
+<h3 id="content-blocks">Block reference</h3>
+<p>Every block has a <code>type</code>. The text fields marked <em>inline</em> accept the inline markup
+<code>**bold**</code>, <code>`code`</code> and <code>[text](target)</code>, where <code>target</code> is an external URL
+(<code>https://</code>, <code>mailto:</code>), another page (<code>quick-start</code>), a heading on another page
+(<code>authentication#scopes</code>), or a heading on this page (<code>#scopes</code>). An unmatched marker stays as
+literal text and never throws.</p>
+<table>
+<thead><tr><th>type</th><th>Fields</th><th>Renders as</th></tr></thead>
+<tbody>
+<tr><td><code>heading</code></td><td><code>text</code>, <code>level</code> (2 or 3, default 2), <code>id</code> (default: slug of the text; repeats get <code>-2</code>, <code>-3</code>)</td><td>An <code>h2</code> / <code>h3</code> with a hover <code>#</code> link. Appears in the table-of-contents rail and in search.</td></tr>
+<tr><td><code>paragraph</code></td><td><code>text</code> (inline)</td><td>Body text, 16 px on a 1.7 line height.</td></tr>
+<tr><td><code>code</code></td><td><code>code</code>, <code>language</code> (<code>dart</code>, <code>yaml</code>, <code>bash</code>, <code>json</code>, anything else is plain), <code>title</code></td><td>A bordered block with the title or language in the header, a copy button (toast on success), horizontal scrolling and syntax colours.</td></tr>
+<tr><td><code>callout</code></td><td><code>kind</code> (<code>info</code>, <code>tip</code>, <code>warning</code>), <code>title</code>, <code>text</code> (inline)</td><td>A <code>CairnAlert</code>. Info and tip differ by icon; warning uses the destructive variant.</td></tr>
+<tr><td><code>tabs</code></td><td><code>tabs</code>: list of <code>{label, blocks}</code></td><td>A <code>CairnTabs</code> bar over the selected tab&rsquo;s blocks. Any block may go inside, including code.</td></tr>
+<tr><td><code>steps</code></td><td><code>steps</code>: list of <code>{title, blocks}</code></td><td>A numbered vertical procedure with a hairline joining the markers.</td></tr>
+<tr><td><code>table</code></td><td><code>headers</code>: list of strings, <code>rows</code>: list of lists of strings (inline)</td><td>A <code>CairnTable</code> in a bordered frame; scrolls sideways when the columns cannot fit at 140 px each.</td></tr>
+<tr><td><code>list</code></td><td><code>items</code>: list of strings (inline), <code>ordered</code> (default false)</td><td>Bullets or numbers with a hanging indent.</td></tr>
+</tbody></table>
+<figure class="code"><figcaption><span>one of each, as Dart maps</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>// A callout
+&lt;String, dynamic&gt;{
+  'type': 'callout',
+  'kind': 'warning',
+  'title': 'Heads up',
+  'text': 'Secret keys must never ship in an app. See [authentication](authentication).',
+},
+
+// Tabs: any blocks inside
+&lt;String, dynamic&gt;{
+  'type': 'tabs',
+  'tabs': &lt;Map&lt;String, dynamic&gt;&gt;[
+    &lt;String, dynamic&gt;{
+      'label': 'npm',
+      'blocks': &lt;Map&lt;String, dynamic&gt;&gt;[
+        &lt;String, dynamic&gt;{'type': 'code', 'language': 'bash', 'code': 'npm i acme'},
+      ],
+    },
+    &lt;String, dynamic&gt;{
+      'label': 'yarn',
+      'blocks': &lt;Map&lt;String, dynamic&gt;&gt;[
+        &lt;String, dynamic&gt;{'type': 'code', 'language': 'bash', 'code': 'yarn add acme'},
+      ],
+    },
+  ],
+},
+
+// Steps
+&lt;String, dynamic&gt;{
+  'type': 'steps',
+  'steps': &lt;Map&lt;String, dynamic&gt;&gt;[
+    &lt;String, dynamic&gt;{
+      'title': 'Create a key',
+      'blocks': &lt;Map&lt;String, dynamic&gt;&gt;[
+        &lt;String, dynamic&gt;{'type': 'paragraph', 'text': 'Open the dashboard.'},
+      ],
+    },
+  ],
+},
+
+// Table
+&lt;String, dynamic&gt;{
+  'type': 'table',
+  'headers': &lt;String&gt;['Option', 'Default', 'Description'],
+  'rows': &lt;List&lt;String&gt;&gt;[
+    &lt;String&gt;['`timeout`', '`30s`', 'Time to wait for a response.'],
+  ],
+},
+
+// List
+&lt;String, dynamic&gt;{
+  'type': 'list',
+  'ordered': true,
+  'items': &lt;String&gt;['First, **install**.', 'Then [configure](configuration).'],
+},</code></pre></figure>
+<div class="callout note"><strong>Headings inside tabs and steps</strong> are not anchors: only the selected tab is on
+screen, so they cannot be scrolled to reliably. Use top-level headings for anything the rail or search should reach.</div>
+
+<h3 id="content-versions">Versions</h3>
+<p>The manifest lists the versions the selector shows. Each is <code>{id, label, latest?, notice?}</code>:</p>
+<figure class="code"><figcaption><span>content/docs_manifest.dart</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>const Map&lt;String, dynamic&gt; docsManifest = &lt;String, dynamic&gt;{
+  'versions': &lt;Map&lt;String, dynamic&gt;&gt;[
+    &lt;String, dynamic&gt;{'id': 'v3.0', 'label': 'v3.0', 'latest': true},
+    &lt;String, dynamic&gt;{'id': 'v2.0', 'label': 'v2.0'},
+    &lt;String, dynamic&gt;{
+      'id': 'v1.x',
+      'label': 'v1.x',
+      'notice': 'Version 1 only receives security fixes.',
+    },
+  ],
+};</code></pre></figure>
+<ul>
+<li>Exactly one version is <code>latest</code>; it gets a &ldquo;(latest)&rdquo; suffix and is where the &ldquo;Switch
+to&hellip;&rdquo; button in an old version&rsquo;s banner leads.</li>
+<li>A <code>notice</code> makes a banner appear above every page of that version.</li>
+<li>Add a branch for the new id in <code>InMemoryDocsRemoteDataSource.fetchSite</code> (or serve it from your own data
+source) returning that version&rsquo;s sidebar and pages.</li>
+<li>Set <code>DocsBrand.defaultVersionId</code> in <code>common/constants/docs_brand.dart</code> to the new latest id.
+The domain test <em>the default version is the latest one</em> fails if you forget.</li>
+</ul>
+<p>Switching version keeps the reader on the same page when the new version has it. When it does not, they see a
+&ldquo;Page not found&rdquo; state that names the version and offers a button to the first page, so a deep link never
+dead-ends silently.</p>
+
+<h3 id="content-search">Search</h3>
+<p>Search needs no configuration: <code>SearchDocs</code> indexes every page title, description and
+<code>h2</code> / <code>h3</code> heading of the loaded version when it loads. The palette (button, <kbd>Ctrl</kbd>+<kbd>K</kbd>,
+<kbd>Cmd</kbd>+<kbd>K</kbd> or <kbd>/</kbd>) lists pages grouped by sidebar section and headings as
+<em>Page &rsaquo; Heading</em>. Choosing a heading opens its page and scrolls to the anchor. To index body text as well, add
+more <code>keywords</code> to the hits in <code>domain/search/use_cases/search_docs.dart</code>.</p>
+
+<h3 id="content-constants">Brand, links and layout constants</h3>
+<table>
+<thead><tr><th>File</th><th>What to change</th></tr></thead>
+<tbody>
+<tr><td><code>common/constants/docs_brand.dart</code></td><td>Product name, tagline, logo monogram, default version, home page slug.</td></tr>
+<tr><td><code>common/constants/docs_links.dart</code></td><td>The &ldquo;Edit this page&rdquo; base URL and the issue tracker link.</td></tr>
+<tr><td><code>common/constants/docs_layout.dart</code></td><td>Breakpoints (drawer 900, rail 1100), sidebar and rail widths, the 720 px reading measure.</td></tr>
+</tbody></table>
+</section>
+<section id="markdown"><h2><a class="anchor" href="#markdown" aria-label="Link to this section">#</a>6. Load content from Markdown or a CMS</h2>
+<p>The in-memory content is a stand-in. Everything the template needs from your content is the interface
+<code>DocsRemoteDataSource</code>:</p>
+<figure class="code"><figcaption><span>data/docs/remote/docs_remote_data_source.dart</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>abstract interface class DocsRemoteDataSource {
+  /// {"versions": [{"id", "label", "latest"?, "notice"?}]}
+  Future&lt;Map&lt;String, dynamic&gt;&gt; fetchManifest();
+
+  /// {"sidebar": [...], "pages": [...]} for one version.
+  Future&lt;Map&lt;String, dynamic&gt;&gt; fetchSite(String versionId);
+}</code></pre></figure>
+<p>Return decoded JSON of the shape in <a href="#content">Update the content</a> and the repository, mapper and every
+screen work unchanged. There are two common sources.</p>
+
+<h3 id="markdown-files">Markdown files in your app</h3>
+<p>Store one <code>.md</code> file per page, a <code>sidebar.json</code> per version and a <code>versions.json</code>:</p>
+<figure class="code"><figcaption><span>asset layout</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>assets/docs/
+  versions.json                  {"versions": [{"id": "v2.0", "label": "v2.0", "latest": true}]}
+  v2.0/
+    sidebar.json                 {"sidebar": [{"id": "start", "title": "Getting started", "items": ["intro"]}]}
+    intro.md</code></pre></figure><figure class="code"><figcaption><span>assets/docs/v2.0/intro.md</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>---
+title: Introduction
+description: What Acme SDK is.
+updated: 2026-03-04
+---
+
+Acme SDK is a typed client for the **Acme Cloud API**.
+
+## Requirements
+
+- Dart 3.4 or newer
+- An API key
+
+&gt; **Tip** Start with the [quick start](quick-start).
+
+```bash title="Terminal"
+dart pub add acme_sdk
+```
+
+| Option | Default |
+| --- | --- |
+| `timeout` | `30s` |</code></pre></figure>
+<p>The converter below handles front matter, <code>##</code> / <code>###</code> headings, fenced code with an optional
+<code>title="..."</code>, <code>&gt; **Note|Tip|Warning**</code> callouts, bullet and numbered lists, pipe tables and
+paragraphs. Tabs and steps have no Markdown form; keep a page that needs them in Dart, or extend the converter with a
+convention of your own (for example a fenced <code>```tabs</code> block holding JSON). It was run against the template&rsquo;s
+mapper in a test, and the sample above produces exactly the blocks you would expect.</p>
+<figure class="code"><figcaption><span>lib/docs/markdown_to_page.dart</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>/// Turns one Markdown file into the page JSON the mapper expects.
+///
+/// Supported: front matter (`title`, `description`, `updated`), `##` / `###`
+/// headings, fenced code (with an optional `title="..."`), `&gt; **Tip** text`
+/// callouts (Note, Tip, Warning), `-` and `1.` lists, pipe tables, paragraphs.
+Map&lt;String, dynamic&gt; markdownToPage(String slug, String source) {
+  final List&lt;String&gt; lines = const LineSplitter().convert(source);
+  final Map&lt;String, String&gt; meta = &lt;String, String&gt;{};
+  int i = 0;
+  if (lines.isNotEmpty &amp;&amp; lines.first.trim() == '---') {
+    for (i = 1; i &lt; lines.length &amp;&amp; lines[i].trim() != '---'; i++) {
+      final int colon = lines[i].indexOf(':');
+      if (colon &gt; 0) {
+        meta[lines[i].substring(0, colon).trim()] = lines[i]
+            .substring(colon + 1)
+            .trim();
+      }
+    }
+    i++;
+  }
+
+  final List&lt;Map&lt;String, dynamic&gt;&gt; blocks = &lt;Map&lt;String, dynamic&gt;&gt;[];
+  final StringBuffer paragraph = StringBuffer();
+
+  void flush() {
+    final String text = paragraph.toString().trim();
+    if (text.isNotEmpty) {
+      blocks.add(&lt;String, dynamic&gt;{'type': 'paragraph', 'text': text});
+    }
+    paragraph.clear();
+  }
+
+  for (; i &lt; lines.length; i++) {
+    final String line = lines[i];
+    final RegExpMatch? heading = RegExp(r'^(#{2,3})\s+(.*)$').firstMatch(line);
+    final RegExpMatch? fence = RegExp(
+      r'^```(\w*)\s*(?:title="([^"]*)")?',
+    ).firstMatch(line);
+    if (heading != null) {
+      flush();
+      blocks.add(&lt;String, dynamic&gt;{
+        'type': 'heading',
+        'level': heading.group(1)!.length,
+        'text': heading.group(2),
+      });
+    } else if (fence != null) {
+      flush();
+      final List&lt;String&gt; code = &lt;String&gt;[];
+      for (i++; i &lt; lines.length &amp;&amp; !lines[i].startsWith('```'); i++) {
+        code.add(lines[i]);
+      }
+      blocks.add(&lt;String, dynamic&gt;{
+        'type': 'code',
+        'language': fence.group(1),
+        'title': fence.group(2),
+        'code': code.join('\n'),
+      });
+    } else if (RegExp(
+      r'^&gt;\s*\*\*(Note|Tip|Warning)\*\*\s*(.*)$',
+    ).hasMatch(line)) {
+      flush();
+      final RegExpMatch m = RegExp(
+        r'^&gt;\s*\*\*(Note|Tip|Warning)\*\*\s*(.*)$',
+      ).firstMatch(line)!;
+      blocks.add(&lt;String, dynamic&gt;{
+        'type': 'callout',
+        'kind': m.group(1)!.toLowerCase(),
+        'text': m.group(2),
+      });
+    } else if (RegExp(r'^(\s*[-*]|\d+\.)\s+').hasMatch(line)) {
+      flush();
+      final bool ordered = RegExp(r'^\d+\.').hasMatch(line);
+      final List&lt;String&gt; items = &lt;String&gt;[];
+      for (
+        ;
+        i &lt; lines.length &amp;&amp; RegExp(r'^(\s*[-*]|\d+\.)\s+').hasMatch(lines[i]);
+        i++
+      ) {
+        items.add(lines[i].replaceFirst(RegExp(r'^(\s*[-*]|\d+\.)\s+'), ''));
+      }
+      i--;
+      blocks.add(&lt;String, dynamic&gt;{
+        'type': 'list',
+        'ordered': ordered,
+        'items': items,
+      });
+    } else if (line.trimLeft().startsWith('|')) {
+      flush();
+      final List&lt;List&lt;String&gt;&gt; rows = &lt;List&lt;String&gt;&gt;[];
+      for (; i &lt; lines.length &amp;&amp; lines[i].trimLeft().startsWith('|'); i++) {
+        final List&lt;String&gt; cells = lines[i]
+            .trim()
+            .replaceAll(RegExp(r'^\||\|$'), '')
+            .split('|')
+            .map((String c) =&gt; c.trim())
+            .toList();
+        if (!cells.every((String c) =&gt; RegExp(r'^:?-+:?$').hasMatch(c))) {
+          rows.add(cells);
+        }
+      }
+      i--;
+      blocks.add(&lt;String, dynamic&gt;{
+        'type': 'table',
+        'headers': rows.first,
+        'rows': rows.skip(1).toList(),
+      });
+    } else if (line.trim().isEmpty) {
+      flush();
+    } else {
+      paragraph.write('${paragraph.isEmpty ? '' : ' '}${line.trim()}');
+    }
+  }
+  flush();
+
+  return &lt;String, dynamic&gt;{
+    'slug': slug,
+    'title': meta['title'] ?? slug,
+    'description': meta['description'] ?? '',
+    'updated': meta['updated'] ?? '2026-01-01',
+    'blocks': blocks,
+  };
+}</code></pre></figure>
+<p>The data source reads the files and applies the converter:</p>
+<figure class="code"><figcaption><span>lib/docs/markdown_docs_remote_data_source.dart</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>import 'dart:convert';
+
+import 'package:cairn_template_docs/cairn_template_docs.dart';
+import 'package:flutter/services.dart' show rootBundle;
+
+import 'markdown_to_page.dart';
+
+class MarkdownDocsRemoteDataSource implements DocsRemoteDataSource {
+  const MarkdownDocsRemoteDataSource({this.root = 'assets/docs'});
+
+  /// Where the files live: `versions.json`, and per version a folder holding
+  /// `sidebar.json` and one `&lt;slug&gt;.md` per page.
+  final String root;
+
+  Future&lt;Map&lt;String, dynamic&gt;&gt; _json(String path) async =&gt;
+      jsonDecode(await rootBundle.loadString(path)) as Map&lt;String, dynamic&gt;;
+
+  @override
+  Future&lt;Map&lt;String, dynamic&gt;&gt; fetchManifest() =&gt; _json('$root/versions.json');
+
+  @override
+  Future&lt;Map&lt;String, dynamic&gt;&gt; fetchSite(String versionId) async {
+    final String dir = '$root/$versionId';
+    final List&lt;dynamic&gt; sidebar =
+        (await _json('$dir/sidebar.json'))['sidebar'] as List&lt;dynamic&gt;;
+    final List&lt;Map&lt;String, dynamic&gt;&gt; pages = &lt;Map&lt;String, dynamic&gt;&gt;[];
+    for (final dynamic section in sidebar) {
+      for (final dynamic item
+          in (section as Map&lt;String, dynamic&gt;)['items'] as List&lt;dynamic&gt;) {
+        final String slug = item is String
+            ? item
+            : (item as Map&lt;String, dynamic&gt;)['slug'] as String;
+        pages.add(
+          markdownToPage(slug, await rootBundle.loadString('$dir/$slug.md')),
+        );
+      }
+    }
+    return &lt;String, dynamic&gt;{'sidebar': sidebar, 'pages': pages};
+  }
+}</code></pre></figure>
+<p>Declare the folder in your <code>pubspec.yaml</code> (each version folder needs its own line, because Flutter does not
+recurse):</p>
+<figure class="code"><figcaption><span>pubspec.yaml</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>flutter:
+  assets:
+    - assets/docs/
+    - assets/docs/v2.0/</code></pre></figure>
+<p>Register it. The simplest way is the <code>remote</code> parameter:</p>
+<figure class="code"><figcaption><span>lib/main.dart</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>DocsApp(remote: const MarkdownDocsRemoteDataSource())</code></pre></figure>
+<p>If you copied <code>lib/</code> and prefer to change the container instead, edit the one line in
+<code>core/infrastructure/di/docs_injection.dart</code>:</p>
+<figure class="code"><figcaption><span>core/infrastructure/di/docs_injection.dart</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>// Data source: the one line to change to load content from elsewhere.
+g.registerLazySingleton&lt;DocsRemoteDataSource&gt;(
+  () =&gt; remote ?? const MarkdownDocsRemoteDataSource(),
+);</code></pre></figure>
+
+<h3 id="markdown-cms">A headless CMS or your own API</h3>
+<p>Fetch over HTTP and return the JSON. This example uses <code>package:http</code> (add it to your app) against an
+endpoint you control that returns the manifest and a version&rsquo;s sidebar and pages already in the template&rsquo;s shape:</p>
+<figure class="code"><figcaption><span>lib/docs/cms_docs_remote_data_source.dart</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>import 'dart:convert';
+
+import 'package:cairn_template_docs/cairn_template_docs.dart';
+import 'package:http/http.dart' as http;
+
+class CmsDocsRemoteDataSource implements DocsRemoteDataSource {
+  CmsDocsRemoteDataSource({
+    required this.baseUrl,
+    http.Client? client,
+  }) : _client = client ?? http.Client();
+
+  final String baseUrl;
+  final http.Client _client;
+
+  Future&lt;Map&lt;String, dynamic&gt;&gt; _get(String path) async {
+    final http.Response res = await _client.get(Uri.parse('$baseUrl$path'));
+    if (res.statusCode != 200) {
+      // Becomes the message in the error state, next to a "Try again" button.
+      throw StateError('Docs request failed (${res.statusCode}): $path');
+    }
+    return jsonDecode(utf8.decode(res.bodyBytes)) as Map&lt;String, dynamic&gt;;
+  }
+
+  @override
+  Future&lt;Map&lt;String, dynamic&gt;&gt; fetchManifest() =&gt; _get('/docs/versions');
+
+  @override
+  Future&lt;Map&lt;String, dynamic&gt;&gt; fetchSite(String versionId) =&gt;
+      _get('/docs/$versionId');
+}</code></pre></figure>
+<p>Use it with <code>DocsApp(remote: CmsDocsRemoteDataSource(baseUrl: 'https://cms.example.com'))</code>.</p>
+<div class="callout note"><strong>If your CMS stores rich text</strong> (Contentful, Sanity, Strapi), write the conversion
+to blocks in the data source, not in the mapper: the data source&rsquo;s job is to return the JSON shape, and the mapper&rsquo;s
+job is to validate it. If your CMS has a different shape per page, keep a second mapper next to
+<code>docs_mapper.dart</code> and call it from a custom repository that implements <code>DocsRepository</code>.</div>
+<div class="callout tip"><strong>Large sites.</strong> <code>fetchSite</code> returns a whole version, which keeps
+search and previous / next trivial. If a version is too big to ship at once, return the sidebar and
+page titles up front and add a <code>getPage(slug)</code> to <code>DocsRepository</code> that fetches bodies lazily; the page view
+is the only consumer of <code>DocPage.blocks</code>, and search would index titles and headings from a build-time
+summary instead.</div>
+</section>
+<section id="theming"><h2><a class="anchor" href="#theming" aria-label="Link to this section">#</a>7. Branding and theming</h2>
+<p>The template draws nothing with a hard-coded colour. Every surface, border and text colour comes from
+<code>CairnTheme</code>, so rebranding is a theme change in your app, not an edit of the template.</p>
+<h3 id="theming-theme">Theme, fonts and radius</h3>
+<figure class="code"><figcaption><span>lib/main.dart</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>final CairnTheme light = CairnTheme.light.copyWith(
+  fontFamily: 'Inter',
+  fontFamilyFallback: const &lt;String&gt;['Roboto', 'sans-serif'],
+  radius: 12,                                  // base for the whole radius scale
+  primary: const Color(0xFF1B4DFF),            // brand mark, primary buttons
+  primaryForeground: const Color(0xFFFFFFFF),
+);
+
+final CairnTheme dark = CairnTheme.dark.copyWith(
+  fontFamily: 'Inter',
+  radius: 12,
+  primary: const Color(0xFF7C9BFF),
+  primaryForeground: const Color(0xFF0A0A0A),
+);
+
+MaterialApp(
+  theme: CairnTheme.materialTheme(light),
+  darkTheme: CairnTheme.materialTheme(dark),
+  // ...
+);</code></pre></figure>
+<p>Declare the font in your <code>pubspec.yaml</code> as usual. Code uses a monospace stack
+(<code>ui-monospace</code>, <code>SFMono-Regular</code>, <code>Menlo</code>, <code>Consolas</code>,
+<code>monospace</code>) defined as <code>monoFallback</code> in <code>core/presentation/docs_text.dart</code>; change it
+there if you bundle a mono font.</p>
+<h3 id="theming-brand">Brand name and logo</h3>
+<ol>
+<li>Set <code>DocsBrand.name</code>, <code>tagline</code> and <code>monogram</code> in <code>common/constants/docs_brand.dart</code>.</li>
+<li>For a real logo, replace the <code>DecoratedBox</code> in <code>core/presentation/widgets/brand_mark.dart</code>:</li>
+</ol>
+<figure class="code"><figcaption><span>brand_mark.dart</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>// brand_mark.dart: swap the monogram tile for an asset.
+Image.asset(
+  'assets/images/logo.png',
+  package: DocsPackage.name,   // null when the assets belong to your app
+  height: 28,
+  semanticLabel: DocsBrand.name,
+)</code></pre></figure>
+<h3 id="theming-syntax">Code colours</h3>
+<p>Cairn&rsquo;s palette is achromatic, so the syntax colours are the one place the template adds hue. They are
+<code>oklch()</code> triples in <code>presentation/docs/widgets/syntax.dart</code>, converted with the same
+<code>Oklch.toColor</code> Cairn uses, and tuned to clear 4.5:1 on the code surface in both themes. Edit
+<code>SyntaxTheme.light</code> and <code>SyntaxTheme.dark</code> to match your brand. The tokeniser is deliberately small
+(comments, strings, numbers, keywords, capitalised identifiers); swap <code>highlight()</code> for a real lexer if you need
+more languages.</p>
+<h3 id="theming-measure">Typography and spacing</h3>
+<p>The reading column is 720 px (<code>DocsLayout.contentMaxWidth</code>), body text is 16 px on a 1.7 line height,
+<code>h2</code> is 24 px with 48 px above it, and blocks are separated by 20 px. Those numbers live in
+<code>block_column.dart</code>, <code>heading_view.dart</code> and <code>page_header.dart</code>.</p>
+</section>
+<section id="router"><h2><a class="anchor" href="#router" aria-label="Link to this section">#</a>8. Use go_router with deep links</h2>
+<p>The template navigates on its own, so it has no router dependency and works inside any host. To put the location in
+the URL (so a reader can share <code>/docs/v2.0/configuration#environments</code> and the back button works), connect
+<code>onLocationChanged</code> and <code>initialLocation</code> to your router. Add <code>go_router</code> to
+<em>your</em> app; the template does not need it.</p>
+<figure class="code"><figcaption><span>lib/main.dart</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>import 'package:cairn_template_docs/cairn_template_docs.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+String urlFor(DocsLocation l) =&gt;
+    '/docs/${l.versionId}/${l.pageSlug}'
+    '${l.headingId == null ? '' : '#${l.headingId}'}';
+
+final GoRouter router = GoRouter(
+  initialLocation: '/docs/v2.0/introduction',
+  routes: &lt;RouteBase&gt;[
+    GoRoute(path: '/', redirect: (_, __) =&gt; '/docs/v2.0/introduction'),
+    GoRoute(
+      path: '/docs/:version/:slug',
+      // One page object for every docs URL, so DocsApp keeps its state
+      // (scroll, collapsed sections) while the path changes.
+      pageBuilder: (BuildContext context, GoRouterState state) {
+        final DocsLocation location = DocsLocation(
+          versionId: state.pathParameters['version']!,
+          pageSlug: state.pathParameters['slug']!,
+          headingId: state.uri.fragment.isEmpty ? null : state.uri.fragment,
+        );
+        return NoTransitionPage&lt;void&gt;(
+          key: const ValueKey&lt;String&gt;('docs'),
+          child: Scaffold(
+            body: DocsApp(
+              initialLocation: location,
+              onLocationChanged: (DocsLocation next) {
+                // Only push when the template, not the URL, caused the change.
+                if (urlFor(next) != urlFor(location)) {
+                  context.go(urlFor(next));
+                }
+              },
+              onOpenExternal: (String url) =&gt; launchUrl(Uri.parse(url)),
+            ),
+          ),
+        );
+      },
+    ),
+  ],
+);
+
+void main() =&gt; runApp(
+  MaterialApp.router(
+    routerConfig: router,
+    theme: CairnTheme.materialTheme(CairnTheme.light),
+    darkTheme: CairnTheme.materialTheme(CairnTheme.dark),
+  ),
+);</code></pre></figure>
+<h3 id="router-how">How the two stay in step</h3>
+<ul>
+<li>A click in the template changes <code>DocsNavigationCubit</code>; <code>DocsProviders</code> calls
+<code>onLocationChanged</code>; your router updates the URL and rebuilds <code>DocsApp</code> with a new
+<code>initialLocation</code>.</li>
+<li>In <code>didUpdateWidget</code>, <code>DocsApp</code> calls <code>navigation.go(location)</code>. When the location equals
+the one it is already at, that is a no-op, so there is no loop.</li>
+<li>A pasted URL or the back button changes <code>initialLocation</code> first, and the template follows.</li>
+<li>A <code>headingId</code> in the location scrolls the page to that heading, on first open and on later changes.</li>
+</ul>
+<div class="callout note"><strong>Paths without a hash.</strong> On the web, Flutter defaults to hash URLs
+(<code>/#/docs/...</code>). Call <code>usePathUrlStrategy()</code> from <code>package:flutter_web_plugins/url_strategy.dart</code>
+in <code>main</code> before <code>runApp</code> for clean paths, then configure your host as described under
+<a href="#deploy">Deploy</a>.</div>
+<h3 id="router-replace">Replacing the navigation cubit instead</h3>
+<p>If you would rather delete <code>DocsNavigationCubit</code> and let the router be the source of truth, keep
+<code>DocsLocation</code> and make the cubit a thin adapter: its <code>openPage</code>, <code>goToHeading</code> and
+<code>selectVersion</code> become calls to <code>context.go(...)</code>, and its state is derived from
+<code>GoRouterState</code>. Every view only calls those three methods and reads <code>state.pageSlug</code>,
+<code>versionId</code>, <code>headingId</code> and <code>jump</code>, so no screen changes. The callback approach above is less work
+and is the one the tests cover.</p>
+</section>
+<section id="deploy"><h2><a class="anchor" href="#deploy" aria-label="Link to this section">#</a>9. Deploy and SEO for Flutter web</h2>
+<h3 id="deploy-build">Build</h3>
+<figure class="code"><figcaption><span>terminal</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>flutter build web --release
+# Served from a sub-path such as https://example.com/docs/ ?
+flutter build web --release --base-href /docs/</code></pre></figure>
+<p>The <code>--base-href</code> value must start and end with a slash and match where you serve the files. A wrong base
+href is the usual cause of a blank page with 404s for <code>main.dart.js</code> in the console.</p>
+<h3 id="deploy-fallback">404 fallback</h3>
+<p>With path URLs (see <code>usePathUrlStrategy()</code> above), a reload on <code>/docs/v2.0/configuration</code> asks the
+server for a file that does not exist. Tell the host to answer every unknown path with <code>index.html</code>:</p>
+<table>
+<thead><tr><th>Host</th><th>Setting</th></tr></thead>
+<tbody>
+<tr><td>Firebase Hosting</td><td><code>"rewrites": [{"source": "**", "destination": "/index.html"}]</code> in <code>firebase.json</code></td></tr>
+<tr><td>Netlify, Cloudflare Pages</td><td>A <code>_redirects</code> file containing <code>/* /index.html 200</code></td></tr>
+<tr><td>GitHub Pages</td><td>Copy <code>build/web/index.html</code> to <code>build/web/404.html</code> after building</td></tr>
+<tr><td>nginx</td><td><code>try_files $uri $uri/ /index.html;</code></td></tr>
+</tbody></table>
+<p>If you keep the default hash strategy no server setup is needed, at the price of uglier URLs.</p>
+<div class="callout warning"><strong>An unknown page is not a 404 to a crawler.</strong> The fallback serves
+<code>index.html</code> with status 200 and the template shows its &ldquo;Page not found&rdquo; state inside it. That is fine for
+readers; search engines may index such URLs as soft 404s.</div>
+<h3 id="deploy-seo">SEO</h3>
+<p>Flutter web renders to a canvas, so a crawler that does not run JavaScript sees only <code>index.html</code>. Be honest
+about this when choosing the template: it is a good fit for logged-in, internal and developer-audience docs, and a weaker
+one for content that depends on organic search. Mitigations, in order of effort:</p>
+<ol>
+<li>Edit <code>web/index.html</code>: a real <code>&lt;title&gt;</code>, <code>&lt;meta name="description"&gt;</code>, Open Graph tags and a
+canonical link.</li>
+<li>Publish a <code>sitemap.xml</code> and <code>robots.txt</code> next to <code>index.html</code>. Generate the sitemap from the same content (the
+<code>DocsSite</code> gives you every slug).</li>
+<li>Update <code>document.title</code> per page from <code>onLocationChanged</code> (for example with
+<code>SystemChrome.setApplicationSwitcherDescription</code> or a small <code>dart:js_interop</code> call).</li>
+<li>Pre-render or serve static HTML for crawlers from the same JSON (a build script that walks <code>docsManifest</code> and
+writes one HTML file per page is about fifty lines), and let people land on the Flutter app.</li>
+</ol>
+<h3 id="deploy-perf">Performance</h3>
+<p>Use <code>--release</code> (the default CanvasKit renderer), serve with gzip or brotli, and give <code>main.dart.js</code> and the
+font files long cache lifetimes. The in-memory content ships inside <code>main.dart.js</code>; a CMS keeps it out.</p>
+</section>
+<section id="testing"><h2><a class="anchor" href="#testing" aria-label="Link to this section">#</a>10. Testing</h2>
+<p>The template ships three kinds of test. Run them from the package folder:</p>
+<figure class="code"><figcaption><span>terminal</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>flutter pub get
+dart format .
+flutter analyze --fatal-infos --fatal-warnings
+flutter test</code></pre></figure>
+<table>
+<thead><tr><th>File</th><th>Covers</th></tr></thead>
+<tbody>
+<tr><td><code>test/domain_test.dart</code></td><td>The inline-markup parser, slugify, every mapper branch and error, the seed content (twelve or more pages, every internal link resolves to a real page and heading), heading extraction, previous / next, and search.</td></tr>
+<tr><td><code>test/session_test.dart</code></td><td>The cubits through the real container with no widgets: navigation, loading and failing, stale-request protection, search indexing, sidebar, scoping rules.</td></tr>
+<tr><td><code>test/docs_app_test.dart</code></td><td><code>DocsApp</code> mounted at 390, 768 and 1280 px in light and dark: navigating, collapsing, previous / next, palette search with scroll to a heading, Ctrl+K, version switching, copy with toast, tabs, the rail, the drawer, loading, error and not-found states.</td></tr>
+</tbody></table>
+<h3 id="testing-harness">Writing your own widget test</h3>
+<p><code>test/support/harness.dart</code> has <code>pumpDocs</code>, which mounts the app in a themed <code>MaterialApp</code> at a given size and
+returns the list of strings written to the clipboard. Two rules it follows, which you should too:</p>
+<ul>
+<li><strong>Never <code>pumpAndSettle</code>.</strong> Cairn&rsquo;s skeleton and spinner animate forever, so the tree never goes idle and the
+call times out. Pump in small steps (<code>settle(tester)</code> pumps eight 100 ms frames).</li>
+<li><strong>Pump a little extra after navigation.</strong> Collapsing sections and the page fade finish a few frames later.</li>
+</ul>
+<figure class="code"><figcaption><span>your_test.dart</span><button type="button" class="copy" aria-label="Copy code">Copy</button></figcaption><pre><code>docsTest('opens a page from the palette', (WidgetTester tester) async {
+  await pumpDocs(tester, size: desktop);
+  await tester.tap(sem('Search documentation'));
+  await settle(tester);
+  await tester.enterText(find.byType(EditableText), 'pagination');
+  await settle(tester, steps: 3);
+  await tester.tap(find.text('Pagination').last);
+  await settle(tester);
+  expect(navOf(tester).state.pageSlug, 'pagination');
+});</code></pre></figure>
+<p>Buttons merge their visible text into their semantics label, so the harness&rsquo;s <code>sem()</code> matches by prefix; and
+<code>docsTest</code> turns semantics on for the test.</p>
+<div class="callout tip"><strong>Fonts in tests.</strong> <code>flutter test</code> draws every glyph as an identical box unless a font is
+loaded, which hides real overflow. <code>test/flutter_test_config.dart</code> loads Geist from <code>../../fonts</code> when it exists; point it at
+your font files for accurate layout assertions. Code also renders as boxes unless a monospace face is loaded.</div>
+<h3 id="testing-content">Testing your content</h3>
+<p>The &ldquo;every internal link resolves&rdquo; test in <code>domain_test.dart</code> walks every block of both versions. When you replace the content, keep it:
+it turns a renamed page or heading into a failing test instead of a dead link.</p>
+</section>
+<section id="faq"><h2><a class="anchor" href="#faq" aria-label="Link to this section">#</a>11. Troubleshooting and FAQ</h2>
+<dl>
+<dt>The page is blank and the console shows 404s for <code>main.dart.js</code>.</dt>
+<dd>The <code>--base-href</code> does not match where the files are served. See <a href="#deploy-build">Build</a>.</dd>
+
+<dt>Reloading a deep link gives a server 404.</dt>
+<dd>You are using path URLs without a rewrite rule. See <a href="#deploy-fallback">404 fallback</a>, or keep hash URLs.</dd>
+
+<dt>Text is unstyled, with a yellow underline.</dt>
+<dd>That is Flutter&rsquo;s &ldquo;no Material ancestor&rdquo; style. <code>DocsApp</code> wraps itself in a transparent <code>Material</code> and a
+<code>DefaultTextStyle</code>, so you only see it if you built your own shell around its widgets without <code>DocsApp</code>.</dd>
+
+<dt>Colours are wrong, or everything is the light theme.</dt>
+<dd><code>CairnTheme.of</code> falls back to <code>CairnTheme.light</code> when the theme has no Cairn extension. Build your
+<code>ThemeData</code> with <code>CairnTheme.materialTheme(...)</code> as shown in <a href="#mount">Mount it</a>.</dd>
+
+<dt>The copy toast does not appear.</dt>
+<dd>The toaster is installed by <code>DocsApp</code> inside its frame. If you rebuilt the shell yourself, wrap it in a
+<code>CairnToaster</code>. In a test, copy works but the toast is only visible for two seconds of fake time.</dd>
+
+<dt>The palette or drawer shows unthemed.</dt>
+<dd>They are routes on the root navigator, so they take the theme from your <code>MaterialApp</code>, not from the template. Make sure the
+theme is set on the app that owns the navigator, not on a widget below it.</dd>
+
+<dt>A page shows &ldquo;Could not load the documentation&rdquo;.</dt>
+<dd>The text under it is the exception. A <code>FormatException</code> from the mapper names the page and block; fix the content and press
+<em>Try again</em>.</dd>
+
+<dt>Clicking a link inside a paragraph does nothing.</dt>
+<dd>Check the target. Internal targets are slugs of the <em>current version</em>; an unknown one opens the not-found state. External targets go to
+<code>onOpenExternal</code>, or are copied when you did not supply one.</dd>
+
+<dt>Why can&rsquo;t I tab to links inside paragraphs?</dt>
+<dd>Inline links are tappable text spans, and Flutter cannot focus a span. Every navigational target also exists as a focusable control (sidebar,
+breadcrumb, previous / next, table of contents). If you need keyboard access to inline links, render them as
+<code>WidgetSpan(CairnLink(...))</code> in <code>rich_inline.dart</code>, accepting that a long link then cannot wrap.</dd>
+
+<dt>The table of contents highlights the wrong heading near the bottom.</dt>
+<dd>On the last screenful the last headings can never reach the top, so the last entry is highlighted once you reach the end. That is intended.</dd>
+
+<dt>I added a heading in a tab and it is not in the rail or search.</dt>
+<dd>Only top-level headings are anchors. See the note under <a href="#content-blocks">Block reference</a>.</dd>
+
+<dt>Two copies of the template on one screen?</dt>
+<dd>Fine. Each <code>DocsApp</code> builds its own container, so they share no state.</dd>
+
+<dt>How do I hide the version selector?</dt>
+<dd>Return a single version from the manifest; the selector then offers one option. To remove the control, delete <code>_VersionSelect</code> from
+<code>presentation/shell/top_bar.dart</code>.</dd>
+
+<dt>How do I add a language to the highlighter?</dt>
+<dd>Add a value to <code>CodeLanguage</code> in <code>doc_block.dart</code> (and its <code>parse</code> aliases), then a keyword set and a branch in <code>highlight()</code> in
+<code>syntax.dart</code>.</dd>
+</dl>
+</section>
+<section id="migration"><h2><a class="anchor" href="#migration" aria-label="Link to this section">#</a>12. Migration notes</h2>
+<h3 id="migration-cairn">Upgrading cairn_ui</h3>
+<p>The template is tested against <code>cairn_ui</code> 0.2.0. Bump the constraint, run <code>flutter analyze</code> and
+<code>flutter test</code>, and look first at these coupling points:</p>
+<table>
+<thead><tr><th>Cairn component</th><th>Used in</th><th>Watch for</th></tr></thead>
+<tbody>
+<tr><td><code>CairnAlert</code></td><td><code>callout_view.dart</code></td><td>0.2 has only <em>normal</em> and <em>destructive</em> variants, so info, tip and warning are told apart by icon and title. If a later release adds info / warning variants, map <code>CalloutKind</code> to them here.</td></tr>
+<tr><td><code>CairnCommand</code>, <code>showCairnCommandPalette</code></td><td><code>search_palette.dart</code></td><td>Filtering is done by the widget (label, group and keywords), not by <code>SearchDocs</code>. A change to its matching changes search results.</td></tr>
+<tr><td><code>CairnSheet</code>, <code>showCairnSheet</code></td><td><code>top_bar.dart</code></td><td>The drawer is a left sheet on the root navigator.</td></tr>
+<tr><td><code>CairnSelect</code></td><td><code>top_bar.dart</code></td><td>The version selector; <code>width</code>, <code>size</code> and <code>semanticLabel</code>.</td></tr>
+<tr><td><code>CairnTabs</code>, <code>CairnTable</code>, <code>CairnBreadcrumb</code></td><td>block views, <code>page_header.dart</code></td><td>Constructor and sizing changes. Table cells are built with <code>CairnColumn.cell</code>.</td></tr>
+<tr><td><code>CairnToaster</code>, <code>CairnToast.show</code></td><td><code>docs_shell.dart</code>, <code>code_block_view.dart</code></td><td>The toast is found through an ancestor, so the toaster must stay above the code block.</td></tr>
+<tr><td><code>CairnTheme</code> tokens</td><td>everywhere</td><td>Renamed or removed tokens fail to compile, which is the point of using only tokens.</td></tr>
+</tbody></table>
+<h3 id="migration-content">Changing the content format</h3>
+<p>If you change a block&rsquo;s JSON, change three places together: the model in <code>doc_block.dart</code>, the case in
+<code>DocsMapper.block</code>, and the case in <code>block_column.dart</code>. <code>DocBlock</code> is sealed, so the renderer&rsquo;s <code>switch</code> will not compile
+until every subtype is handled. Add a case to the &ldquo;maps every block type&rdquo; test.</p>
+<h3 id="migration-version">Template versions</h3>
+<p>This is version 1.0.0 of the template.</p>
+<ul>
+<li><code>DocsApp</code>&rsquo;s public surface is its four parameters and <code>DocsLocation</code>. Treat everything else as yours to edit.</li>
+<li>If you copied <code>lib/</code> you will not receive upstream changes automatically; diff the template folder when you bump <code>cairn_ui</code>.</li>
+<li>Moving from the in-memory data source to your own is the only migration most projects ever need, and it touches no screen.</li>
+</ul>
+</section>
+<footer>This page is self-contained: no external requests, light and dark by system setting, and print-friendly.
+The code samples were checked against the package: the Markdown converter and data source are compiled and run against the template&rsquo;s mapper in a test.</footer>
+</main>
+</div>
+<script>
+(function(){
+  // Copy buttons.
+  document.querySelectorAll('figure.code').forEach(function(fig){
+    var btn=fig.querySelector('button.copy');
+    btn.addEventListener('click',function(){
+      var text=fig.querySelector('code').innerText;
+      var done=function(){btn.textContent='Copied';setTimeout(function(){btn.textContent='Copy'},1500)};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,fallback)}else{fallback()}
+      function fallback(){var t=document.createElement('textarea');t.value=text;document.body.appendChild(t);t.select();try{document.execCommand('copy');done()}catch(e){}document.body.removeChild(t)}
+    });
+  });
+  // Mobile contents toggle.
+  var nav=document.querySelector('nav.toc'),menu=document.querySelector('.menu');
+  menu.addEventListener('click',function(){var o=nav.classList.toggle('open');menu.setAttribute('aria-expanded',o)});
+  nav.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('open')})});
+  // Highlight the current section in the contents.
+  var links={};nav.querySelectorAll('a[href^="#"]').forEach(function(a){links[a.getAttribute('href').slice(1)]=a});
+  var heads=Array.prototype.slice.call(document.querySelectorAll('main h2[id], main h3[id], main section[id]'));
+  function update(){
+    var cur=null,y=window.scrollY+120;
+    heads.forEach(function(h){if(h.offsetTop<=y&&links[h.id])cur=h.id});
+    Object.keys(links).forEach(function(k){links[k].classList.toggle('active',k===cur)});
+    if(cur&&links[cur]&&nav.scrollHeight>nav.clientHeight){var a=links[cur];if(a.offsetTop<nav.scrollTop||a.offsetTop>nav.scrollTop+nav.clientHeight-60)nav.scrollTop=a.offsetTop-80}
+  }
+  window.addEventListener('scroll',update,{passive:true});update();
+})();
+</script>
+</body>
+</html>
