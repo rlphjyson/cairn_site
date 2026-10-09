@@ -102,6 +102,12 @@
 - [Blog](https://rlphjyson.github.io/cairn_site/templates/blog): Posts, search, authors and a newsletter
 - [Documentation](https://rlphjyson.github.io/cairn_site/templates/docs): Sidebar, search palette and content blocks
 - [SaaS landing](https://rlphjyson.github.io/cairn_site/templates/landing): Hero, pricing, testimonials and a waitlist
+- [Online store (SEO)](https://rlphjyson.github.io/cairn_site/templates/jaspr_store): Server-rendered, with full SEO
+- [Onboarding](https://rlphjyson.github.io/cairn_site/templates/onboarding): Swipeable intro, permissions, personalise
+- [Authentication](https://rlphjyson.github.io/cairn_site/templates/auth): Sign in, sign up and recovery
+- [Chat](https://rlphjyson.github.io/cairn_site/templates/chat): Conversations, threads and groups
+- [App landing](https://rlphjyson.github.io/cairn_site/templates/app_landing): A page that sells a phone app
+- [Settings](https://rlphjyson.github.io/cairn_site/templates/settings): Searchable settings with profile, privacy and more
 
 ## Optional
 

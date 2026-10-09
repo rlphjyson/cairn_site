@@ -6,6 +6,7 @@ import 'package:cairn_template_dashboard/cairn_template_dashboard.dart';
 import 'package:cairn_template_docs/cairn_template_docs.dart';
 import 'package:cairn_template_landing/cairn_template_landing.dart';
 import 'package:cairn_template_onboarding/cairn_template_onboarding.dart';
+import 'package:cairn_template_settings/cairn_template_settings.dart';
 import 'package:cairn_template_shop/cairn_template_shop.dart';
 import 'package:flutter/widgets.dart';
 
@@ -520,6 +521,56 @@ dart run tool/seo_audit.dart''',
       const TemplateShot('4-pricing', 'Pricing'),
     ],
     preview: (BuildContext context) => const AppLandingApp(),
+  ),
+  TemplateEntry(
+    slug: 'settings',
+    name: 'Settings',
+    kind: TemplateKind.mobile,
+    summary: 'Searchable settings with profile, privacy and more',
+    description:
+        'The settings screens every app needs, done properly: a searchable '
+        'home with a profile card, then Edit profile, Appearance (theme, '
+        'text size, accent and reduce motion, applied live), Notifications '
+        'with quiet hours, Privacy and security with two-factor, sessions '
+        'and blocked people, Language and region, Storage and data, Help, '
+        'About and a Danger zone that asks you to type to confirm. Every '
+        'setting comes from a registry you can edit, and everything is saved '
+        'through one data source. On a tablet it becomes two panes.',
+    screens: <(String, String)>[
+      ('Home', 'Search, profile card and grouped categories.'),
+      ('Appearance', 'Theme, text size, accent and reduce motion, live.'),
+      ('Notifications', 'Channels, quiet hours and a master switch.'),
+      ('Privacy', 'Password, two-factor, sessions and blocked people.'),
+      ('Storage', 'Usage meter, clear cache and export your data.'),
+      (
+        'Danger zone',
+        'Sign out, deactivate and delete, with typed confirmation.',
+      ),
+    ],
+    uses: <String>[
+      'List',
+      'Switch',
+      'Radio Group',
+      'Slider',
+      'Select',
+      'Input',
+      'Avatar',
+      'Badge',
+      'Button',
+      'Sheet',
+      'Alert Dialog',
+      'Progress',
+      'Skeleton',
+      'Empty',
+      'Toast',
+    ],
+    shots: <TemplateShot>[
+      const TemplateShot('1-home', 'Home'),
+      const TemplateShot('2-appearance', 'Appearance'),
+      const TemplateShot('3-notifications', 'Notifications'),
+      const TemplateShot('4-privacy', 'Privacy'),
+    ],
+    preview: (BuildContext context) => const SettingsApp(),
   ),
 ];
 

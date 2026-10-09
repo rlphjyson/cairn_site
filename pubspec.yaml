@@ -30,6 +30,8 @@ dependencies:
     path: templates/landing
   cairn_template_onboarding:
     path: templates/onboarding
+  cairn_template_settings:
+    path: templates/settings
   cairn_template_shop:
     path: templates/shop
   cairn_ui: ^0.2.0

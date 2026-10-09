@@ -32,7 +32,7 @@ import 'package:cairn_ui/cairn_ui.dart';
 - **Navigation**: Tabs, Accordion, Collapsible, Breadcrumb, Pagination, Menubar, Navigation Menu, Scroll Area, Carousel, Steps, Navbar, Dock, Link
 - **Data & feedback**: Progress, Toast, Data Table, Calendar, Date Picker, Radial Progress, Countdown
 
-5 blocks (Login, Dashboard shell, Settings, Pricing, Team roster) and 5 whole-app templates (E-commerce, Dashboard, Blog, Documentation, SaaS landing).
+5 blocks (Login, Dashboard shell, Settings, Pricing, Team roster) and 11 whole-app templates (E-commerce, Dashboard, Blog, Documentation, SaaS landing, Online store (SEO), Onboarding, Authentication, Chat, App landing, Settings).
 
 ## How to use this server
 

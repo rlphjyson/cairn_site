@@ -1,0 +1,1169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settings template — documentation</title>
+<meta name="description" content="How to install, mount, customise, connect a backend, wire the theme and account hooks, and test the Cairn mobile settings template.">
+<style>
+:root{--bg:#fff;--fg:#0a0a0a;--muted:#6b6b6b;--border:#e5e5e5;--card:#fafafa;--code:#f4f4f5;--accent:#0a0a0a;--accent-fg:#fafafa;--note:#eef6ff;--note-b:#bcd9f7;--warn:#fff7e6;--warn-b:#f2d18b;--ok:#ecfbf1;--ok-b:#a8e2bd}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0a0a0a;--fg:#fafafa;--muted:#a1a1a1;--border:#262626;--card:#111;--code:#171717;--accent:#fafafa;--accent-fg:#0a0a0a;--note:#0e1a2b;--note-b:#1f3a5c;--warn:#2a2007;--warn-b:#5c4710;--ok:#0b2316;--ok-b:#1c5233}}
+:root[data-theme=dark]{--bg:#0a0a0a;--fg:#fafafa;--muted:#a1a1a1;--border:#262626;--card:#111;--code:#171717;--accent:#fafafa;--accent-fg:#0a0a0a;--note:#0e1a2b;--note-b:#1f3a5c;--warn:#2a2007;--warn-b:#5c4710;--ok:#0b2316;--ok-b:#1c5233}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:inherit;text-decoration-color:var(--muted);text-underline-offset:3px}a:hover{text-decoration-color:currentColor}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);max-width:1180px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:28px 20px;border-right:1px solid var(--border);font-size:14px}
+nav.toc .brand{font-weight:650;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+nav.toc ol{list-style:none;margin:0;padding:0}nav.toc li{margin:2px 0}
+nav.toc a{display:block;padding:5px 10px;border-radius:8px;text-decoration:none;color:var(--muted)}
+nav.toc a:hover,nav.toc a.active{background:var(--card);color:var(--fg)}
+nav.toc ol ol{margin-left:12px}
+main{padding:48px 40px 96px;max-width:860px}
+h1{font-size:2.2rem;line-height:1.15;margin:0 0 8px;letter-spacing:-.02em}
+h2{font-size:1.5rem;margin:56px 0 12px;padding-top:24px;border-top:1px solid var(--border);letter-spacing:-.01em}
+h2:first-of-type{border-top:0}h3{font-size:1.1rem;margin:28px 0 8px}
+p,li{color:var(--fg)}.lead{color:var(--muted);font-size:1.1rem;margin:0 0 24px}
+code{font:13.5px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);padding:2px 6px;border-radius:6px}
+pre{position:relative;background:var(--code);border:1px solid var(--border);border-radius:12px;padding:16px 18px;overflow:auto;margin:14px 0}
+pre code{background:none;padding:0;font-size:13px;line-height:1.6;white-space:pre}
+.copy{position:absolute;top:8px;right:8px;border:1px solid var(--border);background:var(--bg);color:var(--muted);border-radius:8px;font-size:12px;padding:3px 9px;cursor:pointer}
+.copy:hover{color:var(--fg)}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+th{font-weight:600;background:var(--card)}
+.callout{border:1px solid;border-radius:12px;padding:12px 16px;margin:16px 0}.callout p{margin:4px 0}
+.callout.note{background:var(--note);border-color:var(--note-b)}.callout.warn{background:var(--warn);border-color:var(--warn-b)}.callout.ok{background:var(--ok);border-color:var(--ok-b)}
+.callout strong:first-child{display:block;margin-bottom:2px}
+.tree{white-space:pre;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.pill{display:inline-block;border:1px solid var(--border);border-radius:999px;padding:1px 10px;font-size:12px;color:var(--muted)}
+.steps{counter-reset:s;list-style:none;padding:0}.steps>li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.steps>li:before{content:counter(s);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-fg);display:grid;place-items:center;font-size:13px;font-weight:600}
+button.theme{border:1px solid var(--border);background:var(--bg);color:var(--fg);border-radius:8px;padding:3px 8px;cursor:pointer;font-size:12px}
+@media (max-width:900px){.layout{display:block}nav.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border)}main{padding:28px 20px 64px}}
+@media print{nav.toc,.copy,button.theme{display:none}.layout{display:block}main{max-width:none;padding:0}pre{white-space:pre-wrap}a{text-decoration:none}}
+
+.diagram{white-space:pre;overflow:auto;background:var(--code);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:14px 0;font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+@media print{.diagram{white-space:pre-wrap}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Contents">
+  <div class="brand"><span>Settings template</span><button class="theme" id="theme" type="button" aria-label="Toggle theme">Theme</button></div>
+  <ol>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#requirements">Requirements</a></li>
+    <li><a href="#install">Install</a></li>
+    <li><a href="#mount">Mount it</a>
+      <ol><li><a href="#arguments">Arguments</a></li></ol></li>
+    <li><a href="#screens">The screens</a>
+      <ol><li><a href="#rules">Rules</a></li></ol></li>
+    <li><a href="#datasource">Connect a backend</a>
+      <ol><li><a href="#contract">The contract</a></li><li><a href="#persisted">Persist the settings</a></li><li><a href="#rest">A REST backend</a></li></ol></li>
+    <li><a href="#registry">Customise the settings</a>
+      <ol><li><a href="#kinds">Kinds of setting</a></li><li><a href="#edit-registry">Add, remove, reorder</a></li><li><a href="#caveats">Settings the screens rely on</a></li><li><a href="#section">Add a section</a></li></ol></li>
+    <li><a href="#theme-wiring">Theme, text size, accent, motion</a></li>
+    <li><a href="#account">Sign out, deactivate, delete</a></li>
+    <li><a href="#notifications">Notification permission</a></li>
+    <li><a href="#links">Links and rating</a></li>
+    <li><a href="#copy">Change the copy</a></li>
+    <li><a href="#architecture">Architecture</a>
+      <ol><li><a href="#layers">Layers</a></li><li><a href="#di">Dependency injection</a></li><li><a href="#navigation">Navigation</a></li><li><a href="#viewmodels">View models</a></li></ol></li>
+    <li><a href="#router">Use go_router</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#a11y">Accessibility</a></li>
+    <li><a href="#checklist">Production checklist</a></li>
+    <li><a href="#faq">Troubleshooting</a></li>
+    <li><a href="#migrate">Migration</a></li>
+  </ol>
+</nav>
+<main>
+<h1>Settings template</h1>
+<p class="lead">Mobile settings screens built only from <code>cairn_ui</code>: a searchable home, profile, appearance, notifications, privacy and security, language, storage, help, about and a danger zone. This guide takes you from <em>copy it in</em> to <em>shipping it with your own backend, your own list of settings and your own account flow</em>.</p>
+
+<h2 id="overview">Overview</h2>
+<p>The template is a Flutter package, <code>cairn_template_settings</code>, that exposes one widget, <code>SettingsApp</code>, and a handful of types your app implements or receives. It contains these screens:</p>
+<ul>
+<li><strong>Home</strong> &ndash; a title, a search field, a profile card and the categories in four groups (Account, Preferences, Data and support, Session). Search matches titles, keywords, descriptions and section names and jumps straight to the right page.</li>
+<li><strong>Edit profile</strong> &ndash; name, username (checked for availability as you type), email, bio and an avatar preset, with inline validation and a &ldquo;Discard changes?&rdquo; guard.</li>
+<li><strong>Appearance</strong> &ndash; Light, Dark or System, four text sizes with a live sample, an accent colour and Reduce motion. Changes apply to the whole template at once.</li>
+<li><strong>Notifications</strong> &ndash; a master switch, categories, channel, digest and quiet hours; an alert with <em>Open settings</em> when the operating system has refused permission.</li>
+<li><strong>Privacy and security</strong> &ndash; biometric lock, two-factor authentication (setup sheet with a secret key and a six-digit code), change password with a strength meter, active sessions, export my data and blocked users.</li>
+<li><strong>Language and region</strong> &ndash; language, region, date and time formats and units, with a preview.</li>
+<li><strong>Storage and data</strong> &ndash; a usage meter, clear cache, Wi-Fi only and auto-delete.</li>
+<li><strong>Help</strong> and <strong>About</strong> &ndash; FAQ, a contact form, copyable version, licences, Terms and Privacy links and a star rating.</li>
+<li><strong>Danger zone</strong> &ndash; Sign out, Deactivate account and Delete account (type <code>DELETE</code>, then confirm again).</li>
+</ul>
+<p>From <strong>600 px</strong> wide the screens become a two-pane master/detail layout: the categories on the left, the selected category on the right. It is organised as <strong>clean architecture by layer, then by feature</strong>, with <code>flutter_bloc</code> for state and <code>get_it</code> for dependency injection. Nothing is generated.</p>
+<div class="diagram">lib/
+├─ settings_app.dart                entry widget (SettingsApp)
+├─ core/
+│  ├─ infrastructure/               get_it registration (di/), the host's callbacks, unsaved-changes guard
+│  └─ presentation/                 navigation cubit, ViewModel, reusable rows and frames, appearance
+├─ common/                          layout, text sizes, FAQ, subjects, avatars, helpers
+├─ data/&lt;feature&gt;/                  SettingsDataSource (+ in-memory demo), repositories
+├─ domain/&lt;feature&gt;/                models, mappers, registry, repository interfaces, use cases
+└─ presentation/&lt;feature&gt;/          bloc, view models, views, widgets (+ shell/)</div>
+
+<div class="callout note"><strong>The one rule to remember</strong><p>Dependencies point inwards: presentation &rarr; domain &larr; data. <em>What settings exist</em> is a list (the <code>SettingsRegistry</code>). <em>Where they are stored</em> is one object (<code>SettingsDataSource</code>). <em>What happens when something changes</em> is a callback. You pass all three to <code>SettingsApp</code> and never fork the template to integrate it.</p></div>
+
+<h2 id="requirements">Requirements</h2>
+<table>
+<tr><th>Tool</th><th>Version</th></tr>
+<tr><td>Flutter</td><td>3.44 or newer (Dart 3.12)</td></tr>
+<tr><td><code>cairn_ui</code></td><td>^0.2.0</td></tr>
+<tr><td><code>flutter_bloc</code>, <code>get_it</code>, <code>equatable</code></td><td>pulled in by the package</td></tr>
+<tr><td><code>shared_preferences</code> or your own database / HTTP client</td><td>your app, to persist settings (the template itself never imports one)</td></tr>
+<tr><td><code>permission_handler</code>, <code>url_launcher</code>, <code>local_auth</code>, <code>package_info_plus</code></td><td>your app, for notification permission, opening links, enforcing the biometric lock and real version info (all optional)</td></tr>
+</table>
+<p>The template has no platform code, no plugins and no assets of its own. Storage, the account and the platform are interfaces and callbacks you provide, so adding or swapping a plugin never touches the template.</p>
+
+<h2 id="install">Install</h2>
+<h3>A. As a package (recommended)</h3>
+<p>Keeping it a package means you can pull in fixes later with a version bump.</p>
+<pre><button class="copy" type="button">Copy</button><code># pubspec.yaml
+dependencies:
+  cairn_ui: ^0.2.0
+  cairn_template_settings:
+    git:
+      url: https://github.com/rlphjyson/cairn_site.git
+      path: templates/settings
+      ref: main            # pin a tag or commit for production
+  shared_preferences: ^2.3.0</code></pre>
+
+<p>Or, from a local checkout: <code>path: ../cairn_site/templates/settings</code>. Everything the package needs for the common cases is exported from <code>package:cairn_template_settings/cairn_template_settings.dart</code>: <code>SettingsApp</code>, <code>SettingsDataSource</code>, <code>InMemorySettingsDataSource</code>, <code>Profile</code>, <code>NotificationPermission</code>, <code>SettingsLink</code>, <code>SettingsPage</code>, <code>SettingsSection</code>, <code>SettingsRegistry</code>, <code>defaultSettingsRegistry</code>, <code>SettingIds</code> and the five definition classes (<code>ToggleSetting</code>, <code>ChoiceSetting</code>, <code>SliderSetting</code>, <code>ActionSetting</code>, <code>LinkSetting</code>) with <code>ChoiceOption</code>, <code>ChoiceStyle</code>, <code>SettingKind</code> and <code>SettingDefinition</code>.</p>
+<h3>B. Copy the source into your app</h3>
+<p>Use this when you want to change screens, add a category or edit the constants (see <a href="#section">Add a section</a> and <a href="#copy">Change the copy</a>).</p>
+<ol class="steps">
+<li>Copy <code>templates/settings/lib/</code> into <code>lib/settings/</code> of your app. Delete <code>cairn_template_settings.dart</code> if you do not want the barrel.</li>
+<li>Add <code>cairn_ui</code>, <code>flutter_bloc</code>, <code>get_it</code> and <code>equatable</code> to your <code>pubspec.yaml</code>. There are no assets to declare.</li>
+<li>Rewrite the <code>package:cairn_template_settings/&hellip;</code> imports to your app's package name (a find-and-replace). Files inside the template use relative imports, so only your own references change.</li>
+<li>Copy <code>test/</code> too (the harness in <code>test/support/</code> is useful) and rewrite its imports the same way.</li>
+</ol>
+
+<h2 id="mount">Mount it</h2>
+<p>The template reads fonts and radii from <code>CairnTheme</code>, so the host app must provide one. Below is a complete <code>main.dart</code>: it keeps the settings in <code>shared_preferences</code> (see <a href="#persisted">Persist the settings</a>), follows the person's theme choice and handles sign out.</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'package:cairn_template_settings/cairn_template_settings.dart';
+import 'package:cairn_ui/cairn_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+Future&lt;void&gt; main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  runApp(MyApp(prefs: prefs));
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key, required this.prefs});
+
+  final SharedPreferences prefs;
+
+  @override
+  State&lt;MyApp&gt; createState() =&gt; _MyAppState();
+}
+
+class _MyAppState extends State&lt;MyApp&gt; {
+  ThemeMode _mode = ThemeMode.system;
+
+  // One data source for the whole app session. PreferencesSettingsDataSource
+  // is defined in "Persist the settings" below.
+  late final PreferencesSettingsDataSource _source =
+      PreferencesSettingsDataSource(widget.prefs);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Daybreak',
+      themeMode: _mode,
+      theme: CairnTheme.materialTheme(CairnTheme.light),
+      darkTheme: CairnTheme.materialTheme(CairnTheme.dark),
+      home: Scaffold(
+        body: SafeArea(
+          child: SettingsApp(
+            settingsDataSource: _source,
+            onThemeModeChanged: (ThemeMode mode) =&gt; setState(() =&gt; _mode = mode),
+            onSignOut: () {
+              // End the session, then show your sign-in screen.
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}</code></pre>
+
+<p><code>SettingsApp</code> fills whatever space its parent gives it (320 &times; 640 and up), so put it in a <code>Scaffold</code> body, a <code>CairnMockupPhone</code> or a fixed-height box. Each instance creates its own dependency container and disposes it, so two copies never share state. It needs a <code>MaterialApp</code> (or <code>WidgetsApp</code>) above it for the overlay that dialogs, sheets and select menus open in. Wrap it in a <code>SafeArea</code> as above, since the template draws its own page frame edge to edge.</p>
+
+<h3 id="arguments">Arguments</h3>
+<table>
+<tr><th>Argument</th><th>Type</th><th>Meaning</th></tr>
+<tr><td><code>settingsDataSource</code></td><td><code>SettingsDataSource?</code></td><td>Where everything is read and written: settings, profile, sessions, storage, support. Default: <code>InMemorySettingsDataSource</code>, which has realistic seed data and forgets everything when the app closes. Read once.</td></tr>
+<tr><td><code>registry</code></td><td><code>SettingsRegistry?</code></td><td>The list of settings. Default: <code>defaultSettingsRegistry</code>. Read once.</td></tr>
+<tr><td><code>profile</code></td><td><code>Profile?</code></td><td>The signed-in person, when your app already has it. It is shown at once and the data source is not asked; saving an edit still goes through the data source. Read once.</td></tr>
+<tr><td><code>onThemeModeChanged</code></td><td><code>void Function(ThemeMode)?</code></td><td>The person picked Light, Dark or System.</td></tr>
+<tr><td><code>onSettingChanged</code></td><td><code>void Function(String id, Object? value)?</code></td><td>Any stored setting changed. Values are <code>bool</code>, <code>String</code> or <code>int</code>.</td></tr>
+<tr><td><code>onSignOut</code></td><td><code>VoidCallback?</code></td><td>The person confirmed Sign out. The template does not end any session itself.</td></tr>
+<tr><td><code>onDeactivateAccount</code></td><td><code>VoidCallback?</code></td><td>The data source deactivated the account. Take the person away from the app.</td></tr>
+<tr><td><code>onDeleteAccount</code></td><td><code>VoidCallback?</code></td><td>The data source deleted the account. Clear local data and leave.</td></tr>
+<tr><td><code>onLinkTap</code></td><td><code>void Function(SettingsLink)?</code></td><td>Terms of service or Privacy policy was tapped. The template never opens URLs.</td></tr>
+<tr><td><code>onRateApp</code></td><td><code>void Function(int stars)?</code></td><td>The person sent a rating, 1 to 5.</td></tr>
+<tr><td><code>onOpenSystemSettings</code></td><td><code>VoidCallback?</code></td><td>The person tapped <em>Open settings</em> on the &ldquo;Notifications are blocked&rdquo; alert.</td></tr>
+<tr><td><code>onRequestNotificationPermission</code></td><td><code>Future&lt;NotificationPermission&gt; Function()?</code></td><td>Asks the platform when notifications are turned on while permission is undecided. Returns the answer.</td></tr>
+<tr><td><code>notificationPermission</code></td><td><code>NotificationPermission</code></td><td>What the operating system allows: <code>granted</code> (default), <code>denied</code> or <code>notDetermined</code>. Read again whenever it changes.</td></tr>
+<tr><td><code>initialLocation</code></td><td><code>String?</code></td><td>Open on a page: a category such as <code>appearance</code> or a path such as <code>privacy/sessions</code>. Read once. See <a href="#navigation">Navigation</a>.</td></tr>
+</table>
+<p>The nine callbacks and <code>notificationPermission</code> may change between builds (a <code>setState</code> in the parent is fine); the app is not restarted. The four <em>read once</em> arguments are used when the widget is first built. To restart the template with new ones, give it a different <code>key</code>.</p>
+
+<h2 id="screens">The screens</h2>
+<div class="diagram"> phone (&lt; 600 px)                          tablet (&ge; 600 px)
+ ┌───────────────┐                       ┌──────────┬────────────────────┐
+ │ Settings      │   tap a row           │ Settings │ Appearance         │
+ │ [Search]      │ ───────────►          │ [Search] │ Theme  ( ) ( ) ( ) │
+ │ [Profile]     │   one page at a time  │ [Profile]│ Text size  ──●──   │
+ │ Appearance  › │   back = chevron,     │ Appear.  │ Accent colour      │
+ │ Notifications │   swipe, system back  │ Notific. │ Reduce motion      │
+ │ ...           │                       │ ...      │                    │
+ └───────────────┘                       └──────────┴────────────────────┘
+                                          288 px list   content up to 560 px</div>
+<h3 id="rules">Rules</h3>
+<ul>
+<li><strong>Two panes</strong> when the available width is at least <code>SettingsLayout.wideBreakpoint</code> (600) <em>and</em> text is not very large (system text scaled above about 1.35). At large text a tablet falls back to one page at a time, so the list never swallows the page beside it. Choosing a category on the left replaces the page on the right; the first category is selected when nothing is open.</li>
+<li><strong>Changes are optimistic.</strong> Toggling a setting updates the screen at once, calls <code>onSettingChanged</code> (and <code>onThemeModeChanged</code> for the theme), then saves through the data source. If the save throws, the previous value comes back and a toast says &ldquo;Could not save that change&rdquo;. A value the registry does not accept is refused with a toast and nothing changes.</li>
+<li><strong>Reading is forgiving.</strong> A missing key, a value of the wrong type and a choice that is no longer offered fall back to the setting's default, and keys with no definition are dropped, so data written by an older or newer build never breaks the app.</li>
+<li><strong>Back</strong> steps from a sub-page (Change password, Active sessions, Blocked users) to its category and from a category to the home. The system back gesture does the same; on the home it is left to your app.</li>
+<li><strong>Unsaved edits are guarded.</strong> If Edit profile has changes, leaving it by the back control, the system back, another category on the tablet or a search result asks &ldquo;Discard changes?&rdquo; first.</li>
+<li><strong>Two-factor.</strong> Turning it on opens a sheet with a secret key and a six-digit code; only a correct code sets the switch. Turning it off asks first, calls the data source, then clears the switch.</li>
+<li><strong>Notifications.</strong> The master switch greys out everything below it; quiet hours' start and end are enabled only when quiet hours are on. See <a href="#notifications">Notification permission</a>.</li>
+<li><strong>Delete account</strong> needs the exact word <code>DELETE</code> (case-sensitive) and then a second &ldquo;This is the last step&rdquo; confirmation. Deactivate and Sign out ask once.</li>
+<li><strong>Some switches only record a choice.</strong> Biometric lock, Wi-Fi only, auto-delete, quiet hours, language and region are stored and reported through <code>onSettingChanged</code>; enforcing them (calling <code>local_auth</code>, pausing downloads, scheduling silence, translating your app) is your app's job.</li>
+</ul>
+
+<h2 id="datasource">Connect a backend</h2>
+<p>Everything the template asks its backend for goes through one interface, <code>SettingsDataSource</code>. Today the default is <code>InMemorySettingsDataSource</code>, a demo that returns decoded JSON and applies a 300 ms latency so loading and saving states are visible. It has a few rules that exercise the error paths: the usernames <code>admin</code>, <code>root</code>, <code>support</code> and <code>cairn</code> are taken, the current password <code>wrong-password</code> is rejected and the two-factor code is <code>123456</code>.</p>
+<h3 id="contract">The contract</h3>
+<p>Every method returns what a REST client would hand you after <code>jsonDecode</code>. Mappers in <code>domain/&lt;feature&gt;/mappers/</code> turn it into models and are the only place that knows the wire format. Reads that fail should <strong>throw</strong>: the screen shows a retry. Writes that the server <em>refuses</em> should <strong>return</strong> <code>{"ok": false, "error": "A sentence for the person."}</code>: the sentence is shown as it is. A write that throws shows a generic &ldquo;Could not &hellip;&rdquo; message.</p>
+<table>
+<tr><th>Method</th><th>Returns</th></tr>
+<tr><td><code>loadSettings()</code></td><td><code>{"schema": 1, "values": {"&lt;setting id&gt;": &lt;value&gt;}}</code>. May be empty: every setting then has its default.</td></tr>
+<tr><td><code>saveSettings(json)</code></td><td><code>void</code>. Receives the same shape, the <em>whole</em> blob, after every change.</td></tr>
+<tr><td><code>loadAppInfo()</code></td><td><code>{"name", "version", "build", "licences": [{"name", "licence", "summary"}]}</code></td></tr>
+<tr><td><code>loadProfile()</code></td><td><code>{"name", "username", "email", "bio", "avatar"}</code> (<code>avatar</code> is a preset id)</td></tr>
+<tr><td><code>saveProfile(json)</code></td><td>The profile as stored, in the same shape.</td></tr>
+<tr><td><code>checkUsername(username)</code></td><td><code>{"available": true}</code></td></tr>
+<tr><td><code>loadSessions()</code></td><td><code>{"sessions": [{"id", "device", "location", "lastActive" (ISO 8601), "current"}]}</code></td></tr>
+<tr><td><code>revokeSession(id)</code>, <code>revokeOtherSessions()</code></td><td>The write envelope.</td></tr>
+<tr><td><code>changePassword(current:, next:)</code></td><td>The write envelope. Return the error for a wrong current password.</td></tr>
+<tr><td><code>beginTwoFactor()</code></td><td><code>{"secret": "JBSWY3DPEHPK3PXP"}</code> (shown in groups of four)</td></tr>
+<tr><td><code>verifyTwoFactor(code)</code>, <code>disableTwoFactor()</code></td><td>The write envelope.</td></tr>
+<tr><td><code>requestExport()</code></td><td><code>{"id", "requestedAt"}</code></td></tr>
+<tr><td><code>loadBlockedUsers()</code></td><td><code>{"blocked": [{"id", "name", "username"}]}</code></td></tr>
+<tr><td><code>unblockUser(id)</code></td><td>The write envelope.</td></tr>
+<tr><td><code>deactivateAccount()</code>, <code>deleteAccount()</code></td><td>The write envelope.</td></tr>
+<tr><td><code>loadStorage()</code></td><td><code>{"capacity": bytes, "categories": [{"id", "label", "bytes"}]}</code></td></tr>
+<tr><td><code>clearCache()</code></td><td><code>{"ok": true, "reclaimed": bytes}</code></td></tr>
+<tr><td><code>submitSupportRequest(json)</code></td><td>The write envelope; its <code>message</code> is the ticket reference. Receives <code>{"subject", "message"}</code>.</td></tr>
+</table>
+<div class="callout note"><strong>Server-owned values</strong><p>The settings blob also carries <code>privacy.twoFactor</code>. If your server is the source of truth for two-factor, include the real state in <code>loadSettings</code> (<code>"privacy.twoFactor": user.twoFactorEnabled</code>) so the switch is right after a reinstall. The same goes for anything else the account decides, such as the language.</p></div>
+
+<h3 id="persisted">Persist the settings</h3>
+<p>The quickest real integration extends the demo and replaces only the calls you care about. This one keeps the setting values in <code>shared_preferences</code> and reports the real app version; profile, sessions and the rest stay on the demo until you replace them.</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'dart:convert';
+
+import 'package:cairn_template_settings/cairn_template_settings.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class PreferencesSettingsDataSource extends InMemorySettingsDataSource {
+  PreferencesSettingsDataSource(SharedPreferences prefs)
+    : _prefs = prefs,
+      super(latency: Duration.zero, settings: _stored(prefs));
+
+  static const String _key = 'settings.values';
+
+  final SharedPreferences _prefs;
+
+  static Map&lt;String, Object?&gt; _stored(SharedPreferences prefs) {
+    final String? raw = prefs.getString(_key);
+    if (raw == null) return &lt;String, Object?&gt;{};
+    try {
+      return Map&lt;String, Object?&gt;.from(jsonDecode(raw) as Map&lt;Object?, Object?&gt;);
+    } on Object {
+      return &lt;String, Object?&gt;{}; // unreadable: start from the defaults
+    }
+  }
+
+  @override
+  Future&lt;void&gt; saveSettings(Map&lt;String, Object?&gt; json) async {
+    await super.saveSettings(json); // keeps loadSettings in step
+    await _prefs.setString(_key, jsonEncode(json));
+  }
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; loadAppInfo() async {
+    final PackageInfo info = await PackageInfo.fromPlatform();
+    return &lt;String, Object?&gt;{
+      'name': info.appName,
+      'version': info.version,
+      'build': info.buildNumber,
+      'licences': &lt;Object?&gt;[
+        &lt;String, Object?&gt;{
+          'name': 'cairn_ui',
+          'licence': 'MIT',
+          'summary': 'The component library the screens are built from.',
+        },
+      ],
+    };
+  }
+}</code></pre>
+<ul>
+<li><strong>What is saved</strong>: <code>{"schema": 1, "values": {...}}</code>, where each value is a <code>bool</code>, a <code>String</code> or an <code>int</code>. None of it is secret.</li>
+<li><strong>Ids are keys.</strong> Setting ids (<code>appearance.themeMode</code>, <code>notifications.messages</code>) are what is stored. Reword titles freely; keep ids stable, or the stored value is lost and the default returns.</li>
+<li><strong>Per user</strong>: if several people share a device, include the user id in your key, and remove it on sign out.</li>
+<li><strong>Stale keys</strong>: keys without a definition are ignored when reading and dropped on the next save.</li>
+</ul>
+
+<h3 id="rest">A REST backend</h3>
+<p>Implement the whole interface when everything lives on a server. The helper methods keep each call to one line: reads throw on any failure, writes turn a 4xx into the <code>ok: false</code> envelope the screens expect and a 5xx into an exception.</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'dart:convert';
+
+import 'package:cairn_template_settings/cairn_template_settings.dart';
+import 'package:http/http.dart' as http;
+
+class ApiSettingsDataSource implements SettingsDataSource {
+  ApiSettingsDataSource(this._client, {required this.baseUrl, required this.token});
+
+  final http.Client _client;
+
+  /// Ends with a slash, for example https://api.example.com/v1/me/
+  final Uri baseUrl;
+  final String Function() token;
+
+  Map&lt;String, String&gt; get _headers =&gt; &lt;String, String&gt;{
+    'Authorization': 'Bearer ${token()}',
+    'Content-Type': 'application/json',
+  };
+
+  Map&lt;String, Object?&gt; _json(String body) =&gt; body.isEmpty
+      ? &lt;String, Object?&gt;{}
+      : Map&lt;String, Object?&gt;.from(jsonDecode(body) as Map&lt;Object?, Object?&gt;);
+
+  Future&lt;http.Response&gt; _send(String method, String path, Object? body) async {
+    final http.Request request = http.Request(method, baseUrl.resolve(path))
+      ..headers.addAll(_headers);
+    if (body != null) request.body = jsonEncode(body);
+    return http.Response.fromStream(await _client.send(request));
+  }
+
+  /// A read: anything but 2xx throws, so the screen offers a retry.
+  Future&lt;Map&lt;String, Object?&gt;&gt; _read(String path, {String method = 'GET', Object? body}) async {
+    final http.Response res = await _send(method, path, body);
+    if (res.statusCode &lt; 200 || res.statusCode &gt; 299) {
+      throw http.ClientException('$method $path failed: ${res.statusCode}');
+    }
+    return _json(res.body);
+  }
+
+  /// A write: 4xx becomes { ok: false, error }, 5xx throws.
+  Future&lt;Map&lt;String, Object?&gt;&gt; _write(String method, String path, [Object? body]) async {
+    final http.Response res = await _send(method, path, body);
+    if (res.statusCode &gt;= 500) {
+      throw http.ClientException('$method $path failed: ${res.statusCode}');
+    }
+    if (res.statusCode &gt;= 400) {
+      return &lt;String, Object?&gt;{
+        'ok': false,
+        'error': _json(res.body)['error'] ?? 'Something went wrong. Please try again.',
+      };
+    }
+    return &lt;String, Object?&gt;{'ok': true, ..._json(res.body)};
+  }
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; loadSettings() =&gt; _read('settings');
+
+  @override
+  Future&lt;void&gt; saveSettings(Map&lt;String, Object?&gt; json) =&gt;
+      _read('settings', method: 'PUT', body: json);
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; loadAppInfo() =&gt; _read('app-info');
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; loadProfile() =&gt; _read('profile');
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; saveProfile(Map&lt;String, Object?&gt; json) =&gt;
+      _read('profile', method: 'PUT', body: json);
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; checkUsername(String username) =&gt;
+      _read('usernames/${Uri.encodeComponent(username)}');
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; loadSessions() =&gt; _read('sessions');
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; revokeSession(String sessionId) =&gt;
+      _write('DELETE', 'sessions/$sessionId');
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; revokeOtherSessions() =&gt;
+      _write('DELETE', 'sessions?others=true');
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; changePassword({
+    required String current,
+    required String next,
+  }) =&gt; _write('POST', 'password', &lt;String, Object?&gt;{'current': current, 'next': next});
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; beginTwoFactor() =&gt;
+      _read('two-factor', method: 'POST');
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; verifyTwoFactor(String code) =&gt;
+      _write('POST', 'two-factor/verify', &lt;String, Object?&gt;{'code': code});
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; disableTwoFactor() =&gt; _write('DELETE', 'two-factor');
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; requestExport() =&gt; _read('exports', method: 'POST');
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; loadBlockedUsers() =&gt; _read('blocked');
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; unblockUser(String userId) =&gt;
+      _write('DELETE', 'blocked/$userId');
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; deactivateAccount() =&gt;
+      _write('POST', 'account/deactivate');
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; deleteAccount() =&gt; _write('DELETE', 'account');
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; loadStorage() =&gt; _read('storage');
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; clearCache() =&gt; _write('POST', 'storage/clear-cache');
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; submitSupportRequest(Map&lt;String, Object?&gt; json) =&gt;
+      _write('POST', 'support', json);
+}
+
+// Then:
+SettingsApp(
+  settingsDataSource: ApiSettingsDataSource(
+    client,
+    baseUrl: Uri.parse('https://api.example.com/v1/me/'),
+    token: () =&gt; auth.accessToken,
+  ),
+)</code></pre>
+
+<p>Things to decide on the server side: <code>saveSettings</code> is called after every single change with the whole blob, so make it idempotent and last-write-wins (or debounce it in the data source); <code>revokeSession</code> must refuse the current device; <code>deleteAccount</code> should be irreversible and <code>deactivateAccount</code> reversible, because the screen says exactly that. If your API answers <code>401</code>, refresh the token inside the data source rather than letting the screens see the failure.</p>
+<p>When your app already has the signed-in person, pass <code>profile: Profile(name: &hellip;, username: &hellip;, email: &hellip;)</code> so the home card shows at once without a round trip. Saving an edit still goes through <code>saveProfile</code> and the card updates from the answer.</p>
+
+<h2 id="registry">Customise the settings</h2>
+<p>A <code>SettingsRegistry</code> is an ordered list of <code>SettingDefinition</code>s. It is the single source of truth: the search reads it to build its index, each category screen reads it to draw its rows, the mapper reads it to repair stored values and <code>UpdateSetting</code> reads it to validate every change. Add or remove a definition and the setting appears or disappears in all four. Ids must be unique; a duplicate throws an <code>ArgumentError</code> when the registry is built.</p>
+<h3 id="kinds">Kinds of setting</h3>
+<table>
+<tr><th>Class</th><th>Stored as</th><th>Drawn as</th><th>Needs code in the screen?</th></tr>
+<tr><td><code>ToggleSetting</code></td><td><code>bool</code></td><td>a switch row (<code>initial</code>)</td><td>No</td></tr>
+<tr><td><code>ChoiceSetting</code></td><td>the option's <code>String</code> value</td><td>a radio group or, by default, a select (<code>style: ChoiceStyle.radio</code> for a handful); needs <code>options</code> and <code>initial</code></td><td>No</td></tr>
+<tr><td><code>SliderSetting</code></td><td>the step's <code>int</code> index</td><td>a stepped slider; <code>labels</code> names every step, <code>initial</code> is an index</td><td>No</td></tr>
+<tr><td><code>ActionSetting</code></td><td>nothing</td><td>a row that does something when tapped (<code>destructive: true</code> draws it as dangerous)</td><td><strong>Yes</strong>: say what the tap does</td></tr>
+<tr><td><code>LinkSetting</code></td><td>nothing</td><td>a row with an external-link glyph; asks the host to open its <code>SettingsLink</code></td><td>Only if you add a new <code>SettingsLink</code></td></tr>
+</table>
+<p>Every definition has <code>id</code>, <code>section</code>, <code>title</code>, and optionally <code>description</code>, <code>keywords</code> (extra words the search matches) and <code>group</code> (a heading shared by <em>consecutive</em> rows). Toggles, choices and sliders are therefore pure data: add one and it is drawn, searched, validated, stored and reported with no new code.</p>
+<h3 id="edit-registry">Add, remove, reorder</h3>
+<p>Build a registry from the default list and pass it in. Rows appear in the order listed, so insert a new row next to its group, or it forms a second card with the same heading.</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'package:cairn_template_settings/cairn_template_settings.dart';
+
+SettingsRegistry buildRegistry() {
+  final List&lt;SettingDefinition&gt; all = defaultSettingsRegistry.definitions.toList();
+
+  // Add a toggle to the "What to notify about" group.
+  final int after = all.indexWhere(
+    (SettingDefinition d) =&gt; d.id == 'notifications.updates',
+  );
+  all.insert(
+    after + 1,
+    const ToggleSetting(
+      id: 'notifications.reminders',
+      section: SettingsSection.notifications,
+      title: 'Reminders',
+      description: 'A nudge when something is due',
+      keywords: &lt;String&gt;['alarm', 'due', 'deadline'],
+      group: 'What to notify about',
+      initial: true,
+    ),
+  );
+
+  // Add a choice to Appearance: how dense lists are.
+  all.add(
+    const ChoiceSetting(
+      id: 'appearance.density',
+      section: SettingsSection.appearance,
+      title: 'List density',
+      keywords: &lt;String&gt;['compact', 'spacing'],
+      style: ChoiceStyle.radio,
+      initial: 'comfortable',
+      options: &lt;ChoiceOption&gt;[
+        ChoiceOption('comfortable', 'Comfortable'),
+        ChoiceOption('compact', 'Compact', 'Fits more on screen'),
+      ],
+    ),
+  );
+
+  // Remove: reduce motion, and the whole About category.
+  all.removeWhere(
+    (SettingDefinition d) =&gt;
+        d.id == SettingIds.reduceMotion || d.section == SettingsSection.about,
+  );
+
+  // Reorder: show the digest before the channel.
+  final SettingDefinition digest = all.firstWhere(
+    (SettingDefinition d) =&gt; d.id == 'notifications.digest',
+  );
+  all
+    ..remove(digest)
+    ..insert(
+      all.indexWhere((SettingDefinition d) =&gt; d.id == 'notifications.channel'),
+      digest,
+    );
+
+  return SettingsRegistry(all);
+}
+
+// Then:
+SettingsApp(
+  registry: buildRegistry(),
+  onSettingChanged: (String id, Object? value) {
+    if (id == 'appearance.density') applyDensity(value as String);
+  },
+)</code></pre>
+
+<ul>
+<li><strong>Remove a whole category</strong> by removing all its definitions: it disappears from the home, the tablet list and the search. A category with no definitions is skipped, and so is a home group left empty.</li>
+<li><strong>Change an option list or a default</strong> by replacing the definition with a new const one (definitions are immutable). A stored value that is no longer offered is repaired to the default when read.</li>
+<li><strong>Search</strong> needs nothing: titles, <code>keywords</code>, descriptions and the section name are matched, case-insensitively, and every word of the query must match. A title match outranks a keyword match.</li>
+<li><strong>The home groups</strong> (Account, Preferences, Data and support, Session) are fixed in <code>domain/settings/registry/home_groups.dart</code>; rename or regroup them there (copy install).</li>
+<li><strong>Titles and summaries of the categories</strong> live on the <code>SettingsSection</code> enum, in <code>domain/settings/models/settings_section.dart</code>.</li>
+</ul>
+<div class="callout warn"><strong>Actions and links need a line of code</strong><p>The screens only know what to do for the built-in action ids (open Change password, clear the cache, sign out&hellip;). A custom <code>ActionSetting</code> is drawn, searched and tappable, but on most screens its tap does nothing until you add it to that view's <code>actions</code> map (<code>SectionBlocks.build(actions: {'my.id': () =&gt; ...})</code>). On About, an unknown row asks the host through <code>onLinkTap</code>, and <code>SettingsLink</code> has only <code>terms</code> and <code>privacy</code>; add a value to the enum (copy install) for a third link. If you only need a toggle, a choice or a slider, none of this applies.</p></div>
+
+<h3 id="caveats">Settings the screens rely on</h3>
+<p>Ids in <code>SettingIds</code> are special: a screen reads them directly. Everything else is drawn from its definition alone. Removing a special one is mostly safe, with these exceptions:</p>
+<table>
+<tr><th>Id</th><th>If you remove it</th></tr>
+<tr><td><code>SettingIds.notificationsMaster</code></td><td>The master switch is read as off, so every other notification row is greyed out. Remove the whole Notifications category instead.</td></tr>
+<tr><td><code>SettingIds.textSize</code></td><td>The template reads a missing step as 0 (Small, 0.9&times;), so text shrinks. Keep it, or with the copy install make <code>SettingsThemeScope</code> fall back to <code>TextSizeSteps.defaultStep</code> when the registry has none.</td></tr>
+<tr><td><code>SettingIds.themeMode</code>, <code>SettingIds.accent</code>, <code>SettingIds.reduceMotion</code></td><td>Safe: the template falls back to System, Ink and motion on. The Appearance home row loses its value.</td></tr>
+<tr><td><code>SettingIds.editProfile</code></td><td>The profile card and the Edit profile screen disappear from the home.</td></tr>
+<tr><td><code>SettingIds.faq</code>, <code>SettingIds.contact</code>, <code>SettingIds.version</code></td><td>Each hides its own block on the Help screen.</td></tr>
+<tr><td><code>SettingIds.twoFactor</code>, <code>SettingIds.changePassword</code>, <code>SettingIds.sessions</code>, <code>SettingIds.blockedUsers</code>, <code>SettingIds.exportData</code>, <code>SettingIds.biometric</code></td><td>Safe: the row and its sub-page entry point go.</td></tr>
+<tr><td><code>SettingIds.signOut</code>, <code>SettingIds.deactivate</code>, <code>SettingIds.deleteAccount</code></td><td>Safe: the row goes. Sign out is often one you want to keep and remove only deactivate and delete.</td></tr>
+</table>
+
+<h3 id="section">Add a section</h3>
+<p>A section is a whole screen, so a new one means a new view; this needs the copy install because <code>SettingsSection</code> and <code>SettingsPage</code> are enums. The compiler guides you: the shell and the icon function switch exhaustively, so a missing case is an error, not a blank page. Example: &ldquo;Connected apps&rdquo;.</p>
+<ol class="steps">
+<li>In <code>domain/settings/models/settings_section.dart</code> add <code>connected('Connected apps', 'Calendar and contacts'),</code> where you want it (declaration order is the search and tablet order).</li>
+<li>In <code>core/presentation/navigation/settings_page.dart</code> add <code>connected('Connected apps', SettingsSection.connected),</code>. The page's <em>name must equal</em> the section's name: <code>SettingsPage.of</code> relies on it, and it is what <code>initialLocation: 'connected'</code> parses.</li>
+<li>In <code>domain/settings/registry/home_groups.dart</code> add <code>SettingsSection.connected</code> to a group. A section that is in no group never shows on the home. Update the &ldquo;home groups cover every section exactly once&rdquo; test in <code>test/domain_test.dart</code>.</li>
+<li>In <code>presentation/home/widgets/section_icons.dart</code> add <code>SettingsSection.connected =&gt; Icons.link,</code>.</li>
+<li>Create <code>presentation/connected/views/connected_view.dart</code> (below).</li>
+<li>In <code>presentation/shell/settings_shell.dart</code> add <code>SettingsPage.connected =&gt; ConnectedView(onBack: back),</code> to the switch in <code>_pageFor</code>.</li>
+<li>Add its definitions to your registry with <code>section: SettingsSection.connected</code>.</li>
+</ol>
+<pre><button class="copy" type="button">Copy</button><code>import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../core/presentation/widgets/load_gate.dart';
+import '../../../core/presentation/widgets/page_frame.dart';
+import '../../../domain/settings/models/settings_section.dart';
+import '../../../domain/settings/registry/settings_registry.dart';
+import '../../settings/bloc/settings_cubit.dart';
+import '../../settings/bloc/settings_state.dart';
+import '../../settings/widgets/section_blocks.dart';
+
+class ConnectedView extends StatelessWidget {
+  const ConnectedView({super.key, required this.onBack});
+
+  /// Null on a tablet, where the list is beside the page.
+  final VoidCallback? onBack;
+
+  @override
+  Widget build(BuildContext context) {
+    final SettingsState state = context.watch&lt;SettingsCubit&gt;().state;
+    final SettingsCubit cubit = context.read&lt;SettingsCubit&gt;();
+    final SettingsRegistry registry = context.read&lt;SettingsRegistry&gt;();
+    return PageFrame(
+      title: SettingsSection.connected.title,
+      onBack: onBack,
+      children: &lt;Widget&gt;[
+        LoadGate(
+          status: state.status,
+          onRetry: cubit.load,
+          child: state.snapshot == null
+              ? const SizedBox.shrink()
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: &lt;Widget&gt;[
+                    for (final (int i, Widget w) in SectionBlocks.build(
+                      context,
+                      registry: registry,
+                      section: SettingsSection.connected,
+                      snapshot: state.snapshot!,
+                      onChanged: cubit.set,
+                    ).indexed) ...&lt;Widget&gt;[
+                      if (i &gt; 0) const SizedBox(height: 20),
+                      w,
+                    ],
+                  ],
+                ),
+        ),
+      ],
+    );
+  }
+}</code></pre>
+
+<p><code>SectionBlocks.build</code> draws every definition of the section in order, grouped under its heading, with no per-setting code. Pass <code>actions</code> for tappable rows, <code>custom</code> to replace the row for one id, <code>enabled</code> to grey rows out and <code>subtitles</code> to override a description. A screen that needs its own state (a list loaded from the server) should own a cubit through a view model; see <a href="#viewmodels">View models</a>.</p>
+
+<h2 id="theme-wiring">Theme, text size, accent, motion</h2>
+<p>The template applies the person's appearance choices <strong>to itself</strong>: it wraps its content in its own <code>Theme</code> and <code>MediaQuery</code> (<code>SettingsThemeScope</code>), so the Appearance screen is a live preview with no wiring. It keeps your font family, fallback fonts and radius from the host's <code>CairnTheme</code>, and takes brightness and accent from the person's choice:</p>
+<ul>
+<li><strong>Light</strong> and <strong>Dark</strong> use <code>CairnTheme.light</code> and <code>CairnTheme.dark</code>.</li>
+<li><strong>System</strong> follows the host's registered <code>CairnTheme</code> (the one in your <code>ThemeData</code> extensions, as <code>CairnTheme.materialTheme</code> registers it) when there is one, so a host that has already resolved its own theme mode is respected. With no registered <code>CairnTheme</code> it follows the device brightness.</li>
+<li><strong>Accent</strong> (Ink, Ocean, Forest) replaces the primary colour and its foreground. Ink keeps the theme's own primary.</li>
+<li><strong>Text size</strong> multiplies the text scale it inherits by 0.9, 1.0, 1.15 or 1.3.</li>
+<li><strong>Reduce motion</strong> turns <code>MediaQuery.disableAnimations</code> on (it is OR-ed with the system setting, never turned off).</li>
+</ul>
+<p>To make the <em>rest of your app</em> follow, listen to the two callbacks. Neither is called when the template mounts, so also read the stored values at start-up from the same place your data source keeps them.</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'dart:convert';
+
+import 'package:cairn_template_settings/cairn_template_settings.dart';
+import 'package:cairn_ui/cairn_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class AppearanceState extends ChangeNotifier {
+  AppearanceState(SharedPreferences prefs) {
+    // The blob PreferencesSettingsDataSource writes: { "schema": 1, "values": {...} }.
+    final String? raw = prefs.getString('settings.values');
+    final Object? decoded = raw == null ? null : jsonDecode(raw);
+    final Object? values = decoded is Map&lt;String, Object?&gt; ? decoded['values'] : null;
+    if (values is Map&lt;String, Object?&gt;) {
+      for (final MapEntry&lt;String, Object?&gt; e in values.entries) {
+        apply(e.key, e.value);
+      }
+    }
+  }
+
+  ThemeMode mode = ThemeMode.system;
+  double textFactor = 1; // steps 0..3 -&gt; 0.9, 1.0, 1.15, 1.3
+  String accent = 'ink';
+  bool reduceMotion = false;
+
+  static const List&lt;double&gt; _factors = &lt;double&gt;[0.9, 1.0, 1.15, 1.3];
+
+  /// Call from SettingsApp.onSettingChanged. Notifies only when it matters.
+  void apply(String id, Object? value) {
+    switch (id) {
+      case SettingIds.themeMode:
+        mode = switch (value) {
+          'light' =&gt; ThemeMode.light,
+          'dark' =&gt; ThemeMode.dark,
+          _ =&gt; ThemeMode.system,
+        };
+      case SettingIds.textSize:
+        textFactor = _factors[(value as int).clamp(0, _factors.length - 1)];
+      case SettingIds.accent:
+        accent = value as String;
+      case SettingIds.reduceMotion:
+        reduceMotion = value as bool;
+      default:
+        return;
+    }
+    notifyListeners();
+  }
+}
+
+/// Your own accent mapping: the template's accents are internal to it.
+CairnTheme hostTheme(CairnTheme base, String accent) =&gt; switch (accent) {
+  'ocean' =&gt; base.copyWith(primary: const Color(0xFF1D4ED8)),
+  'forest' =&gt; base.copyWith(primary: const Color(0xFF166534)),
+  _ =&gt; base,
+};
+
+// In your app widget (listen to the ChangeNotifier with ListenableBuilder):
+MaterialApp(
+  themeMode: appearance.mode,
+  theme: CairnTheme.materialTheme(hostTheme(CairnTheme.light, appearance.accent)),
+  darkTheme: CairnTheme.materialTheme(hostTheme(CairnTheme.dark, appearance.accent)),
+  home: Scaffold(
+    body: SafeArea(
+      child: SettingsApp(
+        onSettingChanged: appearance.apply,
+        // onThemeModeChanged is optional here: onSettingChanged already carries
+        // the theme as 'light', 'dark' or 'system'.
+      ),
+    ),
+  ),
+)</code></pre>
+
+<div class="callout warn"><strong>Do not scale the text twice</strong><p>The template multiplies the text scale it <em>inherits</em> by the person's text size. If you apply the same factor in <code>MaterialApp.builder</code>, the settings screens inherit it and the text is scaled twice (1.3 &times; 1.3). Apply your factor on your own screens only, or undo it around the template:</p></div>
+<pre><button class="copy" type="button">Copy</button><code>// Around SettingsApp, restore the system text scale so only the template applies the factor.
+MediaQuery(
+  data: MediaQuery.of(context).copyWith(
+    textScaler: MediaQueryData.fromView(View.of(context)).textScaler,
+  ),
+  child: SettingsApp(onSettingChanged: appearance.apply),
+)</code></pre>
+<ul>
+<li><strong>Brand colours inside the template.</strong> Inside the settings the colours are the Cairn light and dark palettes plus the three accents, not your host theme's custom colours. To change the accents edit <code>SettingsAppearance.accentColor</code> and <code>SettingsAppearance.accents</code> in <code>core/presentation/settings_appearance.dart</code> and the <code>appearance.accent</code> options in your registry (copy install).</li>
+<li><strong>If saving fails</strong> the template restores the old value and says so, but it has already called your callbacks. Keep your app in step by making <code>saveSettings</code> reliable (queue and retry) rather than throwing.</li>
+<li><strong>Language and region</strong> are stored and reported (<code>language.language</code>, <code>language.region</code>, <code>language.dateFormat</code>, <code>language.timeFormat</code>, <code>language.units</code>); the template does not translate itself. Apply them in your app from <code>onSettingChanged</code>.</li>
+</ul>
+
+<h2 id="account">Sign out, deactivate, delete</h2>
+<p>The danger zone never ends a session or touches an account by itself. Each action asks for confirmation, then tells your app:</p>
+<table>
+<tr><th>Action</th><th>Confirmation</th><th>What the template does</th></tr>
+<tr><td>Sign out</td><td>&ldquo;Sign out?&rdquo;, once</td><td>Calls <code>onSignOut</code>. Signing out affects this device only. If the callback is missing, the toast says &ldquo;Pass onSignOut to SettingsApp to handle this.&rdquo;</td></tr>
+<tr><td>Deactivate account</td><td>&ldquo;Deactivate your account?&rdquo;, once</td><td>Calls <code>deactivateAccount()</code> on the data source; on <code>ok</code> calls <code>onDeactivateAccount</code> and shows &ldquo;Account deactivated&rdquo;. A refusal shows its <code>error</code> and calls nothing.</td></tr>
+<tr><td>Delete account</td><td>Type <code>DELETE</code>, then &ldquo;This is the last step&rdquo;</td><td>Checks the word again, calls <code>deleteAccount()</code>; on <code>ok</code> calls <code>onDeleteAccount</code>. The row is disabled and says &ldquo;Deleting...&rdquo; while it runs.</td></tr>
+</table>
+<pre><button class="copy" type="button">Copy</button><code>SettingsApp(
+  settingsDataSource: source,
+  onSignOut: () async {
+    await auth.signOut();               // revoke the token, clear secure storage
+    await prefs.remove('settings.values'); // per-user data on a shared device
+    router.go('/sign-in');
+  },
+  onDeactivateAccount: () {
+    // The server has hidden the account already: drop the local session.
+    auth.clearLocal();
+    router.go('/goodbye');
+  },
+  onDeleteAccount: () async {
+    await localDatabase.wipe();
+    await prefs.clear();
+    router.go('/goodbye');
+  },
+)</code></pre>
+<p>The confirmation word is <code>deleteConfirmationPhrase</code> in <code>common/constants/confirmation_phrases.dart</code> (copy install). The check is exact and case-sensitive, so autofill or a stray tap cannot delete an account; the use case verifies it too, not only the dialog. After the hook fires the template may still be on screen: navigate away in the callback.</p>
+
+<h2 id="notifications">Notification permission</h2>
+<p>Whether the operating system lets the app notify is the system's decision, not a setting, so you pass it in as <code>notificationPermission</code> and the screen reacts:</p>
+<ul>
+<li><code>granted</code> &ndash; the master switch works normally.</li>
+<li><code>notDetermined</code> &ndash; turning the master switch on first calls <code>onRequestNotificationPermission</code>. If it answers <code>granted</code> the switch turns on; any other answer leaves it off. With no callback the switch simply turns on.</li>
+<li><code>denied</code> &ndash; the person refused and the app cannot ask again. The screen shows &ldquo;Notifications are blocked&rdquo; with <strong>Open settings</strong> (<code>onOpenSystemSettings</code>), the master switch cannot be turned on and every row below is greyed out.</li>
+</ul>
+<p>Read the status again whenever the app returns to the foreground, since the person may have changed it in the system settings:</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'package:cairn_template_settings/cairn_template_settings.dart';
+import 'package:flutter/widgets.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+class SettingsPageHost extends StatefulWidget {
+  const SettingsPageHost({super.key, required this.source});
+
+  final SettingsDataSource source;
+
+  @override
+  State&lt;SettingsPageHost&gt; createState() =&gt; _SettingsPageHostState();
+}
+
+class _SettingsPageHostState extends State&lt;SettingsPageHost&gt;
+    with WidgetsBindingObserver {
+  NotificationPermission _permission = NotificationPermission.notDetermined;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _refresh();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) _refresh();
+  }
+
+  NotificationPermission _map(PermissionStatus status) =&gt; switch (status) {
+    PermissionStatus.granted ||
+    PermissionStatus.limited ||
+    PermissionStatus.provisional =&gt; NotificationPermission.granted,
+    // The system will not show its prompt again: the only way back is Settings.
+    PermissionStatus.permanentlyDenied ||
+    PermissionStatus.restricted =&gt; NotificationPermission.denied,
+    // Refused once, but asking again is still possible.
+    PermissionStatus.denied =&gt; NotificationPermission.notDetermined,
+  };
+
+  Future&lt;void&gt; _refresh() async {
+    final NotificationPermission now = _map(await Permission.notification.status);
+    if (mounted) setState(() =&gt; _permission = now);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SettingsApp(
+      settingsDataSource: widget.source,
+      notificationPermission: _permission,
+      onRequestNotificationPermission: () async =&gt;
+          _map(await Permission.notification.request()),
+      onOpenSystemSettings: openAppSettings,
+    );
+  }
+}</code></pre>
+<p>On Android 13+ declare <code>POST_NOTIFICATIONS</code> in <code>AndroidManifest.xml</code>; on iOS enable the notification permission macro in the Podfile as <code>permission_handler</code>'s README describes. The template only shows and stores the person's <em>preferences</em> (<code>notifications.messages</code>, <code>notifications.digest</code>, quiet hours&hellip;); sending, scheduling and silencing are your push backend's job, driven by <code>onSettingChanged</code> or by the stored blob.</p>
+
+<h2 id="links">Links and rating</h2>
+<p>About has Terms of service and Privacy policy rows. The template never opens URLs: it calls <code>onLinkTap</code> with a <code>SettingsLink</code> and you decide how (browser, in-app web view, a route). Without the callback, tapping shows a toast saying to pass <code>onLinkTap</code>.</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'package:url_launcher/url_launcher.dart';
+
+SettingsApp(
+  onLinkTap: (SettingsLink link) {
+    final Uri url = switch (link) {
+      SettingsLink.terms =&gt; Uri.parse('https://example.com/terms'),
+      SettingsLink.privacy =&gt; Uri.parse('https://example.com/privacy'),
+    };
+    launchUrl(url, mode: LaunchMode.externalApplication);
+  },
+  onRateApp: (int stars) async {
+    analytics.log('app_rating', &lt;String, Object?&gt;{'stars': stars});
+    if (stars &gt;= 4) await InAppReview.instance.requestReview();
+    // Otherwise route low ratings to your feedback form instead of the store.
+  },
+)</code></pre>
+<p><strong>Rate the app</strong> opens a dialog with five stars; <em>Send</em> is enabled once one is picked and calls <code>onRateApp(stars)</code>; the template then thanks the person with a toast. <em>Not now</em> calls nothing. <strong>Open-source licences</strong> expands the list from <code>loadAppInfo</code>, and <strong>App version</strong> on Help copies the version and build to the clipboard for a support request.</p>
+
+<h2 id="copy">Change the copy</h2>
+<p>Words come from three places. With the package install you can change the first (the registry's titles and descriptions, passed in) and the data source; the constants and view strings need the copy install.</p>
+<table>
+<tr><th>To change</th><th>Edit</th></tr>
+<tr><td>A setting's title, description, keywords, options, defaults, group heading</td><td>its definition in your <code>SettingsRegistry</code> (or <code>domain/settings/registry/default_settings_registry.dart</code>)</td></tr>
+<tr><td>A category's title and one-line summary</td><td><code>domain/settings/models/settings_section.dart</code></td></tr>
+<tr><td>The home group headings</td><td><code>domain/settings/registry/home_groups.dart</code></td></tr>
+<tr><td>FAQ questions and answers</td><td><code>common/constants/faq_items.dart</code> (<code>FaqItems.all</code>; or load yours and build the same records)</td></tr>
+<tr><td>Contact form subjects</td><td><code>common/constants/support_subjects.dart</code> (<code>SupportSubjects.all</code>)</td></tr>
+<tr><td>Text size names and factors</td><td><code>common/constants/text_size_steps.dart</code> (<code>TextSizeSteps</code>; the registry's text size slider uses its <code>labels</code>)</td></tr>
+<tr><td>Avatar presets</td><td><code>common/constants/avatar_presets.dart</code> (ids and names) and <code>presentation/profile/widgets/profile_avatar.dart</code> (how each looks)</td></tr>
+<tr><td>The quiet-hours time list</td><td><code>common/constants/time_options.dart</code> (<code>TimeOptions.halfHours</code>)</td></tr>
+<tr><td>The word typed to delete; the demo two-factor code and wrong password</td><td><code>common/constants/confirmation_phrases.dart</code></td></tr>
+<tr><td>Breakpoint (600), list pane (288), content width (560), minimum target (44), gutter (16)</td><td><code>common/constants/settings_layout.dart</code> (<code>SettingsLayout</code>)</td></tr>
+<tr><td>Validation messages (name, username, email, bio, password, support form)</td><td>the use cases: <code>ValidateProfile</code>, <code>ChangePassword</code>, <code>SubmitSupportRequest</code></td></tr>
+<tr><td>Toasts, dialogs and button labels (&ldquo;Discard changes?&rdquo;, &ldquo;Clear cache?&rdquo;, Cancel&hellip;)</td><td>the views and cubits under <code>presentation/&lt;feature&gt;/</code>, and <code>core/presentation/navigation/settings_navigator.dart</code></td></tr>
+</table>
+<p><strong>Localisation.</strong> Build the registry per locale and give <code>SettingsApp</code> a key tied to it so it restarts when the language changes; stored values carry over because they are ids, not words. Strings that live in views, constants and use cases are literals: replace each with your <code>AppLocalizations</code> lookup (a search for the English text finds them). Right-to-left layouts have not been verified; check the back chevron and the two-pane order if you ship an RTL locale.</p>
+<pre><button class="copy" type="button">Copy</button><code>SettingsApp(
+  key: ValueKey&lt;Locale&gt;(locale),
+  registry: registryFor(locale), // same ids, translated titles and descriptions
+  settingsDataSource: source,
+)</code></pre>
+
+<h2 id="architecture">Architecture</h2>
+<h3 id="layers">Layers</h3>
+<div class="diagram">presentation  ──►  domain  ◄──  data
+ views, cubits      models, mappers,     SettingsDataSource,
+ view models        registry, use cases  repository implementations
+        ▲                                     ▲
+        └──────── core (DI, hooks, widgets) ──┘      common (constants, helpers)</div>
+<ul>
+<li><strong><code>domain/</code></strong> depends on nothing but Dart and <code>common</code>. <code>models/</code> are plain objects (<code>Profile</code>, <code>SettingsSnapshot</code>, <code>DeviceSession</code>, the setting definitions), <code>mappers/</code> convert decoded JSON, <code>registry/</code> holds the <code>SettingsRegistry</code> and the default list, <code>repositories/</code> are the interfaces and <code>use_cases/</code> do one job each (<code>LoadSettings</code>, <code>UpdateSetting</code>, <code>SearchSettings</code>, <code>SaveProfile</code>, <code>ChangePassword</code>, <code>RevokeSession</code>, <code>DeleteAccount</code>&hellip;). Use cases throw <code>SettingsFailure</code> with a message written for the person.</li>
+<li><strong><code>data/</code></strong> implements the repositories on top of <code>SettingsDataSource</code> and holds the in-memory demo. It is the only layer that talks to a backend.</li>
+<li><strong><code>presentation/</code></strong> has one folder per feature (<code>about</code>, <code>appearance</code>, <code>danger</code>, <code>help</code>, <code>home</code>, <code>language</code>, <code>notifications</code>, <code>privacy</code>, <code>profile</code>, <code>settings</code>, <code>storage</code>) with <code>bloc/</code>, <code>view_models/</code>, <code>views/</code> and <code>widgets/</code>, plus <code>shell/</code> which composes the pages.</li>
+<li><strong><code>core/</code></strong> is shared by every layer's consumers: the container, <code>SettingsHooks</code>, the navigation cubit, <code>ViewModel</code> and the reusable rows and frames. Features do not import each other's views; anything shared lives in <code>core/presentation/widgets/</code>.</li>
+</ul>
+<h3 id="di">Dependency injection</h3>
+<p><code>createSettingsLocator</code> in <code>core/infrastructure/di/settings_injection.dart</code> builds a fresh <code>GetIt.asNewInstance()</code> for each mounted <code>SettingsApp</code>, never the global instance, so two copies (or a hot restart) never collide. Registration is written out by hand; there is no <code>build_runner</code> step. <code>SettingsApp</code> creates the container once, loads the settings and the profile, and calls <code>reset()</code> in <code>dispose</code>.</p>
+<table>
+<tr><th>Scope</th><th>What</th></tr>
+<tr><td>Singleton</td><td>the integration points: <code>SettingsHooks</code>, <code>UnsavedChangesGuard</code>, <code>SettingsRegistry</code>, <code>SettingsDataSource</code></td></tr>
+<tr><td>Lazy singleton</td><td><code>SettingsMapper</code>, the five repositories, and the <strong>session cubits</strong> <code>SettingsNavigationCubit</code>, <code>SettingsCubit</code> and <code>ProfileCubit</code> (closed by the container, never by a view model), plus <code>SettingsNavigator</code></td></tr>
+<tr><td>Factory</td><td>every use case, and every <strong>view model</strong> (<code>SearchViewModel</code>, <code>ProfileEditViewModel</code>, <code>PrivacyViewModel</code>, <code>ChangePasswordViewModel</code>, <code>SessionsViewModel</code>, <code>BlockedUsersViewModel</code>, <code>TwoFactorViewModel</code>, <code>StorageViewModel</code>, <code>SupportViewModel</code>, <code>AccountViewModel</code>)</td></tr>
+</table>
+<p>Views never touch the container. <code>SettingsProviders</code> exposes the session cubits with <code>BlocProvider.value</code> (which does not close them) and the registry, hooks, navigator and guard with <code>RepositoryProvider.value</code>, so a view reads them with <code>context.read</code>. To swap a single piece in a copy install, change its registration, for example to replace a repository:</p>
+<pre><button class="copy" type="button">Copy</button><code>// settings_injection.dart
+..registerLazySingleton&lt;StorageRepository&gt;(() =&gt; MyStorageRepository(g()))</code></pre>
+<h3 id="navigation">Navigation</h3>
+<p>The template deliberately does not use your app's router: it has to run unchanged inside any Flutter app. <code>SettingsNavigationCubit</code> holds a small stack of <code>SettingsPage</code>s:</p>
+<table>
+<tr><th>Call</th><th>Effect</th></tr>
+<tr><td><code>open(page)</code></td><td>pushes a page on top (a sub-page, or a category on a phone)</td></tr>
+<tr><td><code>select(page)</code></td><td>makes it the only open page (the tablet list)</td></tr>
+<tr><td><code>back()</code></td><td>closes the top page; <code>false</code> when nothing was open</td></tr>
+<tr><td><code>home()</code></td><td>closes everything</td></tr>
+</table>
+<p>Views call <code>SettingsNavigator</code> instead, which does the same but first asks &ldquo;Discard changes?&rdquo; when <code>UnsavedChangesGuard.hasUnsavedChanges</code> says an edit would be lost. On a phone the top page fills the screen with a short fade-and-slide (instant with reduced motion); on a tablet the stack's first entry is the selected category and the top is shown beside the list. <code>SettingsShell</code> wraps it in a <code>PopScope</code> so the system back goes up one page.</p>
+<p><code>initialLocation</code> opens the app on a page. It is a category name from <code>SettingsPage</code> &ndash; <code>profile</code>, <code>appearance</code>, <code>notifications</code>, <code>privacy</code>, <code>language</code>, <code>storage</code>, <code>help</code>, <code>about</code>, <code>danger</code> &ndash; or a path from category to sub-page, separated by <code>/</code>: <code>privacy/changePassword</code>, <code>privacy/sessions</code>, <code>privacy/blockedUsers</code>. Unknown names are ignored. It is read once.</p>
+<h3 id="viewmodels">View models</h3>
+<p>A view model owns what is scoped to <em>one screen visit</em>: it creates the feature cubit, exposes it to the view and closes it in <code>dispose</code>. <code>ViewModelBuilder&lt;T&gt;</code> resolves it from the container (<code>SettingsScope.of(context)</code>) and disposes it when the widget leaves the tree.</p>
+<pre><button class="copy" type="button">Copy</button><code>class SearchViewModel implements ViewModel {
+  SearchViewModel(this.cubit);
+
+  final SearchCubit cubit;
+
+  @override
+  void dispose() =&gt; cubit.close();
+}
+
+// In the view:
+ViewModelBuilder&lt;SearchViewModel&gt;(
+  builder: (BuildContext context, SearchViewModel vm) =&gt;
+      BlocProvider&lt;SearchCubit&gt;.value(value: vm.cubit, child: const _HomeBody()),
+)
+
+// In the container:
+..registerFactory&lt;SearchViewModel&gt;(() =&gt; SearchViewModel(SearchCubit(g())))</code></pre>
+<p>Screen cubits extend <code>SafeCubit</code>, which ignores <code>emit</code> after it is closed, so a request still in flight when the screen goes cannot throw. A cubit raises a message with a <code>Notice</code> in its state and the view shows it as a toast with <code>NoticeListener</code>; each notice is distinct, so the same text twice still shows twice.</p>
+
+<h2 id="router">Use go_router</h2>
+<p>Mount <code>SettingsApp</code> as <em>one</em> route in your router and let <code>initialLocation</code> carry deep links. Use a query parameter so the page path (<code>privacy/sessions</code>) stays one value:</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'package:cairn_template_settings/cairn_template_settings.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+GoRouter buildRouter(SettingsDataSource source) {
+  return GoRouter(
+    initialLocation: '/home',
+    routes: &lt;RouteBase&gt;[
+      GoRoute(path: '/home', builder: (c, s) =&gt; const HomeScreen()),
+      GoRoute(path: '/sign-in', builder: (c, s) =&gt; const SignInScreen()),
+      // /settings            opens the home
+      // /settings?page=appearance
+      // /settings?page=privacy/sessions
+      GoRoute(
+        path: '/settings',
+        builder: (BuildContext context, GoRouterState state) {
+          final String? page = state.uri.queryParameters['page'];
+          return Scaffold(
+            body: SafeArea(
+              child: SettingsApp(
+                key: ValueKey&lt;String?&gt;(page), // a new deep link restarts it
+                settingsDataSource: source,
+                initialLocation: page,
+                onSignOut: () {
+                  auth.signOut();
+                  context.go('/sign-in');
+                },
+              ),
+            ),
+          );
+        },
+      ),
+    ],
+  );
+}
+
+// From anywhere in your app:
+context.push('/settings?page=notifications');</code></pre>
+<p>The template's own back stack is separate from the router's: the system back goes up inside the settings first and leaves the route only from the home. Pop the route yourself from a toolbar if you want a way out on the home of a phone.</p>
+<h3>Make each page a real route</h3>
+<p>Only do this if you need the browser back button on web or a URL per page. It means editing the template (copy install). A sketch of where to cut; the template does not ship it:</p>
+<ol class="steps">
+<li><code>core/presentation/navigation/settings_navigation_cubit.dart</code>: keep the cubit as the source of truth, but have the shell listen to it and call <code>context.go('/settings/${page.name}')</code> from a <code>BlocListener</code>.</li>
+<li><code>presentation/shell/settings_shell.dart</code>: replace the <code>AnimatedSwitcher</code> in <code>_OnePane</code> with the router's child (a <code>ShellRoute</code> whose child routes build each view through <code>_pageFor</code>); the views read the session cubits by <code>context.read</code> and do not care how they were reached.</li>
+<li><code>SettingsNavigator</code>: route its <code>open</code>, <code>back</code> and <code>select</code> to <code>context.go</code> / <code>context.pop</code>, keeping <code>confirmLeave</code> so the &ldquo;Discard changes?&rdquo; dialog still guards the edit form.</li>
+</ol>
+<p>Everything else (use cases, mappers, cubits, tests) is untouched, which is the point of keeping navigation in one small cubit.</p>
+
+<h2 id="testing">Testing</h2>
+<p>In the template's folder:</p>
+<pre><button class="copy" type="button">Copy</button><code>flutter pub get
+dart format .
+flutter analyze --fatal-infos --fatal-warnings
+flutter test</code></pre>
+
+<p>The suite has three layers: <strong>domain</strong> (the registry, the search, the settings mapper and its repair of bad values, <code>UpdateSetting</code>, profile and password rules, sessions, two-factor, delete confirmation, storage, the support form and the formatting helpers), <strong>session</strong> (the cubits wired through the real container with no widgets) and <strong>widget</strong> tests that mount every page at 320, 360 and 700 px, light and dark, at text scales 1, 1.3 and 2, then play the flows. Flutter fails a test on any <code>RenderFlex</code> overflow, so passing at every size also means no overflow.</p>
+<p>Use small <code>tester.pump(Duration)</code> steps, never <code>pumpAndSettle</code>: Cairn has repeating animations (skeletons, spinners), so it would never return. <code>pumpFrames</code> in the harness does this for you.</p>
+<h3>The harness</h3>
+<p><code>test/support/settings_harness.dart</code> is the one thing to copy. <code>Host</code> records everything your app would see (<code>modes</code>, <code>changes</code>, <code>signedOut</code>, <code>deleted</code>, <code>deactivated</code>, <code>links</code>, <code>ratings</code>, <code>systemSettingsOpened</code>) and owns a zero-latency <code>InMemorySettingsDataSource</code>. <code>mountSettings(tester, width:, height:, dark:, textScale:, initialLocation:, permission:, profile:, registry:, host:)</code> mounts <code>SettingsApp</code> in a Cairn-themed <code>MaterialApp</code> at a given size. Finders and helpers: <code>row</code>, <code>tapRow</code>, <code>button</code>, <code>tapButton</code>, <code>input</code>, <code>typeInto</code>, <code>tapOn</code> and <code>openSection</code>.</p>
+<h3>Testing your integration</h3>
+<pre><button class="copy" type="button">Copy</button><code>import 'package:cairn_template_settings/cairn_template_settings.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import 'support/settings_harness.dart';
+
+/// Fails to load until told it is online, like a phone coming out of a tunnel.
+class OfflineOnce extends InMemorySettingsDataSource {
+  OfflineOnce() : super(latency: Duration.zero);
+
+  bool online = false;
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; loadSettings() async {
+    if (!online) throw StateError('offline');
+    return super.loadSettings();
+  }
+}
+
+void main() {
+  testWidgets('sign out tells the app', (WidgetTester tester) async {
+    final Host h = await mountSettings(tester, initialLocation: 'danger');
+    await tapRow(tester, 'Sign out');
+    await tapButton(tester, 'Sign out'); // the dialog's confirm button
+    expect(h.signedOut, 1);
+  });
+
+  testWidgets('a removed setting is hidden and not searchable', (tester) async {
+    final SettingsRegistry registry = SettingsRegistry(
+      defaultSettingsRegistry.definitions.where(
+        (SettingDefinition d) =&gt; d.id != SettingIds.reduceMotion,
+      ),
+    );
+    await mountSettings(tester, registry: registry, initialLocation: 'appearance');
+    expect(find.text('Reduce motion'), findsNothing);
+    expect(find.text('Text size'), findsOneWidget);
+  });
+
+  testWidgets('a failing data source offers a retry', (tester) async {
+    final OfflineOnce offline = OfflineOnce();
+    await mountSettings(
+      tester,
+      host: Host(source: offline),
+      initialLocation: 'appearance',
+    );
+    expect(find.text('Could not load'), findsOneWidget);
+    offline.online = true;
+    await tapButton(tester, 'Try again');
+    expect(find.text('Text size'), findsOneWidget);
+  });
+}</code></pre>
+
+<p>Without widgets, build the container directly and drive the cubits, which is how <code>session_test.dart</code> works:</p>
+<pre><button class="copy" type="button">Copy</button><code>test('a changed setting reaches the host', () async {
+  final List&lt;(String, Object?)&gt; changes = &lt;(String, Object?)&gt;[];
+  final GetIt locator = createSettingsLocator(
+    settingsDataSource: InMemorySettingsDataSource(latency: Duration.zero),
+    hooks: SettingsHooks(
+      onSettingChanged: (String id, Object? v) =&gt; changes.add((id, v)),
+    ),
+  );
+  addTearDown(locator.reset);
+
+  final SettingsCubit settings = locator&lt;SettingsCubit&gt;();
+  await settings.load();
+  await settings.set(SettingIds.accent, 'ocean');
+
+  expect(changes, &lt;(String, Object?)&gt;[(SettingIds.accent, 'ocean')]);
+});</code></pre>
+<p>Import <code>createSettingsLocator</code>, <code>SettingsHooks</code> and <code>SettingsCubit</code> from their files under <code>package:cairn_template_settings/</code>; they are internal to the package and not in the barrel. To test your own <code>SettingsDataSource</code>, run its output through <code>SettingsMapper</code> and the other mappers (<code>ProfileMapper</code>, <code>SecurityMapper</code>, <code>StorageMapper</code>, <code>ActionResultMapper</code>) in a unit test: a typo that fails there would fail on every user's phone.</p>
+<p>The template's tests load Geist from the Cairn site checkout when they can find it (<code>test/flutter_test_config.dart</code>), so text has real metrics. Without a real font, Flutter draws every glyph as a wide box and reports overflows that production text never has; load your app's font in your own <code>flutter_test_config.dart</code> the same way.</p>
+
+<h2 id="a11y">Accessibility</h2>
+<ul>
+<li><strong>Every control is named.</strong> The back control reads &ldquo;Back&rdquo;, the search field &ldquo;Search settings&rdquo;, the clear button &ldquo;Clear search&rdquo;; rows read their title and description, and switches announce their on or off state (a disabled one says so).</li>
+<li><strong>Headings are headings.</strong> The home title and every page title are announced as headers.</li>
+<li><strong>Targets are at least 44 &times; 44.</strong> Cairn's buttons are 32 to 40 px, so each is wrapped in <code>TouchTarget</code>, which adds an invisible margin that triggers the same action without adding a second semantic node. The input and select are Cairn's own 36 px controls; their text scales up to 1.5&times; inside them (<code>ControlScale</code>) while labels, hints and errors around them scale fully.</li>
+<li><strong>Text scaling.</strong> The text size setting multiplies the system scale, and pages scroll with the primary content reachable at 2&times;. Rows stack their action under their text at large sizes, and a tablet falls back from two panes to one so nothing is squeezed.</li>
+<li><strong>State is not colour alone.</strong> Errors have an icon and words and are live regions, so they are announced when they appear; the search reports &ldquo;3 results&rdquo; or &ldquo;No results&rdquo; the same way; a loading list is announced as &ldquo;Loading&rdquo;.</li>
+<li><strong>Focus order follows reading order</strong> (<code>ReadingOrderTraversalPolicy</code>): back, title, content, then actions. Cairn controls are keyboard focusable, activate on Space and Enter and show a ring on keyboard focus.</li>
+<li><strong>Reduced motion.</strong> When <code>MediaQuery.disableAnimations</code> is true, or the Reduce motion setting is on, page transitions are instant. Nothing in the template loops except Cairn's skeletons and spinners while something loads.</li>
+<li><strong>Destructive actions are guarded.</strong> Sign out, deactivate, clear cache, turning off two-factor and leaving unsaved edits each ask first; deleting needs a typed word and a second confirmation.</li>
+</ul>
+<p>Test with TalkBack and VoiceOver on a device: the template is built to be correct by construction, but only a screen reader tells you how it <em>sounds</em>.</p>
+
+<h2 id="checklist">Production checklist</h2>
+<ol class="steps">
+<li><strong>Replace the demo data source.</strong> The in-memory one forgets everything on exit and accepts <code>123456</code> as a two-factor code. Pass a real <code>settingsDataSource</code> and check each failure path: a throwing read shows a retry, a refused write returns <code>ok: false</code> with a sentence.</li>
+<li><strong>Stabilise setting ids</strong> before launch, and never reuse one for a different meaning. They are the storage keys.</li>
+<li><strong>Wire the hooks you ship.</strong> <code>onSignOut</code>, <code>onDeactivateAccount</code> and <code>onDeleteAccount</code> must end the session and clear local data; <code>onLinkTap</code> must open real Terms and Privacy pages. The template shows a toast asking for a missing callback, which you do not want in production.</li>
+<li><strong>Make the switches mean something.</strong> Biometric lock (<code>local_auth</code>), Wi-Fi only, auto-delete, quiet hours, language and the notification categories are only <em>stored</em> by the template.</li>
+<li><strong>Replace the content.</strong> The FAQ (<code>FaqItems</code>), support subjects, avatar presets, licences from <code>loadAppInfo</code> and the version from <code>package_info_plus</code>.</li>
+<li><strong>Handle notification permission</strong> on both platforms (manifest and Podfile entries), and re-read it on resume.</li>
+<li><strong>Server-side rules.</strong> Enforce the username, password and confirmation rules on the server too; the client checks are a convenience. Refuse revoking the current session, make delete irreversible and deactivate reversible.</li>
+<li><strong>Secrets.</strong> Never log passwords or two-factor codes in your data source. The template holds them only in memory while the form is open.</li>
+<li><strong>Do not scale text twice</strong> if your app applies the person's text size too (<a href="#theme-wiring">Theme, text size, accent, motion</a>).</li>
+<li><strong>Run the checks.</strong> <code>flutter analyze --fatal-infos --fatal-warnings</code> and <code>flutter test</code>, then try the real app at 320 px, on a tablet, with 200% text, in dark mode and with a screen reader.</li>
+</ol>
+
+<h2 id="faq">Troubleshooting</h2>
+<h3>"No SettingsScope above this context"</h3>
+<p>You built a view or <code>ViewModelBuilder</code> outside <code>SettingsApp</code>. Mount <code>SettingsApp</code> (it provides the scope), or wrap your tree in a <code>SettingsScope</code> with a locator from <code>createSettingsLocator()</code>.</p>
+<h3>Everything is black and white and unstyled</h3>
+<p>The host app has no <code>CairnTheme</code>. Use <code>CairnTheme.materialTheme(...)</code> or add <code>CairnTheme.light</code> to <code>ThemeData.extensions</code>.</p>
+<h3>Nothing survives a restart</h3>
+<p>The default data source is in memory. Pass a <code>settingsDataSource</code> that persists (see <a href="#persisted">Persist the settings</a>). Also make sure the same instance, or the same storage key, is used on every launch.</p>
+<h3>"Could not load your settings" with a retry</h3>
+<p><code>loadSettings</code>, <code>loadAppInfo</code> or <code>loadProfile</code> threw. Reads must complete: add a timeout in the data source and rethrow. <em>Try again</em> calls them again.</p>
+<h3>My app does not follow the theme choice</h3>
+<p>The template themes <em>itself</em>. Your app changes only if you handle <code>onThemeModeChanged</code> (set <code>MaterialApp.themeMode</code>) and read the stored value at start-up, because the callbacks are not called on mount. With System selected, the template follows your registered <code>CairnTheme</code>, so the two agree.</p>
+<h3>Text is far too large inside the settings</h3>
+<p>Your app applies the text size in <code>MaterialApp.builder</code> and the template applies it again. See the warning under <a href="#theme-wiring">Theme, text size, accent, motion</a>.</p>
+<h3>All the notification rows are greyed out</h3>
+<p>Either the operating system's permission is <code>denied</code> (the alert above the rows says so), or <code>notifications.master</code> is missing from your registry (a missing switch reads as off). Pass the right <code>notificationPermission</code> and keep the master switch.</p>
+<h3>Text got smaller after I removed a setting</h3>
+<p>You removed <code>appearance.textSize</code>. See <a href="#caveats">Settings the screens rely on</a>.</p>
+<h3>My new row does nothing when tapped</h3>
+<p>It is an <code>ActionSetting</code> or <code>LinkSetting</code> and the screen has no handler for its id. Add it to that view's <code>actions</code> map (copy install). Toggles, choices and sliders need no handler.</p>
+<h3>ArgumentError: Duplicate setting id</h3>
+<p>Two definitions in your registry share an <code>id</code>. Ids must be unique across all sections.</p>
+<h3>Sign out does nothing, and a toast says "Pass onSignOut"</h3>
+<p>That is the default behaviour with no callback. Pass <code>onSignOut</code>, <code>onDeactivateAccount</code> and <code>onDeleteAccount</code>; Terms and Privacy need <code>onLinkTap</code> the same way.</p>
+<h3>It opens on the home instead of the page I asked for</h3>
+<p><code>initialLocation</code> must be a name from <code>SettingsPage</code> (<code>appearance</code>, <code>privacy/sessions</code>&hellip;); unknown names are ignored. It is read once, so give <code>SettingsApp</code> a new <code>key</code> to open another page later.</p>
+<h3>The two-pane layout does not appear on a tablet</h3>
+<p>It needs 600 px of width <em>and</em> text that is not very large (system scale above about 1.35 falls back to one page at a time). Check the width the widget is actually given, not the screen's.</p>
+<h3>The select's menu or a dialog is hidden or throws "No Overlay"</h3>
+<p><code>CairnSelect</code>, dialogs and sheets open in the nearest <code>Overlay</code>. Mount the template under a <code>MaterialApp</code> (or <code>WidgetsApp</code>) so one exists.</p>
+<h3>"RenderFlex overflowed" in my tests</h3>
+<p>Flutter's test font is wide. Load your real font in <code>test/flutter_test_config.dart</code> and set <code>fontFamily</code> on the test theme.</p>
+<h3>Where do I report a bug?</h3>
+<p>Open an issue on the <a href="https://github.com/rlphjyson/cairn_site/issues">cairn_site repository</a> with the Flutter and <code>cairn_ui</code> versions.</p>
+
+<h2 id="migrate">Migration notes</h2>
+<table>
+<tr><th>When you&hellip;</th><th>Do this</th></tr>
+<tr><td>Upgrade <code>cairn_ui</code> to a new minor</td><td>Bump the constraint, run <code>flutter analyze</code>. Components added in a minor never break this template; read the library's CHANGELOG for renames.</td></tr>
+<tr><td>Add a setting that is already live elsewhere</td><td>Add a definition with a sensible <code>initial</code>. Existing users have no stored value, so they get the default; nothing crashes.</td></tr>
+<tr><td>Remove a setting</td><td>Remove its definition. Its stored value is ignored when reading and dropped on the next save. Check <a href="#caveats">Settings the screens rely on</a> first.</td></tr>
+<tr><td>Rename a setting id</td><td>Treat it as a removal plus an addition: users fall back to the default. To keep their choice, read the old key in your data source's <code>loadSettings</code> and return it under the new id once.</td></tr>
+<tr><td>Remove an option from a choice</td><td>Just remove it. A stored value that is no longer offered is repaired to the default.</td></tr>
+<tr><td>Change a setting's type (toggle to choice)</td><td>The old value is the wrong type and is repaired to the default. Use a new id if you need to migrate it.</td></tr>
+<tr><td>Change the stored shape</td><td>The envelope is <code>{"schema": 1, "values": {...}}</code> (<code>SettingsMapper.schema</code>). Reading is forgiving, so most changes need no migration; if you do change the envelope, do it in your data source and keep returning the shape above.</td></tr>
+<tr><td>Move from the copied source to the package</td><td>Delete your copy, add the dependency, change imports back to <code>package:cairn_template_settings/&hellip;</code>, and move your edits (usually the registry and the hooks) into your own wrapper. Anything that changed a screen, the constants or an enum stays a copy install.</td></tr>
+<tr><td>Pull template updates into a copy</td><td>Diff <code>templates/settings/lib</code> between your last sync tag and the new one; because dependencies point inwards, changes are almost always inside a single layer.</td></tr>
+<tr><td>Change state management</td><td>Cubits are plain streams of immutable states. Views call <code>cubit.method()</code> and read <code>state</code>, so Riverpod or Provider can replace <code>BlocBuilder</code> view by view.</td></tr>
+</table>
+</main>
+</div>
+<script>
+(function(){
+  document.querySelectorAll('pre').forEach(function(pre){
+    var b=pre.querySelector('.copy'); if(!b) return;
+    b.addEventListener('click',function(){
+      var code=pre.querySelector('code').innerText;
+      var done=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1200)};
+      if(navigator.clipboard){navigator.clipboard.writeText(code).then(done,done)}else{done()}
+    });
+  });
+  var links=[].slice.call(document.querySelectorAll('nav.toc a'));
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){links.forEach(function(a){a.classList.remove('active')});var a=map[e.target.id];if(a)a.classList.add('active')}
+  })},{rootMargin:'-20% 0px -70% 0px'});
+  document.querySelectorAll('h2[id],h3[id]').forEach(function(h){io.observe(h)});
+  var root=document.documentElement, key='tpl-theme';
+  try{var s=localStorage.getItem(key);if(s)root.setAttribute('data-theme',s)}catch(e){}
+  document.getElementById('theme').addEventListener('click',function(){
+    var dark=root.getAttribute('data-theme')?root.getAttribute('data-theme')==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+    var next=dark?'light':'dark';root.setAttribute('data-theme',next);try{localStorage.setItem(key,next)}catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

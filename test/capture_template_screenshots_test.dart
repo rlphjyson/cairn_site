@@ -23,6 +23,7 @@ import 'package:cairn_template_dashboard/cairn_template_dashboard.dart';
 import 'package:cairn_template_docs/cairn_template_docs.dart';
 import 'package:cairn_template_landing/cairn_template_landing.dart';
 import 'package:cairn_template_onboarding/cairn_template_onboarding.dart';
+import 'package:cairn_template_settings/cairn_template_settings.dart';
 import 'package:cairn_template_shop/cairn_template_shop.dart';
 import 'package:cairn_ui/cairn_ui.dart';
 import 'package:flutter/material.dart';
@@ -381,6 +382,36 @@ final List<_Script> _scripts = <_Script>[
         await _settle(tester, 15);
         await shot(s.$2);
       }
+    },
+  ),
+  _Script(
+    slug: 'settings',
+    frame: _phone,
+    size: const Size(520, 900),
+    pixelRatio: 2,
+    app: const SettingsApp(),
+    run: (WidgetTester tester, _Shot shot) async {
+      Future<void> open(String text) async {
+        await tester.ensureVisible(find.text(text).last);
+        await _settle(tester, 2);
+        await tester.tap(find.text(text).last);
+        await _settle(tester);
+      }
+
+      Future<void> back() async {
+        await tester.tap(find.bySemanticsLabel('Back').first);
+        await _settle(tester);
+      }
+
+      await shot('1-home');
+      await open('Appearance');
+      await shot('2-appearance');
+      await back();
+      await open('Notifications');
+      await shot('3-notifications');
+      await back();
+      await open('Privacy and security');
+      await shot('4-privacy');
     },
   ),
 ];

@@ -81,6 +81,13 @@ packages:
       relative: true
     source: path
     version: "1.0.0"
+  cairn_template_settings:
+    dependency: "direct main"
+    description:
+      path: "templates/settings"
+      relative: true
+    source: path
+    version: "1.0.0"
   cairn_template_shop:
     dependency: "direct main"
     description:

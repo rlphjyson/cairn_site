@@ -130,7 +130,7 @@ const List<(String, String)> _tools = <(String, String)>[
   ),
   (
     'list_templates / get_template',
-    'The five whole-app templates and how to mount each.',
+    'The eleven whole-app templates and how to mount each.',
   ),
   (
     'get_docs',
