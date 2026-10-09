@@ -19,6 +19,7 @@ import 'package:cairn_template_blog/cairn_template_blog.dart';
 import 'package:cairn_template_dashboard/cairn_template_dashboard.dart';
 import 'package:cairn_template_docs/cairn_template_docs.dart';
 import 'package:cairn_template_landing/cairn_template_landing.dart';
+import 'package:cairn_template_onboarding/cairn_template_onboarding.dart';
 import 'package:cairn_template_shop/cairn_template_shop.dart';
 import 'package:cairn_ui/cairn_ui.dart';
 import 'package:flutter/material.dart';
@@ -266,6 +267,39 @@ final List<_Script> _scripts = <_Script>[
       await tester.tap(find.text('FAQ').first);
       await _settle(tester, 15);
       await shot('4-faq');
+    },
+  ),
+  _Script(
+    slug: 'onboarding',
+    frame: _phone,
+    size: const Size(520, 900),
+    pixelRatio: 2,
+    app: const OnboardingApp(),
+    run: (WidgetTester tester, _Shot shot) async {
+      Future<void> tapAny(String text) async {
+        await tester.tap(find.text(text).first);
+        await _settle(tester);
+      }
+
+      await shot('1-welcome');
+      await tapAny('Next');
+      await shot('2-value');
+      await tapAny('Next');
+      await tapAny('Next');
+      await tapAny('Get started');
+      await tapAny('Allow notifications');
+      await shot('3-permissions');
+      await tapAny('Continue');
+      for (final String chip in <String>['Focus', 'Fitness', 'Reading']) {
+        await tapAny(chip);
+      }
+      await shot('4-interests');
+      await tapAny('Continue');
+      await tapAny('Feel calmer');
+      await tapAny('Continue');
+      await tapAny('Continue');
+      await tapAny('Create account');
+      await shot('5-done');
     },
   ),
 ];

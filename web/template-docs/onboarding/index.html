@@ -1,0 +1,859 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Onboarding template — documentation</title>
+<meta name="description" content="How to install, mount, customise, persist, instrument and test the Cairn mobile onboarding template.">
+<style>
+:root{--bg:#fff;--fg:#0a0a0a;--muted:#6b6b6b;--border:#e5e5e5;--card:#fafafa;--code:#f4f4f5;--accent:#0a0a0a;--accent-fg:#fafafa;--note:#eef6ff;--note-b:#bcd9f7;--warn:#fff7e6;--warn-b:#f2d18b;--ok:#ecfbf1;--ok-b:#a8e2bd}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0a0a0a;--fg:#fafafa;--muted:#a1a1a1;--border:#262626;--card:#111;--code:#171717;--accent:#fafafa;--accent-fg:#0a0a0a;--note:#0e1a2b;--note-b:#1f3a5c;--warn:#2a2007;--warn-b:#5c4710;--ok:#0b2316;--ok-b:#1c5233}}
+:root[data-theme=dark]{--bg:#0a0a0a;--fg:#fafafa;--muted:#a1a1a1;--border:#262626;--card:#111;--code:#171717;--accent:#fafafa;--accent-fg:#0a0a0a;--note:#0e1a2b;--note-b:#1f3a5c;--warn:#2a2007;--warn-b:#5c4710;--ok:#0b2316;--ok-b:#1c5233}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:inherit;text-decoration-color:var(--muted);text-underline-offset:3px}a:hover{text-decoration-color:currentColor}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);max-width:1180px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:28px 20px;border-right:1px solid var(--border);font-size:14px}
+nav.toc .brand{font-weight:650;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+nav.toc ol{list-style:none;margin:0;padding:0}nav.toc li{margin:2px 0}
+nav.toc a{display:block;padding:5px 10px;border-radius:8px;text-decoration:none;color:var(--muted)}
+nav.toc a:hover,nav.toc a.active{background:var(--card);color:var(--fg)}
+nav.toc ol ol{margin-left:12px}
+main{padding:48px 40px 96px;max-width:860px}
+h1{font-size:2.2rem;line-height:1.15;margin:0 0 8px;letter-spacing:-.02em}
+h2{font-size:1.5rem;margin:56px 0 12px;padding-top:24px;border-top:1px solid var(--border);letter-spacing:-.01em}
+h2:first-of-type{border-top:0}h3{font-size:1.1rem;margin:28px 0 8px}
+p,li{color:var(--fg)}.lead{color:var(--muted);font-size:1.1rem;margin:0 0 24px}
+code{font:13.5px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);padding:2px 6px;border-radius:6px}
+pre{position:relative;background:var(--code);border:1px solid var(--border);border-radius:12px;padding:16px 18px;overflow:auto;margin:14px 0}
+pre code{background:none;padding:0;font-size:13px;line-height:1.6;white-space:pre}
+.copy{position:absolute;top:8px;right:8px;border:1px solid var(--border);background:var(--bg);color:var(--muted);border-radius:8px;font-size:12px;padding:3px 9px;cursor:pointer}
+.copy:hover{color:var(--fg)}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+th{font-weight:600;background:var(--card)}
+.callout{border:1px solid;border-radius:12px;padding:12px 16px;margin:16px 0}.callout p{margin:4px 0}
+.callout.note{background:var(--note);border-color:var(--note-b)}.callout.warn{background:var(--warn);border-color:var(--warn-b)}.callout.ok{background:var(--ok);border-color:var(--ok-b)}
+.callout strong:first-child{display:block;margin-bottom:2px}
+.tree{white-space:pre;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.pill{display:inline-block;border:1px solid var(--border);border-radius:999px;padding:1px 10px;font-size:12px;color:var(--muted)}
+.steps{counter-reset:s;list-style:none;padding:0}.steps>li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.steps>li:before{content:counter(s);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-fg);display:grid;place-items:center;font-size:13px;font-weight:600}
+button.theme{border:1px solid var(--border);background:var(--bg);color:var(--fg);border-radius:8px;padding:3px 8px;cursor:pointer;font-size:12px}
+@media (max-width:900px){.layout{display:block}nav.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border)}main{padding:28px 20px 64px}}
+@media print{nav.toc,.copy,button.theme{display:none}.layout{display:block}main{max-width:none;padding:0}pre{white-space:pre-wrap}a{text-decoration:none}}
+
+.diagram{white-space:pre;overflow:auto;background:var(--code);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:14px 0;font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+@media print{.diagram{white-space:pre-wrap}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Contents">
+  <div class="brand"><span>Onboarding template</span><button class="theme" id="theme" type="button" aria-label="Toggle theme">Theme</button></div>
+  <ol>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#requirements">Requirements</a></li>
+    <li><a href="#install">Install</a></li>
+    <li><a href="#mount">Mount it</a>
+      <ol><li><a href="#arguments">Arguments</a></li><li><a href="#result">The result</a></li></ol></li>
+    <li><a href="#flow">The flow</a>
+      <ol><li><a href="#rules">Rules</a></li></ol></li>
+    <li><a href="#content">Change the content</a>
+      <ol><li><a href="#shapes">JSON shapes</a></li><li><a href="#pages">Pages and images</a></li><li><a href="#interests">Interests, goals, reminders</a></li></ol></li>
+    <li><a href="#steps">Add or remove a step</a></li>
+    <li><a href="#permissions">Real permissions</a></li>
+    <li><a href="#remote">Remote-config content</a></li>
+    <li><a href="#persist">Persist progress</a></li>
+    <li><a href="#analytics">Analytics hooks</a></li>
+    <li><a href="#auth">Hand off to auth</a></li>
+    <li><a href="#router">Use go_router</a></li>
+    <li><a href="#l10n">Localisation</a></li>
+    <li><a href="#a11y">Accessibility</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#faq">Troubleshooting</a></li>
+    <li><a href="#migrate">Migration</a></li>
+  </ol>
+</nav>
+<main>
+<h1>Onboarding template</h1>
+<p class="lead">A mobile onboarding flow built only from <code>cairn_ui</code>: splash, value pages, permissions, personalisation, an account choice and a calm summary. This guide takes you from <em>copy it in</em> to <em>shipping it with your own content, storage and permissions</em>.</p>
+
+<h2 id="overview">Overview</h2>
+<p>The template is a Flutter package, <code>cairn_template_onboarding</code>, that exposes one widget, <code>OnboardingApp</code>, and a handful of types your app implements or receives. It runs six screens:</p>
+<ul>
+<li><strong>Splash</strong> &ndash; the brand mark fades in once and the flow moves on as soon as its content has loaded.</li>
+<li><strong>Value pages</strong> &ndash; four swipeable pages with a large photograph, a title and a line of body text; dots, Skip, Next / Get started, and back by swipe or gesture.</li>
+<li><strong>Permissions</strong> &ndash; a card each for notifications and location (camera is one JSON entry away), with benefit copy and an Allow button that calls <em>your</em> <code>PermissionService</code>.</li>
+<li><strong>Personalise</strong> &ndash; interests (at least three), one goal and a reminder time, one part per screen, with <code>CairnSteps</code> showing where you are. It cannot be skipped.</li>
+<li><strong>Account</strong> &ndash; Create account, I already have an account, Continue as guest. No forms: the choice is handed to your app.</li>
+<li><strong>Done</strong> &ndash; a summary and a Start button that calls <code>onCompleted(OnboardingResult)</code>.</li>
+</ul>
+<p>Progress is saved after every change, so closing the app and re-opening it continues where the user left off. It is organised as <strong>clean architecture by layer, then by feature</strong>, with <code>flutter_bloc</code> for state and <code>get_it</code> for dependency injection. Nothing is generated.</p>
+<div class="diagram">lib/
+├─ onboarding_app.dart              entry widget (OnboardingApp)
+├─ core/
+│  ├─ infrastructure/               get_it registration (di/), the host's callbacks
+│  └─ presentation/                 navigation cubit, ViewModel, step layout, motion
+├─ common/                          brand, layout, personalise parts, helpers
+├─ data/&lt;feature&gt;/                  content source, progress store, permission demo
+├─ domain/&lt;feature&gt;/                models, mappers, repository interfaces, use cases
+└─ presentation/&lt;feature&gt;/          bloc, view models, views, widgets (+ shell/)</div>
+
+<div class="callout note"><strong>The one rule to remember</strong><p>Dependencies point inwards: presentation &rarr; domain &larr; data. To change what the onboarding <em>says</em> you touch one JSON map. To change where it <em>stores</em> things or how it <em>asks the platform</em> you pass an object to <code>OnboardingApp</code>. You never fork the template to integrate it.</p></div>
+
+<h2 id="requirements">Requirements</h2>
+<table>
+<tr><th>Tool</th><th>Version</th></tr>
+<tr><td>Flutter</td><td>3.44 or newer (Dart 3.12)</td></tr>
+<tr><td><code>cairn_ui</code></td><td>^0.2.0</td></tr>
+<tr><td><code>flutter_bloc</code>, <code>get_it</code>, <code>equatable</code></td><td>pulled in by the package</td></tr>
+<tr><td><code>shared_preferences</code></td><td>your app, to persist progress (the template itself never imports it)</td></tr>
+<tr><td><code>permission_handler</code></td><td>your app, for real permission prompts (optional)</td></tr>
+</table>
+<p>The template has no platform code and no plugins of its own. Storage and permissions are interfaces you implement, so adding or swapping a plugin never touches the template.</p>
+
+<h2 id="install">Install</h2>
+<h3>A. As a package (recommended)</h3>
+<p>Keeping it a package means you can pull in fixes later with a version bump.</p>
+<pre><button class="copy" type="button">Copy</button><code># pubspec.yaml
+dependencies:
+  cairn_ui: ^0.2.0
+  cairn_template_onboarding:
+    git:
+      url: https://github.com/rlphjyson/cairn_site.git
+      path: templates/onboarding
+      ref: main            # pin a tag or commit for production
+  shared_preferences: ^2.3.0</code></pre>
+
+<p>Or, from a local checkout: <code>path: ../cairn_site/templates/onboarding</code>. The four photographs ship inside the package and are found automatically (<code>OnboardingPackage.name</code>).</p>
+<h3>B. Copy the source into your app</h3>
+<ol class="steps">
+<li>Copy <code>templates/onboarding/lib/</code> into <code>lib/onboarding/</code> and <code>templates/onboarding/assets/images/</code> into your app's <code>assets/onboarding/</code> (any folder you like).</li>
+<li>Add <code>cairn_ui</code>, <code>flutter_bloc</code>, <code>get_it</code> and <code>equatable</code> to your <code>pubspec.yaml</code>, and declare the image folder under <code>flutter: assets:</code>.</li>
+<li>In <code>lib/common/constants/onboarding_package.dart</code> set <code>static const String? name = null;</code> so images resolve from <em>your</em> app instead of the package, and update the <code>image</code> paths in the content to match your folder.</li>
+<li>Rewrite the <code>package:cairn_template_onboarding/&hellip;</code> imports to your app's package name (a find-and-replace). Files inside the template use relative imports, so only your own references change. Delete <code>cairn_template_onboarding.dart</code> if you do not want the barrel.</li>
+</ol>
+<div class="callout warn"><strong>Photographs</strong><p>The images are from Pexels under the Pexels licence (see <code>NOTICE.md</code>). They are placeholders for the demo: replace them with your own artwork before you ship, and keep each to roughly 150 KB so the first page does not wait on a decode.</p></div>
+
+<h2 id="mount">Mount it</h2>
+<p>The template reads colours, radii and type from <code>CairnTheme</code>, so the host app must provide one. Below is a complete <code>main.dart</code> with a "show once" gate: the first launch shows onboarding, every later launch goes straight to the app. Progress survives the app being killed mid-way.</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'dart:convert';
+
+import 'package:cairn_template_onboarding/cairn_template_onboarding.dart';
+import 'package:cairn_ui/cairn_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+/// Keeps onboarding progress as one JSON string in shared_preferences.
+class SharedPreferencesProgressStore implements ProgressStore {
+  SharedPreferencesProgressStore(this._prefs);
+
+  static const String _key = 'onboarding.progress';
+
+  final SharedPreferences _prefs;
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;?&gt; read() async {
+    final String? raw = _prefs.getString(_key);
+    if (raw == null) return null;
+    try {
+      return Map&lt;String, Object?&gt;.from(jsonDecode(raw) as Map&lt;Object?, Object?&gt;);
+    } on Object {
+      return null; // unreadable: the flow starts over instead of crashing
+    }
+  }
+
+  @override
+  Future&lt;void&gt; write(Map&lt;String, Object?&gt; json) =&gt;
+      _prefs.setString(_key, jsonEncode(json));
+
+  @override
+  Future&lt;void&gt; clear() =&gt; _prefs.remove(_key);
+}
+
+Future&lt;void&gt; main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  runApp(MyApp(prefs: prefs));
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key, required this.prefs});
+
+  final SharedPreferences prefs;
+
+  @override
+  State&lt;MyApp&gt; createState() =&gt; _MyAppState();
+}
+
+class _MyAppState extends State&lt;MyApp&gt; {
+  static const String _seenKey = 'onboarding.seen';
+
+  late bool _seen = widget.prefs.getBool(_seenKey) ?? false;
+
+  Future&lt;void&gt; _finish(OnboardingResult result) async {
+    await widget.prefs.setBool(_seenKey, true);
+    // Keep what the user told you: your own storage or API goes here.
+    await widget.prefs.setStringList('interests', result.interests);
+    if (!mounted) return;
+    setState(() =&gt; _seen = true);
+    // result.accountChoice says where to go next: see "Hand off to auth".
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Daybreak',
+      theme: CairnTheme.materialTheme(CairnTheme.light),
+      darkTheme: CairnTheme.materialTheme(CairnTheme.dark),
+      home: _seen
+          ? const HomeScreen()
+          : Scaffold(
+              body: SafeArea(
+                child: OnboardingApp(
+                  progressStore: SharedPreferencesProgressStore(widget.prefs),
+                  onCompleted: _finish,
+                ),
+              ),
+            ),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) =&gt;
+      const Scaffold(body: Center(child: Text('Welcome back')));
+}</code></pre>
+
+<p><code>OnboardingApp</code> fills whatever space its parent gives it (320 &times; 640 and up), so put it in a <code>Scaffold</code> body, a <code>CairnMockupPhone</code> or a fixed-height box. From 600 px wide it stays a centred 440 px column. Each instance creates its own dependency container and disposes it, so two copies never share state. Wrap it in a <code>SafeArea</code> as above, since the template draws its own progress bar and footer edge to edge.</p>
+<div class="callout note"><strong>Why a separate "seen" flag?</strong><p>The saved progress also records <code>completed</code>, so you could read it back. A one-line boolean of your own is simpler to reason about, survives a change of the saved format, and is the thing you will want to reset when a user signs out on a shared device.</p></div>
+
+<h3 id="arguments">Arguments</h3>
+<table>
+<tr><th>Argument</th><th>Type</th><th>Meaning</th></tr>
+<tr><td><code>onCompleted</code></td><td><code>void Function(OnboardingResult)?</code></td><td>The user pressed Start. Called once.</td></tr>
+<tr><td><code>onSkipped</code></td><td><code>void Function(OnboardingStepKind)?</code></td><td>The user skipped a step that allows it. Informational: the flow moves on by itself.</td></tr>
+<tr><td><code>onStepChanged</code></td><td><code>void Function(OnboardingStepKind)?</code></td><td>A step was shown, including the first. For analytics.</td></tr>
+<tr><td><code>flowDataSource</code></td><td><code>FlowRemoteDataSource?</code></td><td>Where the content comes from. Default: <code>InMemoryFlowRemoteDataSource</code>.</td></tr>
+<tr><td><code>progressStore</code></td><td><code>ProgressStore?</code></td><td>Where progress is kept. Default: <code>InMemoryProgressStore</code>, which forgets everything when the app closes.</td></tr>
+<tr><td><code>permissionService</code></td><td><code>PermissionService?</code></td><td>How permissions are requested. Default: <code>DemoPermissionService</code>, which grants everything without a system prompt.</td></tr>
+<tr><td><code>startAtStep</code></td><td><code>OnboardingStepKind?</code></td><td>Open on this step and skip the splash. Read once, when the app is first built.</td></tr>
+<tr><td><code>showReplay</code></td><td><code>bool</code></td><td>Offer "Replay from the start" on the last step. For demos; leave it off.</td></tr>
+</table>
+<p>The callbacks may change between builds (a <code>setState</code> in the parent is fine); the flow is not restarted. The three objects are read once, when the widget is first built.</p>
+
+<h3 id="result">The result</h3>
+<table>
+<tr><th>Field</th><th>Meaning</th></tr>
+<tr><td><code>interests</code></td><td>Chosen interest ids, in the order the content lists them.</td></tr>
+<tr><td><code>goalId</code></td><td>The chosen goal id (<code>null</code> if the content has no personalise step).</td></tr>
+<tr><td><code>reminderId</code></td><td>The chosen reminder option id.</td></tr>
+<tr><td><code>permissions</code></td><td><code>Map&lt;PermissionKind, PermissionStatus&gt;</code>: the answer to every permission that was asked for. Ones never asked are absent.</td></tr>
+<tr><td><code>accountChoice</code></td><td><code>AccountChoice.createAccount</code>, <code>signIn</code> or <code>guest</code>. <code>guest</code> when the user skipped the step or the content has none.</td></tr>
+</table>
+
+<h2 id="flow">The flow</h2>
+<div class="diagram"> splash ──► welcome ───────► permissions ──► personalise ──────────────► account ──► done
+ (fade,     4 pages          2 cards        interests ► goal ► reminders  3 choices   summary
+  load)     Skip ──────────► Skip ────────► (cannot be skipped)           Skip=guest   Start
+              ▲                  ▲                 ▲                          │           │
+              └── back ──────────┴─────── back ───┘◄─────── back ────────────┘           ▼
+                                                                                 onCompleted(result)</div>
+
+<p>The steps and their order are <em>content</em>: the <code>steps</code> list in the flow JSON. The default is <code>welcome, permissions, personalise, account, done</code>. Leave one out and it is simply not shown; <code>done</code> is always last.</p>
+<h3 id="rules">Rules</h3>
+<ul>
+<li><strong>Skip</strong> is offered on the welcome pages, the permissions and the account step. It moves to the next step and calls <code>onSkipped</code>. Skipping the account step means <code>AccountChoice.guest</code>. Skipping the permissions asks for nothing.</li>
+<li><strong>Personalise cannot be skipped</strong>, whatever the JSON says, and the flow will not move past it until there are at least <code>minInterests</code> valid interests, a goal and a reminder choice (<code>CanAdvance</code>). <code>CompleteOnboarding</code> checks the same rule again, so a restored or hand-edited state can never reach the host half-answered.</li>
+<li><strong>Back</strong> steps through the pages and the personalise parts before it leaves a step. The system back gesture does the same; on the very first page it is left to your app.</li>
+<li><strong>Resuming</strong> restores the step, the page, the personalise part and every answer. Content that has changed since is repaired: a removed step falls back to the first; a page index past the end is clamped; interests, goals, reminders and permissions the content no longer offers are dropped.</li>
+<li><strong>Saving never blocks.</strong> If the store throws, the user carries on; they simply cannot resume.</li>
+</ul>
+
+<h2 id="content">Change the content</h2>
+<p>Everything the flow says comes from one place: <code>lib/data/flow/remote/flow_remote_data_source.dart</code>. Today it is an in-memory stand-in that returns decoded JSON, exactly what an HTTP client or a remote-config SDK would hand you. That makes it the one place to edit, and the one place to replace (see <a href="#remote">Remote-config content</a>).</p>
+<h3 id="shapes">JSON shapes</h3>
+<p>The mapper in <code>domain/flow/mappers/flow_mapper.dart</code> reads these keys. Anything not listed is ignored.</p>
+<table>
+<tr><th>Key</th><th>Fields</th></tr>
+<tr><td><code>steps[]</code></td><td><code>kind</code> (<code>welcome</code> | <code>permissions</code> | <code>personalise</code> | <code>account</code> | <code>done</code>), optional <code>title</code>, <code>body</code> (the step's heading and line), optional <code>skippable</code> (default <code>true</code>)</td></tr>
+<tr><td><code>pages[]</code></td><td><code>id</code>, <code>title</code>, <code>body</code>, <code>image</code> (asset path), optional <code>imageLabel</code> (what the photograph shows, read by screen readers)</td></tr>
+<tr><td><code>permissions[]</code></td><td><code>kind</code> (<code>notifications</code> | <code>location</code> | <code>camera</code>), <code>title</code>, <code>benefit</code>, optional <code>deniedHelp</code> (how to enable it later), optional <code>optional</code></td></tr>
+<tr><td><code>personalise</code></td><td><code>minInterests</code> (default 3), <code>defaultReminder</code> (a reminder id), <code>interests[]</code> (<code>id</code>, <code>label</code>), <code>goals[]</code> (<code>id</code>, <code>label</code>, <code>hint</code>), <code>reminders[]</code> (<code>id</code>, <code>label</code>)</td></tr>
+</table>
+<div class="callout note"><strong>Forgiving about structure, strict about types</strong><p>Unknown or repeated step kinds are ignored; a <code>welcome</code> step with no pages or a <code>permissions</code> step with no cards is dropped. A wrong <em>type</em> (a number where a string belongs) or a missing required key makes loading fail, and the splash screen shows a retry. Ids are saved with the user's progress, so keep them stable when you reword a label.</p></div>
+
+<h3 id="pages">Pages and images</h3>
+<p>Edit a page in place, or add one. Add the image to <code>assets/images/</code> (it is already declared in <code>pubspec.yaml</code> as a folder), then:</p>
+<pre><button class="copy" type="button">Copy</button><code>&lt;String, Object?&gt;{
+  'id': 'privacy',
+  'title': 'Yours alone',
+  'body': 'Your notes stay on your device unless you share them.',
+  'image': 'assets/images/privacy.jpg',
+  'imageLabel': 'A closed notebook with a pen on a wooden table',
+},</code></pre>
+
+<p>Pages appear in list order and the dots follow the count. A page that fails to load shows a quiet grey panel instead of crashing. Aim for portrait photographs around 1000 &times; 1250 and under 200 KB; the page crops to fill with <code>BoxFit.cover</code>, centred.</p>
+<div class="callout warn"><strong>Images in a package install</strong><p>When the template is a package, <code>Image.asset</code> looks in the package, so new images must live in the package (a path or git dependency you control). Use the copy install (B) if the images belong to your app, or load them from the network: in <code>presentation/welcome/widgets/value_page_view.dart</code> replace the <code>Image.asset</code> with</p></div>
+<pre><button class="copy" type="button">Copy</button><code>page.asset.startsWith('http')
+    ? Image.network(
+        page.asset,
+        fit: BoxFit.cover,
+        errorBuilder: (BuildContext c, Object e, StackTrace? s) =&gt;
+            ColoredBox(color: theme.muted),
+      )
+    : Image.asset(
+        page.asset,
+        package: OnboardingPackage.name,
+        fit: BoxFit.cover,
+        errorBuilder: (BuildContext c, Object e, StackTrace? s) =&gt;
+            ColoredBox(color: theme.muted),
+      )</code></pre>
+
+<h3 id="interests">Interests, goals and reminders</h3>
+<p>Inside the <code>personalise</code> object. Interests are chips that wrap, so ten to fourteen short labels read well; goals are cards with a hint; reminders fill the select. To require more interests set <code>minInterests</code>; the message ("Pick 2 more to continue.") follows. <code>defaultReminder</code> must be one of the reminder ids, or omitted to make the user choose.</p>
+<p>The headings of the three personalise parts and the sample reminder notification are not content but constants: <code>common/constants/personalise_sections.dart</code> and <code>common/constants/onboarding_brand.dart</code>. The splash name and tagline are in the same brand file.</p>
+
+<h2 id="steps">Add or remove a step</h2>
+<h3>Remove one</h3>
+<p>Delete its entry from <code>steps</code> (or from your remote JSON). Nothing else changes: navigation, the progress bar ("step 2 of 4"), the summary rows and the result all follow the list. Removing <code>permissions</code> leaves <code>OnboardingResult.permissions</code> empty; removing <code>account</code> makes <code>accountChoice</code> always <code>guest</code>; removing <code>personalise</code> removes the rules that guard it.</p>
+<h3>Reorder</h3>
+<p>Reorder the entries. Putting <code>account</code> before <code>personalise</code>, for example, just works; the <code>done</code> step stays last.</p>
+<h3>Add a new kind of step</h3>
+<p>Say an "Invite a friend" screen. The compiler guides you: the shell switches exhaustively on <code>OnboardingStepKind</code>, so a missing case is an error, not a blank page.</p>
+<ol class="steps">
+<li>Add <code>invite</code> to the <code>OnboardingStepKind</code> enum in <code>domain/flow/models/onboarding_step.dart</code>. The mapper accepts it automatically.</li>
+<li>Create <code>presentation/invite/views/invite_view.dart</code> (below).</li>
+<li>Add <code>OnboardingStepKind.invite =&gt; const InviteView(),</code> to the switch in <code>presentation/shell/onboarding_shell.dart</code>.</li>
+<li>Add <code>{'kind': 'invite', 'title': 'Better together', 'body': 'Invite a friend.', 'skippable': true}</code> to <code>steps</code>, before <code>done</code>.</li>
+</ol>
+<pre><button class="copy" type="button">Copy</button><code>import 'dart:async';
+
+import 'package:cairn_ui/cairn_ui.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../core/presentation/widgets/footer_button.dart';
+import '../../../core/presentation/widgets/step_layout.dart';
+import '../../../domain/flow/models/onboarding_step.dart';
+import '../../flow/bloc/onboarding_cubit.dart';
+import '../../flow/bloc/onboarding_state.dart';
+
+class InviteView extends StatelessWidget {
+  const InviteView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final OnboardingCubit cubit = context.read&lt;OnboardingCubit&gt;();
+    final OnboardingState state = cubit.state;
+    final step = state.flow?.step(OnboardingStepKind.invite);
+    return StepLayout(
+      title: step?.title,
+      body: step?.body,
+      footer: FooterButton(
+        label: 'Continue',
+        onPressed: () =&gt; unawaited(cubit.next()),
+      ),
+      child: const CairnAlert(
+        icon: CairnIcon(CairnIconData.info),
+        title: Text('Streaks last longer with a friend'),
+        description: Text('You can invite someone later from your profile.'),
+      ),
+    );
+  }
+}</code></pre>
+
+<p>The top bar's Skip button appears automatically when the step's <code>skippable</code> is true. If the new step collects data that must be saved, add a field to <code>OnboardingProgress</code> and its mapper (<code>domain/progress/mappers/progress_mapper.dart</code>) and bump <code>ProgressMapper.version</code> so older saved data is ignored rather than misread. If it must be validated, add the rule to <code>CanAdvance</code>; it is pure and unit-testable.</p>
+
+<h2 id="permissions">Real permissions</h2>
+<p>The template never talks to the operating system. Its <code>PermissionService</code> is three methods, and the default <code>DemoPermissionService</code> grants everything without a prompt so the flow works on web, desktop and in tests. For a real app implement the interface with <a href="https://pub.dev/packages/permission_handler">permission_handler</a>:</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'package:cairn_template_onboarding/cairn_template_onboarding.dart';
+import 'package:permission_handler/permission_handler.dart' as ph;
+
+class PermissionHandlerService implements PermissionService {
+  const PermissionHandlerService();
+
+  ph.Permission _permission(PermissionKind kind) =&gt; switch (kind) {
+    PermissionKind.notifications =&gt; ph.Permission.notification,
+    PermissionKind.location =&gt; ph.Permission.locationWhenInUse,
+    PermissionKind.camera =&gt; ph.Permission.camera,
+  };
+
+  PermissionStatus _status(ph.PermissionStatus status) =&gt; switch (status) {
+    ph.PermissionStatus.granted ||
+    ph.PermissionStatus.limited ||
+    ph.PermissionStatus.provisional =&gt; PermissionStatus.granted,
+    ph.PermissionStatus.denied =&gt; PermissionStatus.denied,
+    // The system will not show its prompt again: the only way back is Settings.
+    ph.PermissionStatus.permanentlyDenied ||
+    ph.PermissionStatus.restricted =&gt; PermissionStatus.permanentlyDenied,
+  };
+
+  @override
+  Future&lt;PermissionStatus&gt; status(PermissionKind kind) async =&gt;
+      _status(await _permission(kind).status);
+
+  @override
+  Future&lt;PermissionStatus&gt; request(PermissionKind kind) async =&gt;
+      _status(await _permission(kind).request());
+
+  @override
+  Future&lt;void&gt; openSettings() async {
+    await ph.openAppSettings();
+  }
+}
+
+// Then:
+OnboardingApp(
+  permissionService: const PermissionHandlerService(),
+  onCompleted: _finish,
+)</code></pre>
+
+<h3>Platform setup</h3>
+<ul>
+<li><strong>Android</strong> &ndash; declare the permissions in <code>android/app/src/main/AndroidManifest.xml</code>: <code>POST_NOTIFICATIONS</code> (Android 13+), <code>ACCESS_FINE_LOCATION</code> / <code>ACCESS_COARSE_LOCATION</code>, <code>CAMERA</code>.</li>
+<li><strong>iOS</strong> &ndash; add the usage strings to <code>Info.plist</code> (<code>NSLocationWhenInUseUsageDescription</code>, <code>NSCameraUsageDescription</code>) and enable each permission's macro in the Podfile (<code>PERMISSION_NOTIFICATIONS=1</code>, <code>PERMISSION_LOCATION=1</code>, <code>PERMISSION_CAMERA=1</code> under <code>GCC_PREPROCESSOR_DEFINITIONS</code>). Unlisted permissions are compiled out and always report denied.</li>
+</ul>
+<p>Check <code>permission_handler</code>'s own README for the current keys; they change with the plugin, not with this template.</p>
+<h3>What the template does with the answer</h3>
+<ul>
+<li><code>granted</code>: the card shows an "Allowed" badge.</li>
+<li><code>denied</code>: the card explains (the content's <code>deniedHelp</code>) how to enable it later, and offers <strong>Try again</strong> and <strong>Open settings</strong>.</li>
+<li><code>permanentlyDenied</code>: only <strong>Open settings</strong>, because a retry would do nothing.</li>
+<li>An exception from your service, or <code>notDetermined</code> after asking, is treated as <code>denied</code>, so a missing plugin can never trap the user.</li>
+</ul>
+<div class="callout ok"><strong>Add the camera</strong><p>Add <code>{'kind': 'camera', 'title': 'Camera', 'benefit': 'Scan a receipt or add a photo to a habit.'}</code> to <code>permissions</code>. A third card appears; nothing else changes.</p></div>
+<p>A good onboarding asks in context, with the benefit visible, and lets people decline. The template's cards are built that way: each says why, nothing is requested until the button is pressed, and Continue is always available.</p>
+
+<h2 id="remote">Remote-config content</h2>
+<p>Implement <code>FlowRemoteDataSource</code> and return the JSON from anywhere. <code>FlowRepositoryImpl</code> caches the mapped flow for the life of the app instance; the splash screen waits for it, so keep the call fast and always fall back to the built-in content.</p>
+<h3>Firebase Remote Config</h3>
+<pre><button class="copy" type="button">Copy</button><code>import 'dart:convert';
+
+import 'package:cairn_template_onboarding/cairn_template_onboarding.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
+
+class RemoteConfigFlowDataSource implements FlowRemoteDataSource {
+  RemoteConfigFlowDataSource(
+    this._config, {
+    this.fallback = const InMemoryFlowRemoteDataSource(),
+  });
+
+  final FirebaseRemoteConfig _config;
+  final FlowRemoteDataSource fallback;
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; fetchFlow() async {
+    try {
+      await _config.fetchAndActivate().timeout(const Duration(seconds: 3));
+      final String raw = _config.getString('onboarding_flow');
+      if (raw.isEmpty) return fallback.fetchFlow();
+      return Map&lt;String, Object?&gt;.from(jsonDecode(raw) as Map&lt;Object?, Object?&gt;);
+    } on Object {
+      return fallback.fetchFlow(); // offline, timed out or malformed
+    }
+  }
+}</code></pre>
+
+<h3>Your own REST endpoint</h3>
+<pre><button class="copy" type="button">Copy</button><code>import 'dart:convert';
+
+import 'package:cairn_template_onboarding/cairn_template_onboarding.dart';
+import 'package:http/http.dart' as http;
+
+class HttpFlowDataSource implements FlowRemoteDataSource {
+  HttpFlowDataSource(this._client, {required this.url, this.locale});
+
+  final http.Client _client;
+  final Uri url;
+  final String? locale;
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; fetchFlow() async {
+    final http.Response res = await _client.get(
+      url,
+      headers: &lt;String, String&gt;{if (locale != null) 'Accept-Language': locale!},
+    );
+    if (res.statusCode != 200) {
+      throw http.ClientException('Onboarding content failed: ${res.statusCode}');
+    }
+    return Map&lt;String, Object?&gt;.from(jsonDecode(res.body) as Map&lt;Object?, Object?&gt;);
+  }
+}
+
+// Then:
+OnboardingApp(flowDataSource: HttpFlowDataSource(client, url: Uri.parse('https://api.example.com/onboarding')))</code></pre>
+
+<p>If the call throws, the splash screen shows "We could not load the welcome" with a <strong>Try again</strong> button. If you would rather never block the user, catch the error and return the in-memory content as above. To use network images for the pages, see <a href="#pages">Pages and images</a>.</p>
+<div class="callout note"><strong>Test the JSON before you publish it</strong><p>Run the same map through <code>FlowMapper.fromJson</code> in a unit test (the template's <code>test/domain_test.dart</code> does this for the built-in content). A typo that fails there would fail on every user's phone.</p></div>
+
+<h2 id="persist">Persist progress</h2>
+<p><code>ProgressStore</code> is three methods over a small JSON object, so anything fits. The <code>shared_preferences</code> implementation is in <a href="#mount">Mount it</a>. A file-based one is as short:</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'dart:convert';
+import 'dart:io';
+
+import 'package:cairn_template_onboarding/cairn_template_onboarding.dart';
+
+class FileProgressStore implements ProgressStore {
+  FileProgressStore(this._file);
+
+  final File _file;
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;?&gt; read() async {
+    if (!_file.existsSync()) return null;
+    try {
+      return Map&lt;String, Object?&gt;.from(
+        jsonDecode(await _file.readAsString()) as Map&lt;Object?, Object?&gt;,
+      );
+    } on Object {
+      return null;
+    }
+  }
+
+  @override
+  Future&lt;void&gt; write(Map&lt;String, Object?&gt; json) =&gt;
+      _file.writeAsString(jsonEncode(json));
+
+  @override
+  Future&lt;void&gt; clear() async {
+    if (_file.existsSync()) await _file.delete();
+  }
+}</code></pre>
+
+<ul>
+<li><strong>What is saved</strong>: <code>version</code>, <code>step</code>, <code>pageIndex</code>, <code>section</code>, <code>permissions</code>, <code>interests</code>, <code>goalId</code>, <code>reminderId</code>, <code>accountChoice</code> and <code>completed</code>. It is written after every change, not only at the end. None of it is secret.</li>
+<li><strong>Versioning</strong>: <code>ProgressMapper.version</code> is bumped when the shape changes incompatibly. Data from another version is ignored and the flow starts over; it is never half-read.</li>
+<li><strong>Per user</strong>: if several people share a device, include the user id in your store's key, and call <code>clear()</code> (or remove the key) on sign-out.</li>
+<li><strong>Replay</strong>: <code>OnboardingApp(showReplay: true)</code> adds a "Replay from the start" link to the last step, which clears the store and returns to the first page. It is meant for demos.</li>
+<li><strong>Never blocks</strong>: a store that throws on <code>write</code> is ignored; one that throws on <code>read</code> means a fresh start.</li>
+</ul>
+
+<h2 id="analytics">Analytics hooks</h2>
+<p>Three callbacks cover the funnel; a decorator covers permissions, which the template does not otherwise report.</p>
+<pre><button class="copy" type="button">Copy</button><code>OnboardingApp(
+  onStepChanged: (OnboardingStepKind step) =&gt;
+      analytics.log('onboarding_step', &lt;String, Object?&gt;{'step': step.name}),
+  onSkipped: (OnboardingStepKind step) =&gt;
+      analytics.log('onboarding_skip', &lt;String, Object?&gt;{'step': step.name}),
+  onCompleted: (OnboardingResult result) =&gt;
+      analytics.log('onboarding_done', &lt;String, Object?&gt;{
+        'interests': result.interests.length,
+        'goal': result.goalId,
+        'reminder': result.reminderId,
+        'account': result.accountChoice.name,
+        'granted': &lt;String&gt;[
+          for (final e in result.permissions.entries)
+            if (e.value.isGranted) e.key.name,
+        ],
+      }),
+  permissionService: AnalyticsPermissionService(
+    inner: const PermissionHandlerService(),
+    log: analytics.log,
+  ),
+)
+
+/// Reports every answer, then returns it unchanged.
+class AnalyticsPermissionService implements PermissionService {
+  AnalyticsPermissionService({required this.inner, required this.log});
+
+  final PermissionService inner;
+  final void Function(String event, Map&lt;String, Object?&gt; data) log;
+
+  @override
+  Future&lt;PermissionStatus&gt; status(PermissionKind kind) =&gt; inner.status(kind);
+
+  @override
+  Future&lt;PermissionStatus&gt; request(PermissionKind kind) async {
+    final PermissionStatus result = await inner.request(kind);
+    log('permission_result', &lt;String, Object?&gt;{
+      'kind': kind.name,
+      'status': result.name,
+    });
+    return result;
+  }
+
+  @override
+  Future&lt;void&gt; openSettings() =&gt; inner.openSettings();
+}</code></pre>
+
+<p><code>onStepChanged</code> fires for the first step too (and for every step re-shown after a back), so count distinct steps if you build a funnel. <code>PermissionStatus.isGranted</code> is exported with the barrel's <code>PermissionStatus</code>.</p>
+
+<h2 id="auth">Hand off to auth</h2>
+<p>The account step builds no forms. It records one of three choices and, when the user presses Start, <code>OnboardingResult.accountChoice</code> arrives in <code>onCompleted</code>. Route on it. The <a href="../../auth/doc/index.html">authentication template</a> (<code>templates/auth</code>, package <code>cairn_template_auth</code>) is built to receive exactly this: its <code>AuthApp</code> opens on the sign-up or sign-in screen.</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'package:cairn_template_auth/cairn_template_auth.dart';
+import 'package:cairn_template_onboarding/cairn_template_onboarding.dart';
+import 'package:flutter/material.dart';
+
+void routeAfterOnboarding(BuildContext context, OnboardingResult result) {
+  switch (result.accountChoice) {
+    case AccountChoice.createAccount:
+      _openAuth(context, AuthScreen.signUp, result);
+    case AccountChoice.signIn:
+      _openAuth(context, AuthScreen.signIn, result);
+    case AccountChoice.guest:
+      Navigator.of(context).pushReplacementNamed('/home');
+  }
+}
+
+void _openAuth(BuildContext context, AuthScreen screen, OnboardingResult result) {
+  Navigator.of(context).pushReplacement(
+    MaterialPageRoute&lt;void&gt;(
+      builder: (BuildContext context) =&gt; Scaffold(
+        body: SafeArea(
+          child: AuthApp(
+            startOn: screen,
+            onAuthenticated: (Session session) {
+              // Send result.interests, result.goalId and result.reminderId to
+              // your API now that there is an account to attach them to.
+              Navigator.of(context).pushReplacementNamed('/home');
+            },
+          ),
+        ),
+      ),
+    ),
+  );
+}</code></pre>
+
+<p>Keep the user's answers until the account exists: onboarding finishes <em>before</em> sign-up, so hold the <code>OnboardingResult</code> (in memory or local storage) and apply it in <code>onAuthenticated</code>. For a guest, apply it to a local profile and offer the account later from settings; guests who skipped the permissions can still be asked from your own settings screen.</p>
+<div class="callout note"><strong>Why not sign-up inside the flow?</strong><p>Auth has its own rules (social providers, verification, password reset, a backend). Keeping it a separate template means each can change without touching the other, and either can be used alone.</p></div>
+
+<h2 id="router">Use go_router</h2>
+<p>The template navigates between its own steps with a small cubit, so it needs no router and runs unchanged inside any app. Mount it as <em>one</em> route in yours and use <code>go_router</code> for everything around it:</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'package:cairn_template_onboarding/cairn_template_onboarding.dart';
+import 'package:cairn_ui/cairn_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+GoRouter buildRouter(SharedPreferences prefs, ValueNotifier&lt;bool&gt; seen) {
+  return GoRouter(
+    initialLocation: '/home',
+    refreshListenable: seen,
+    redirect: (BuildContext context, GoRouterState state) {
+      final bool onboarding = state.matchedLocation == '/onboarding';
+      if (!seen.value &amp;&amp; !onboarding) return '/onboarding';
+      if (seen.value &amp;&amp; onboarding) return '/home';
+      return null;
+    },
+    routes: &lt;RouteBase&gt;[
+      GoRoute(
+        path: '/onboarding',
+        builder: (BuildContext context, GoRouterState state) =&gt; Scaffold(
+          body: SafeArea(
+            child: OnboardingApp(
+              progressStore: SharedPreferencesProgressStore(prefs),
+              permissionService: const PermissionHandlerService(),
+              onCompleted: (OnboardingResult result) async {
+                await prefs.setBool('onboarding.seen', true);
+                seen.value = true; // the redirect now allows leaving
+                if (!context.mounted) return;
+                switch (result.accountChoice) {
+                  case AccountChoice.createAccount:
+                    context.go('/sign-up');
+                  case AccountChoice.signIn:
+                    context.go('/sign-in');
+                  case AccountChoice.guest:
+                    context.go('/home');
+                }
+              },
+            ),
+          ),
+        ),
+      ),
+      GoRoute(path: '/home', builder: (c, s) =&gt; const HomeScreen()),
+      GoRoute(path: '/sign-up', builder: (c, s) =&gt; const SignUpScreen()),
+      GoRoute(path: '/sign-in', builder: (c, s) =&gt; const SignInScreen()),
+    ],
+  );
+}
+
+// Seed it from storage once, before runApp:
+final ValueNotifier&lt;bool&gt; seen =
+    ValueNotifier&lt;bool&gt;(prefs.getBool('onboarding.seen') ?? false);</code></pre>
+
+<div class="callout warn"><strong>Order matters</strong><p>Set <code>seen.value = true</code> <em>after</em> the flag is saved, and <em>before</em> <code>context.go</code>: the redirect runs on every change and would otherwise bounce you back to <code>/onboarding</code>.</p></div>
+<h3>Make each step a real route</h3>
+<p>Only do this if you need deep links to a step or a browser back button on web. It means editing the template (use the copy install). This is a sketch of where to cut; the template does not ship it:</p>
+<ol class="steps">
+<li><code>core/presentation/navigation/onboarding_navigation_cubit.dart</code>: keep the cubit as the source of truth, but have the shell listen to it and call <code>context.go('/onboarding/${step.name}')</code> from a <code>BlocListener</code>.</li>
+<li><code>presentation/shell/onboarding_shell.dart</code>: replace the <code>AnimatedSwitcher</code> body with the router's <code>child</code> (a <code>ShellRoute</code> whose builder returns the shell and whose child routes build each <code>*View</code>); the views read the session cubits by <code>context.read</code> and do not care how they were reached.</li>
+<li><code>presentation/flow/bloc/onboarding_cubit.dart</code>: on a deep link, call <code>load()</code> and then set the step from the route, instead of <code>begin()</code>. <code>startAtStep</code> already does this for a first build.</li>
+</ol>
+<p>Everything else (use cases, mappers, cubits, tests) is untouched, which is the point of keeping navigation in one small cubit.</p>
+
+<h2 id="l10n">Localisation</h2>
+<p>There are two kinds of text, and they are localised differently.</p>
+<ul>
+<li><strong>Content</strong> (page titles and bodies, permission copy, interests, goals, reminder labels, step headings, image descriptions) comes from the flow JSON. Serve the JSON for the user's locale. <code>OnboardingApp</code> reads its data source once, so give it a <code>key</code> tied to the locale and it reloads when the language changes; saved progress carries over because it stores ids, not words.</li>
+<li><strong>Chrome</strong> (Next, Get started, Continue, Skip, Allow, Back, Start, the validation messages) is a short list of strings in the views. Replace each literal with your <code>AppLocalizations</code> lookup.</li>
+</ul>
+<pre><button class="copy" type="button">Copy</button><code>class LocalizedFlowDataSource implements FlowRemoteDataSource {
+  const LocalizedFlowDataSource(this.locale);
+
+  final Locale locale;
+
+  static const Map&lt;String, Map&lt;String, Object?&gt;&gt; _byLanguage =
+      &lt;String, Map&lt;String, Object?&gt;&gt;{
+    'en': InMemoryFlowRemoteDataSource.content,
+    'fr': frenchContent, // same keys, translated values
+  };
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; fetchFlow() async =&gt;
+      _byLanguage[locale.languageCode] ?? InMemoryFlowRemoteDataSource.content;
+}
+
+// Rebuild the flow when the language changes:
+OnboardingApp(
+  key: ValueKey&lt;Locale&gt;(locale),
+  flowDataSource: LocalizedFlowDataSource(locale),
+  progressStore: store,
+)</code></pre>
+
+<p>Where the chrome strings live, so you can find them with a search:</p>
+<table>
+<tr><th>File</th><th>Strings</th></tr>
+<tr><td><code>presentation/shell/onboarding_shell.dart</code></td><td>Back, Skip, "Skip this step", "Onboarding progress, step N of M"</td></tr>
+<tr><td><code>presentation/welcome/</code></td><td>Next, Get started, "Page N of M"</td></tr>
+<tr><td><code>presentation/permissions/</code></td><td>Allow &hellip;, Try again, Open settings, Allowed, Not allowed, Continue</td></tr>
+<tr><td><code>presentation/personalise/</code> and <code>domain/personalise/models/interests_validation.dart</code></td><td>Continue, "Pick N more to continue.", "Choose a goal to continue.", Remind me, Choose when</td></tr>
+<tr><td><code>presentation/account/</code></td><td>Create account, I already have an account, Continue as guest</td></tr>
+<tr><td><code>presentation/done/</code></td><td>Start, Replay from the start, the summary values, "Not asked yet"</td></tr>
+<tr><td><code>common/constants/</code></td><td>Splash tagline, the personalise headings, the account benefits, the sample notification</td></tr>
+</table>
+<p>Layouts already cope with longer words: buttons and chips size to their label, headings wrap, and every screen scrolls under a pinned footer. Right-to-left layouts have not been verified: the back chevron and the top bar use fixed left and right positions, so check them if you ship an RTL locale.</p>
+
+<h2 id="a11y">Accessibility</h2>
+<ul>
+<li><strong>Every control is named.</strong> Icon buttons carry a label ("Back"); buttons that need more context than their text have one ("Allow notifications", "Skip this step", "Open settings to allow location"). The progress bar reads "Onboarding progress, step 2 of 5".</li>
+<li><strong>Headings are headings.</strong> Each screen's title and each page title is announced as a header; the page indicator is one label ("Page 2 of 4") rather than four dots.</li>
+<li><strong>Images are described.</strong> The photographs carry the <code>imageLabel</code> from the content and are otherwise hidden from the tree. Decorative marks are excluded.</li>
+<li><strong>State is not colour alone.</strong> A chosen interest shows a tick as well as a fill; a refused permission shows an icon and words; errors have an icon and are live regions, so they are announced when they appear.</li>
+<li><strong>Targets are at least 44 &times; 44.</strong> Cairn's buttons are 32 to 40 px, so each is wrapped in <code>TouchTarget</code>, which adds an invisible margin that triggers the same action without adding a second semantic node. The one exception is the reminder <code>CairnSelect</code>, which is Cairn's own 36 px control.</li>
+<li><strong>Focus order follows reading order</strong>: back, progress, skip, the screen's content, then its actions. Cairn controls are keyboard focusable, activate on Space and Enter and show a ring on keyboard focus.</li>
+<li><strong>Reduced motion.</strong> When <code>MediaQuery.disableAnimations</code> is true the step transition, the page change, the splash fade, the dots, the progress bar and the step markers are all instant, and the splash holds for 400 ms instead of 1.4 s. Nothing in the template loops.</li>
+<li><strong>Large text.</strong> Every screen scrolls and keeps its main action pinned. At very large sizes the step labels are dropped (the numbered markers and the heading remain) so three labels never collide.</li>
+<li><strong>Back.</strong> Swipe, the Back button and the platform back gesture all step backwards through pages and parts before leaving a step.</li>
+</ul>
+<p>Test with TalkBack and VoiceOver on a device: the template is built to be correct by construction, but only a screen reader tells you how it <em>sounds</em>.</p>
+
+<h2 id="testing">Testing</h2>
+<p>In the template's folder:</p>
+<pre><button class="copy" type="button">Copy</button><code>flutter pub get
+dart format .
+flutter analyze --fatal-infos --fatal-warnings
+flutter test</code></pre>
+
+<p>The suite has three layers: <strong>domain</strong> (the content mapper, progress mapping and repair, the step rules, interest validation, the use cases), <strong>session</strong> (the cubits wired through the real container, no widgets) and <strong>widget</strong> tests that mount <code>OnboardingApp</code> at 320, 360 and 700 px, light and dark, and play the whole journey (skip, next through the pages, allow and deny, validation, goal, finish, resume after a simulated restart), plus the reduced-motion path and large text. Flutter fails a test on any <code>RenderFlex</code> overflow, so passing at every width also means no overflow.</p>
+<p>Use small <code>tester.pump(Duration)</code> steps, never <code>pumpAndSettle</code>: Cairn has repeating animations, so it would never return. The splash holds for 1.4 s, so pump about 20 steps of 100 ms (or pass <code>startAtStep</code>).</p>
+<h3>Testing your integration</h3>
+<p>Resume from saved JSON, with the permission service stubbed:</p>
+<pre><button class="copy" type="button">Copy</button><code>testWidgets('Start reports the saved choices', (WidgetTester tester) async {
+  final List&lt;OnboardingResult&gt; done = &lt;OnboardingResult&gt;[];
+  final InMemoryProgressStore store = InMemoryProgressStore(&lt;String, Object?&gt;{
+    'version': 1,
+    'step': 'done',
+    'pageIndex': 0,
+    'section': 2,
+    'permissions': &lt;String, Object?&gt;{'notifications': 'granted'},
+    'interests': &lt;String&gt;['focus', 'sleep', 'music'],
+    'goalId': 'calm',
+    'reminderId': 'morning',
+    'accountChoice': 'guest',
+    'completed': false,
+  });
+
+  await tester.pumpWidget(
+    MaterialApp(
+      theme: CairnTheme.materialTheme(CairnTheme.light),
+      home: Scaffold(
+        body: OnboardingApp(
+          progressStore: store,
+          permissionService: DemoPermissionService(),
+          startAtStep: OnboardingStepKind.done,
+          onCompleted: done.add,
+        ),
+      ),
+    ),
+  );
+  for (int i = 0; i &lt; 5; i++) {
+    await tester.pump(const Duration(milliseconds: 100));
+  }
+
+  await tester.tap(find.widgetWithText(CairnButton, 'Start'));
+  await tester.pump();
+
+  expect(done.single.goalId, 'calm');
+  expect(done.single.permissions[PermissionKind.notifications], PermissionStatus.granted);
+});</code></pre>
+
+<p>Keep the in-memory sources for tests: pass <code>InMemoryProgressStore</code> and <code>DemoPermissionService(answers: {PermissionKind.location: PermissionStatus.denied})</code> to drive the refusal path. To simulate the app being closed and re-opened, unmount (<code>pumpWidget(const SizedBox.shrink())</code>) and mount again with <em>the same store</em>.</p>
+<p>The template's tests load Geist from the Cairn site checkout when they can find it (<code>test/flutter_test_config.dart</code>), so text has real metrics. Without a real font, Flutter draws every glyph as a wide box and reports overflows that production text never has; load your app's font in your own <code>flutter_test_config.dart</code> the same way.</p>
+
+<h2 id="faq">Troubleshooting</h2>
+<h3>"No OnboardingScope above this context"</h3>
+<p>You built a view or <code>ViewModelBuilder</code> outside <code>OnboardingApp</code>. Mount <code>OnboardingApp</code> (it provides the scope), or wrap your tree in an <code>OnboardingScope</code> with a locator from <code>createOnboardingLocator()</code>.</p>
+<h3>Everything is black and white and unstyled</h3>
+<p>The host app has no <code>CairnTheme</code>. Use <code>CairnTheme.materialTheme(...)</code> or add <code>CairnTheme.light</code> to <code>ThemeData.extensions</code>.</p>
+<h3>The photographs are grey panels</h3>
+<p>The asset did not load. With the package install, check the <code>image</code> path matches a file in the package's <code>assets/images/</code>. With the copy install, make sure <code>OnboardingPackage.name</code> is <code>null</code> and the folder is declared in your <code>pubspec.yaml</code>. Run <code>flutter clean</code> after adding assets.</p>
+<h3>It does not resume</h3>
+<p>The default store is in memory. Pass a <code>progressStore</code> that persists (see <a href="#persist">Persist progress</a>). Also check that your gate does not re-create the store with a different key.</p>
+<h3>Permissions are always "Allowed" and there is no system prompt</h3>
+<p>That is <code>DemoPermissionService</code>, the default. Pass your own <code>permissionService</code>.</p>
+<h3>The splash never goes away</h3>
+<p>It waits for the content. If loading fails it shows a retry; if your data source never completes (no timeout on a request) it waits forever. Add a timeout and fall back to the built-in content.</p>
+<h3>Loading fails with a <code>TypeError</code> or <code>FormatException</code></h3>
+<p>The JSON has a missing required key or a value of the wrong type. Run it through <code>FlowMapper.fromJson</code> in a test; the stack trace names the key.</p>
+<h3>Start takes me back to the personalise step</h3>
+<p>The saved answers do not satisfy the rules (for example a restored state with fewer than <code>minInterests</code>). This is intentional: the host never receives a half-answered result.</p>
+<h3>The select's menu is hidden behind something</h3>
+<p><code>CairnSelect</code> opens in the nearest <code>Overlay</code>. Mount the template under a <code>MaterialApp</code> (or <code>WidgetsApp</code>) so one exists.</p>
+<h3>"RenderFlex overflowed" in my tests</h3>
+<p>Flutter's test font is wide. Load your real font in <code>test/flutter_test_config.dart</code> and set <code>fontFamily</code> on the test theme.</p>
+<h3>Where do I report a bug?</h3>
+<p>Open an issue on the <a href="https://github.com/rlphjyson/cairn_site/issues">cairn_site repository</a> with the Flutter and <code>cairn_ui</code> versions.</p>
+
+<h2 id="migrate">Migration notes</h2>
+<table>
+<tr><th>When you&hellip;</th><th>Do this</th></tr>
+<tr><td>Upgrade <code>cairn_ui</code> to a new minor</td><td>Bump the constraint, run <code>flutter analyze</code>. Components added in a minor never break this template; read the library's CHANGELOG for renames.</td></tr>
+<tr><td>Change the saved shape (add a field to <code>OnboardingProgress</code>)</td><td>Update <code>ProgressMapper</code> and bump <code>ProgressMapper.version</code>. Users with older saved data start over once; nothing crashes.</td></tr>
+<tr><td>Reword content that is already live</td><td>Change labels freely; keep <code>id</code>s. Ids are what users' saved progress refers to.</td></tr>
+<tr><td>Remove an interest, goal, reminder, page or step that is live</td><td>Just remove it. <code>ResumeProgress</code> drops what no longer exists and clamps the page index, so a returning user lands somewhere valid.</td></tr>
+<tr><td>Move from the copied source to the package</td><td>Delete your copy, add the dependency, change imports back to <code>package:cairn_template_onboarding/&hellip;</code>, set <code>OnboardingPackage.name</code> back (the package's default), and move your edits (usually only the content map and the brand constants) into your own data source and wrapper.</td></tr>
+<tr><td>Pull template updates into a copy</td><td>Diff <code>templates/onboarding/lib</code> between your last sync tag and the new one; because dependencies point inwards, changes are almost always inside a single layer.</td></tr>
+<tr><td>Change state management</td><td>Cubits are plain streams of immutable states. Views call <code>cubit.method()</code> and read <code>state</code>, so Riverpod or Provider can replace <code>BlocBuilder</code> view by view.</td></tr>
+</table>
+</main>
+</div>
+<script>
+(function(){
+  document.querySelectorAll('pre').forEach(function(pre){
+    var b=pre.querySelector('.copy'); if(!b) return;
+    b.addEventListener('click',function(){
+      var code=pre.querySelector('code').innerText;
+      var done=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1200)};
+      if(navigator.clipboard){navigator.clipboard.writeText(code).then(done,done)}else{done()}
+    });
+  });
+  var links=[].slice.call(document.querySelectorAll('nav.toc a'));
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){links.forEach(function(a){a.classList.remove('active')});var a=map[e.target.id];if(a)a.classList.add('active')}
+  })},{rootMargin:'-20% 0px -70% 0px'});
+  document.querySelectorAll('h2[id],h3[id]').forEach(function(h){io.observe(h)});
+  var root=document.documentElement, key='tpl-theme';
+  try{var s=localStorage.getItem(key);if(s)root.setAttribute('data-theme',s)}catch(e){}
+  document.getElementById('theme').addEventListener('click',function(){
+    var dark=root.getAttribute('data-theme')?root.getAttribute('data-theme')==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+    var next=dark?'light':'dark';root.setAttribute('data-theme',next);try{localStorage.setItem(key,next)}catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

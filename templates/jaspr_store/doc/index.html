@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jaspr store template: documentation</title>
+<meta name="description" content="How to install, customise, optimise for search, connect to a backend and Stripe, and deploy the Cairn Jaspr store template.">
+<style>
+
+:root{--bg:#fff;--fg:#0a0a0a;--muted:#6b6b6b;--border:#e5e5e5;--card:#fafafa;--code:#f4f4f5;--accent:#0a0a0a;--accent-fg:#fafafa;--note:#eef6ff;--note-b:#bcd9f7;--warn:#fff7e6;--warn-b:#f2d18b;--ok:#ecfbf1;--ok-b:#a8e2bd}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0a0a0a;--fg:#fafafa;--muted:#a1a1a1;--border:#262626;--card:#111;--code:#171717;--accent:#fafafa;--accent-fg:#0a0a0a;--note:#0e1a2b;--note-b:#1f3a5c;--warn:#2a2007;--warn-b:#5c4710;--ok:#0b2316;--ok-b:#1c5233}}
+:root[data-theme=dark]{--bg:#0a0a0a;--fg:#fafafa;--muted:#a1a1a1;--border:#262626;--card:#111;--code:#171717;--accent:#fafafa;--accent-fg:#0a0a0a;--note:#0e1a2b;--note-b:#1f3a5c;--warn:#2a2007;--warn-b:#5c4710;--ok:#0b2316;--ok-b:#1c5233}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:inherit;text-decoration-color:var(--muted);text-underline-offset:3px}a:hover{text-decoration-color:currentColor}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);max-width:1180px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:28px 20px;border-right:1px solid var(--border);font-size:14px}
+nav.toc .brand{font-weight:650;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+nav.toc ol{list-style:none;margin:0;padding:0}nav.toc li{margin:2px 0}
+nav.toc a{display:block;padding:5px 10px;border-radius:8px;text-decoration:none;color:var(--muted)}
+nav.toc a:hover,nav.toc a.active{background:var(--card);color:var(--fg)}
+nav.toc ol ol{margin-left:12px}
+main{padding:48px 40px 96px;max-width:860px}
+h1{font-size:2.2rem;line-height:1.15;margin:0 0 8px;letter-spacing:-.02em}
+h2{font-size:1.5rem;margin:56px 0 12px;padding-top:24px;border-top:1px solid var(--border);letter-spacing:-.01em}
+h2:first-of-type{border-top:0}h3{font-size:1.1rem;margin:28px 0 8px}
+p,li{color:var(--fg)}.lead{color:var(--muted);font-size:1.1rem;margin:0 0 24px}
+code{font:13.5px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);padding:2px 6px;border-radius:6px}
+pre{position:relative;background:var(--code);border:1px solid var(--border);border-radius:12px;padding:16px 18px;overflow:auto;margin:14px 0}
+pre code{background:none;padding:0;font-size:13px;line-height:1.6;white-space:pre}
+.copy{position:absolute;top:8px;right:8px;border:1px solid var(--border);background:var(--bg);color:var(--muted);border-radius:8px;font-size:12px;padding:3px 9px;cursor:pointer}
+.copy:hover{color:var(--fg)}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+th{font-weight:600;background:var(--card)}
+.callout{border:1px solid;border-radius:12px;padding:12px 16px;margin:16px 0}.callout p{margin:4px 0}
+.callout.note{background:var(--note);border-color:var(--note-b)}.callout.warn{background:var(--warn);border-color:var(--warn-b)}.callout.ok{background:var(--ok);border-color:var(--ok-b)}
+.callout strong:first-child{display:block;margin-bottom:2px}
+.tree{white-space:pre;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.pill{display:inline-block;border:1px solid var(--border);border-radius:999px;padding:1px 10px;font-size:12px;color:var(--muted)}
+.steps{counter-reset:s;list-style:none;padding:0}.steps>li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.steps>li:before{content:counter(s);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-fg);display:grid;place-items:center;font-size:13px;font-weight:600}
+button.theme{border:1px solid var(--border);background:var(--bg);color:var(--fg);border-radius:8px;padding:3px 8px;cursor:pointer;font-size:12px}
+@media (max-width:900px){.layout{display:block}nav.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border)}main{padding:28px 20px 64px}}
+@media print{nav.toc,.copy,button.theme{display:none}.layout{display:block}main{max-width:none;padding:0}pre{white-space:pre-wrap}a{text-decoration:none}}
+
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Contents">
+  <div class="brand"><span>Jaspr store</span><button class="theme" id="theme" type="button" aria-label="Toggle theme">Theme</button></div>
+  <ol>
+    <li><a href="#overview">Overview &amp; architecture</a></li>
+    <li><a href="#requirements">Requirements</a></li>
+    <li><a href="#install">Install &amp; run</a></li>
+    <li><a href="#catalogue">Change the catalogue</a>
+      <ol><li><a href="#fields">Field reference</a></li><li><a href="#add-product">Add a product</a></li><li><a href="#categories">Categories</a></li><li><a href="#images">Images &amp; srcset</a></li></ol></li>
+    <li><a href="#brand">Rebrand</a></li>
+    <li><a href="#seo">SEO guide</a>
+      <ol><li><a href="#seo-tags">Tags</a></li><li><a href="#jsonld">JSON-LD</a></li><li><a href="#verify">Verify</a></li><li><a href="#sitemap">Sitemap &amp; robots</a></li><li><a href="#canonical">Canonical rules</a></li></ol></li>
+    <li><a href="#backend">Connect a backend</a>
+      <ol><li><a href="#stripe">Stripe</a></li></ol></li>
+    <li><a href="#cart">Cart cookie &amp; security</a></li>
+    <li><a href="#deploy">Deploy</a></li>
+    <li><a href="#performance">Performance</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#migrate">Migration</a></li>
+    <li><a href="#faq">Troubleshooting</a></li>
+  </ol>
+</nav>
+<main>
+<h1>Jaspr store template</h1>
+<p class="lead">A server-rendered online store with first-class SEO, built with Jaspr and the Cairn design language. This guide takes you from <em>clone it</em> to <em>sell with your own catalogue, brand and backend</em>.</p>
+
+<h2 id="overview">Overview &amp; architecture</h2>
+<p>The template is a pure Dart package, <code>cairn_template_jaspr_store</code>. It is <strong>not</strong> a Flutter app and does not depend on Flutter or <code>cairn_ui</code>: Cairn UI is a Flutter widget library and cannot run in Jaspr. What it shares with Cairn is the <em>design language</em>: the OKLCH palette, radius scale, spacing grid, type scale and shadows are copied into CSS custom properties, and the components (buttons, inputs, badges, cards, alerts, accordions) match their Flutter counterparts.</p>
+<p>Every page is rendered to HTML on a Dart server. Only three small <em>islands</em> ship JavaScript (a theme toggle, a cart counter and an add-to-cart enhancement), so the whole store works with JavaScript disabled: browse, search, filter, add to cart, apply a promo code, check out.</p>
+<pre class="tree">lib/
+├─ app.dart                 routing, canonical redirects, Reply -> Response
+├─ main.server.dart         shelf pipeline + serveApp
+├─ main.client.dart         hydrates the 3 islands
+├─ core/                    config (Brand, StoreConfig), Result, analytics, errors, seo/
+├─ common/                  constants, utils (money, slug, escape, text)
+├─ domain/&lt;feature&gt;/        models, repository interfaces, use cases (pure Dart)
+│    catalog  cart  checkout  reviews  newsletter
+├─ data/&lt;feature&gt;/          repository implementations
+├─ presentation/            theme, components, shell, seo, islands, pages + controllers
+├─ http/                    RequestInfo, Reply, middleware, sitemap/robots/manifest
+├─ di/service_locator.dart  composition root (get_it)
+└─ backend/                 DEMO STAND-IN: seed data, in-memory stores, cart cookie</pre>
+<div class="callout note"><strong>The one rule to remember</strong><p>Dependencies point inwards: presentation &rarr; domain &larr; data. To change where products come from you replace one repository implementation and delete <code>lib/backend/</code>. To change how things look you touch <code>presentation/</code>. Controllers return plain data (<code>SeoData</code> + a page component); <code>app.dart</code> is the only place that talks HTTP.</p></div>
+<p>A request flows: <code>RequestInfo</code> (parsed query, cookies, bounded form body) &rarr; method and same-origin checks &rarr; path hygiene (301) &rarr; controller &rarr; <code>Reply</code> (page, redirect, raw, not-found) &rarr; render <code>Document(head: buildHead(seo), body: SiteShell(page))</code> &rarr; response with status, <code>Cache-Control</code>, <code>ETag</code>, <code>Vary</code> and <code>Set-Cookie</code>.</p>
+
+<h2 id="requirements">Requirements</h2>
+<table>
+<tr><th>Tool</th><th>Version</th></tr>
+<tr><td>Dart SDK</td><td>3.12 or newer</td></tr>
+<tr><td><code>jaspr_cli</code></td><td>0.23.4 (<code>dart pub global activate jaspr_cli 0.23.4</code>)</td></tr>
+<tr><td><code>jaspr</code></td><td>^0.23.4 (pulled in by <code>pub get</code>)</td></tr>
+<tr><td><code>build_web_compilers</code></td><td>pinned <code>&gt;=4.8.0 &lt;4.8.1</code>; 4.8.1 needs a Dart newer than 3.12</td></tr>
+<tr><td>Python 3 + Pillow</td><td>only for generating image sizes (see <a href="#images">Images</a>)</td></tr>
+<tr><td>Docker</td><td>optional, for deployment</td></tr>
+</table>
+
+<h2 id="install">Install &amp; run</h2>
+<pre><button class="copy" type="button">Copy</button><code>cd templates/jaspr_store
+dart pub get
+dart run build_runner build      # generates lib/main.*.options.dart (gitignored)
+jaspr serve                      # http://localhost:8080, hot reload</code></pre>
+<p>Production build and run:</p>
+<pre><button class="copy" type="button">Copy</button><code>jaspr build --dart-define=APP_ENV=production --dart-define=SITE_URL=https://shop.example
+PORT=8080 SITE_URL=https://shop.example CART_SECRET=$(openssl rand -hex 32) ./build/jaspr/app</code></pre>
+<p><code>build/jaspr/app</code> is an AOT-compiled server; <code>build/jaspr/web</code> holds the island JavaScript and your static files and must sit next to it.</p>
+<div class="callout warn"><strong>Only one build daemon per directory</strong><p><code>jaspr serve</code> and <code>jaspr build</code> cannot run at the same time ("Incompatible options with current running build daemon"). Stop the dev server first.</p></div>
+<p>Try the demo: add something to the cart, apply <code>CAIRN10</code> for 10% off, then check out with any valid-looking address (a US ZIP is five digits). The checkout never asks for a card.</p>
+
+<h2 id="catalogue">Change the catalogue</h2>
+<p>The catalogue lives in <code>lib/backend/seed_catalog.dart</code> (products and categories) and <code>lib/backend/seed_reviews.dart</code>. It is the single place to edit while you are still on the in-memory backend.</p>
+<h3 id="fields">Field reference</h3>
+<table>
+<tr><th>Field</th><th>Meaning</th><th>Where it shows up</th></tr>
+<tr><td><code>id</code></td><td>Stable internal id. Never shown. Carts and orders reference it.</td><td>cart lines, form fields</td></tr>
+<tr><td><code>slug</code></td><td>URL segment: lower-case, digits, single hyphens.</td><td><code>/products/&lt;slug&gt;</code>, canonical, sitemap</td></tr>
+<tr><td><code>name</code>, <code>brand</code></td><td>Display name; brand.</td><td>h1, cards, <code>Product.name</code>, <code>Product.brand</code></td></tr>
+<tr><td><code>categorySlug</code></td><td>Must match a <code>Category.slug</code>.</td><td>breadcrumbs, <code>/categories/&lt;slug&gt;</code>, related products</td></tr>
+<tr><td><code>summary</code></td><td>One or two sentences.</td><td>card, <code>og:description</code>, meta description seed, JSON-LD <code>description</code></td></tr>
+<tr><td><code>description</code></td><td>Paragraphs of long copy.</td><td>"About" section</td></tr>
+<tr><td><code>priceCents</code>, <code>compareAtCents</code></td><td>Integers in minor units. A compare-at above the price shows a strike-through and a "Save N%" badge.</td><td>price, JSON-LD <code>Offer.price</code>, <code>product:price:amount</code></td></tr>
+<tr><td><code>sku</code>, <code>gtin</code></td><td>Your SKU; a GTIN-13 / EAN.</td><td>JSON-LD <code>sku</code>, <code>mpn</code>, <code>gtin13</code>; Merchant Center</td></tr>
+<tr><td><code>images</code></td><td>List of <code>ProductImage(base, alt)</code>. The first is the LCP image.</td><td>gallery, cards, <code>og:image</code>, JSON-LD <code>image</code></td></tr>
+<tr><td><code>variants</code></td><td><code>ProductVariant(id, label, sku, stock, priceCents?)</code>. Stock 0 = sold out.</td><td>variant radios, availability, stock badge</td></tr>
+<tr><td><code>variantLabel</code></td><td>"Size (EU)", "Colour", ...</td><td>legend above the picker</td></tr>
+<tr><td><code>details</code></td><td>Accordion entries (title, body).</td><td><code>&lt;details&gt;</code> list</td></tr>
+<tr><td><code>tags</code></td><td>Search and related-products signal.</td><td>search ranking</td></tr>
+<tr><td><code>featured</code></td><td>Shown on the home page.</td><td>home, default sort</td></tr>
+<tr><td><code>createdAt</code>, <code>updatedAt</code></td><td>UTC dates.</td><td>"newest" sort; sitemap <code>lastmod</code></td></tr>
+<tr><td><code>previousSlugs</code></td><td>Old URLs. A request for one answers 301.</td><td>redirects</td></tr>
+</table>
+<h3 id="add-product">Add a product</h3>
+<ol class="steps">
+<li>Generate its images (next section) and put them in <code>web/images/products/</code>.</li>
+<li>Append a <code>Product(...)</code> to <code>seedProducts()</code> with a unique <code>id</code>, <code>slug</code>, <code>sku</code>, <code>gtin</code> and variant ids.</li>
+<li>Run <code>dart test test/domain/catalog_test.dart</code>. It fails on duplicate ids/slugs/SKUs, a bad GTIN check digit, an unknown category, or an image file missing on disk.</li>
+<li>Restart the server. The product appears in listings, search, the sitemap (with <code>lastmod</code> and an image entry) and gets Product JSON-LD automatically.</li>
+</ol>
+<pre><button class="copy" type="button">Copy</button><code>Product(
+  id: 'p_linen_shirt',
+  slug: 'linen-shirt',
+  name: 'Linen Shirt',
+  brand: 'Northgate',
+  categorySlug: 'apparel',
+  summary: 'A relaxed shirt in washed European linen.',
+  description: ['Cut for room to move...'],
+  priceCents: 7800,
+  sku: 'NG-APP-001',
+  gtin: '8401234510839',
+  variantLabel: 'Size',
+  images: const [ProductImage(base: 'linen-shirt', alt: 'Folded blue linen shirt on a table')],
+  variants: const [
+    ProductVariant(id: 'v_linen_m', label: 'M', sku: 'NG-APP-001-M', stock: 10),
+    ProductVariant(id: 'v_linen_l', label: 'L', sku: 'NG-APP-001-L', stock: 4),
+  ],
+  createdAt: DateTime.utc(2026, 4, 1),
+  updatedAt: DateTime.utc(2026, 4, 1),
+),</code></pre>
+<h3 id="categories">Categories</h3>
+<p>Add a <code>Category(slug, name, headline, description, image)</code> to <code>seedCategories()</code>. It gets an indexable landing page at <code>/categories/&lt;slug&gt;</code> with its own title, description and BreadcrumbList, a navigation entry, a home tile and a sitemap entry. Write a distinct <code>description</code>: it becomes the meta description, and a test asserts that every page's title and description are unique.</p>
+<h3 id="images">Images and <code>srcset</code> generation</h3>
+<p><code>ProductImage(base: 'x', alt: ...)</code> expects these files in <code>web/images/products/</code>:</p>
+<pre class="tree">x-350.webp   x-700.webp   x.jpg (700 px fallback)</pre>
+<p>The template renders <code>&lt;picture&gt;&lt;source type="image/webp" srcset="x-350.webp 350w, x-700.webp 700w" sizes="..."&gt;&lt;img src="x.jpg" width="700" height="700" alt="..." loading="lazy" decoding="async"&gt;</code>. The intrinsic <code>width</code>/<code>height</code> reserve the box so nothing shifts when the image arrives; CSS (<code>aspect-ratio: 1</code>, <code>object-fit: cover</code>) crops every photo to a consistent square.</p>
+<pre><button class="copy" type="button">Copy</button><code># tool/make_images.py  (needs: pip install Pillow)
+import sys
+from PIL import Image
+
+def square(im):
+    w, h = im.size; s = min(w, h)
+    l, t = (w - s) // 2, (h - s) // 2
+    return im.crop((l, t, l + s, t + s))
+
+src, name = sys.argv[1], sys.argv[2]
+im = square(Image.open(src).convert('RGB'))
+out = 'web/images/products/' + name
+for w in (350, 700):
+    im.resize((w, w), Image.LANCZOS).save(f'{out}-{w}.webp', 'WEBP', quality=70, method=6)
+im.resize((700, 700), Image.LANCZOS).save(f'{out}.jpg', 'JPEG', quality=74, optimize=True, progressive=True)</code></pre>
+<pre><button class="copy" type="button">Copy</button><code>python tool/make_images.py ~/Downloads/shirt.jpg linen-shirt</code></pre>
+<p>Different sizes? Change <code>ProductImage.widths</code>, <code>width</code> and <code>height</code>. Always write real <code>alt</code> text: it is read aloud, shown when the image fails, and used for <code>og:image:alt</code>. Photo credits for the bundled images are in <code>NOTICE.md</code>. Image files are cached for a week, so <strong>rename a file when you change it</strong>.</p>
+
+<h2 id="brand">Rebrand</h2>
+<table>
+<tr><th>To change</th><th>Edit</th></tr>
+<tr><td>Shop name, tagline, description, contact, address, social links, locale, currency, theme colours</td><td><code>lib/core/config/brand.dart</code> (every piece of brand copy is in this one file)</td></tr>
+<tr><td>Public origin (canonicals, sitemap, JSON-LD, Open Graph)</td><td><code>SITE_URL</code> (<code>--dart-define</code> and/or runtime environment variable)</td></tr>
+<tr><td>Free-shipping threshold, shipping prices, promo codes</td><td><code>lib/core/config/store_config.dart</code> (<code>ShippingPolicy</code>, <code>promoCodes</code>)</td></tr>
+<tr><td>Colours, radius, spacing, shadows</td><td><code>lib/presentation/theme/tokens.dart</code></td></tr>
+<tr><td>Logo mark</td><td><code>brandMark()</code> in <code>components/icons.dart</code>; <code>web/favicon.svg</code>, <code>web/favicon.ico</code>, <code>web/icons/*.png</code></td></tr>
+<tr><td>Social preview image (1200x630)</td><td><code>web/images/og-cover.jpg</code>, plus <code>Brand.ogImageAlt</code></td></tr>
+<tr><td>Hero image</td><td><code>web/images/hero/*</code> and <code>HeroImage</code> in <code>components/media.dart</code></td></tr>
+<tr><td>Manifest, <code>robots.txt</code></td><td>generated from the above (<code>http/seo_endpoints.dart</code>)</td></tr>
+</table>
+<h3>Colours via tokens</h3>
+<p>Every colour is a CSS variable. To use a brand colour for primary buttons, change two lines (light and dark):</p>
+<pre><button class="copy" type="button">Copy</button><code>// tokens.dart
+const Map&lt;String, String&gt; lightTokens = {
+  '--primary': 'oklch(0.45 0.15 255)',            // was oklch(0.205 0 0)
+  '--primary-foreground': 'oklch(0.985 0 0)',
+  ...
+};
+const Map&lt;String, String&gt; darkTokens = {
+  '--primary': 'oklch(0.75 0.12 255)',
+  '--primary-foreground': 'oklch(0.145 0 0)',
+  ...
+};</code></pre>
+<p>Radius is one number: change <code>--radius</code> and the sm/md/lg/xl steps follow (they are multipliers, exactly as in <code>CairnRadius</code>). Check contrast: body text and button labels need at least 4.5:1.</p>
+<div class="callout note"><strong>Update tests when you rebrand</strong><p>The tests assert on "Northgate Goods", the seed products and <code>https://shop.example</code>. A global rename in <code>test/</code> plus re-running <code>dart test</code> is the quickest way to confirm nothing else hard-codes the old brand.</p></div>
+
+<h2 id="seo">SEO guide</h2>
+<p>SEO is the reason this template is Jaspr and not Flutter web. A crawler, a link unfurler and a user with JavaScript disabled all receive the same complete HTML on the first response.</p>
+<h3 id="seo-tags">Tags on every page</h3>
+<table>
+<tr><th>Tag</th><th>Source</th><th>Notes</th></tr>
+<tr><td><code>&lt;title&gt;</code></td><td><code>SeoData.title</code> + brand suffix</td><td>Cut on a word boundary to fit about 60 characters. Home uses the full "Brand: tagline".</td></tr>
+<tr><td><code>meta description</code></td><td><code>SeoData.description</code></td><td>Clipped to 158 characters with an ellipsis. Unique per page (tested).</td></tr>
+<tr><td><code>link rel=canonical</code></td><td><code>SeoData.path</code></td><td>Absolute from <code>SITE_URL</code>; tracking parameters never included.</td></tr>
+<tr><td><code>meta robots</code></td><td><code>RobotsPolicy</code></td><td>Indexable pages also get <code>max-image-preview:large</code>. Noindex pages also send <code>X-Robots-Tag</code>.</td></tr>
+<tr><td><code>html lang</code>, viewport, charset</td><td><code>Brand.language</code>, <code>Document</code></td><td></td></tr>
+<tr><td><code>theme-color</code> (light + dark)</td><td><code>Brand.themeColor*</code></td><td>Two tags with <code>media</code> queries.</td></tr>
+<tr><td>Open Graph</td><td><code>og:type/title/description/url/image/image:alt/image:width/height/site_name/locale</code></td><td>Product pages: <code>og:type=product</code> and <code>product:price:amount/currency</code>, <code>product:availability</code>, <code>product:brand</code>, <code>product:retailer_item_id</code>, <code>product:condition</code>, <code>product:category</code>.</td></tr>
+<tr><td>Twitter / X</td><td><code>twitter:card=summary_large_image</code>, title, description, image, image:alt, site</td><td></td></tr>
+<tr><td><code>hreflang</code></td><td><code>SeoData.hreflangPaths</code></td><td>Single-language: a self reference plus <code>x-default</code>. Add <code>{'fr': '/fr/...'}</code> when localised URLs exist.</td></tr>
+<tr><td><code>rel=prev/next</code></td><td>listing pagination</td><td></td></tr>
+<tr><td><code>link rel=preload as=image</code></td><td><code>SeoData.preloadImage</code></td><td>Home hero and the first product image (the LCP), with <code>imagesrcset</code> and <code>fetchpriority=high</code>.</td></tr>
+</table>
+<h3 id="jsonld">JSON-LD</h3>
+<table>
+<tr><th>Type</th><th>Page</th><th>Highlights</th></tr>
+<tr><td><code>Organization</code></td><td>home, about</td><td>name, logo, address, contact, <code>sameAs</code></td></tr>
+<tr><td><code>WebSite</code> + <code>SearchAction</code></td><td>home</td><td>Enables the sitelinks search box: <code>https://.../products?q={search_term_string}</code></td></tr>
+<tr><td><code>BreadcrumbList</code></td><td>listings, categories, product, about</td><td>1-based <code>position</code>, absolute <code>item</code></td></tr>
+<tr><td><code>ItemList</code></td><td>listings</td><td><code>position</code> continues across pages (page 2 starts at 9)</td></tr>
+<tr><td><code>Product</code> + <code>Offer</code></td><td>product</td><td>name, image[], sku, mpn, gtin13, brand, category; offer with price (decimal string), currency, availability, <code>priceValidUntil</code> (one year ahead, recomputed per render), itemCondition, seller, shipping details, return policy</td></tr>
+<tr><td><code>AggregateRating</code> + <code>Review</code></td><td>product</td><td>Only when reviews exist (up to five reviews, the same ones visible on the page). A product with no reviews makes no rating claim.</td></tr>
+</table>
+<p>All JSON-LD is built by pure functions in <code>presentation/seo/structured_data.dart</code> and written through <code>safeJsonForScript</code>, which escapes <code>&lt;</code>, <code>&gt;</code> and <code>&amp;</code> so a product named <code>&lt;/script&gt;...</code> cannot break out of the tag. Tests parse every emitted block as JSON.</p>
+<h3 id="verify">Verify</h3>
+<ol class="steps">
+<li><strong>Raw HTML:</strong> <code>curl -s https://your.site/products/stride-knit-sneaker | grep -A1 ld+json</code>. If it is there, a crawler sees it.</li>
+<li><strong>The bundled audit:</strong> <code>dart run tool/seo_audit.dart https://your.site</code> crawls your sitemap and fails on missing or duplicate titles, canonicals, h1s, relative OG URLs, invalid JSON-LD, images without alt/size, unlabelled controls or broken links. Use it in CI against a staging deployment.</li>
+<li><strong>Rich results:</strong> paste a product URL into Google's <em>Rich Results Test</em> (search.google.com/test/rich-results). Expect "Product snippets" and "Merchant listings" with no errors.</li>
+<li><strong>Schema validator:</strong> validator.schema.org accepts a URL or pasted JSON-LD and checks property types.</li>
+<li><strong>Lighthouse:</strong> Chrome DevTools &rarr; Lighthouse &rarr; mobile. Expect near-100 for SEO and Accessibility; LCP is the preloaded first image.</li>
+<li><strong>Search Console:</strong> submit <code>/sitemap.xml</code>; inspect a few URLs ("Test live URL" shows the rendered HTML).</li>
+<li><strong>Open Graph preview:</strong> the Facebook Sharing Debugger, LinkedIn Post Inspector, or just paste the URL into Slack or iMessage. The tags are in the first response, so they unfurl without JavaScript.</li>
+</ol>
+<h3 id="sitemap">Sitemap and robots</h3>
+<p><code>/sitemap.xml</code> is generated per request: home, <code>/products</code>, every category (with the newest product's date as <code>lastmod</code>), every product (<code>lastmod</code> = <code>updatedAt</code>, plus image entries), and <code>/about</code>. Update a product's <code>updatedAt</code> when its content changes, as it is the signal crawlers use. <code>/robots.txt</code> allows everything except <code>/cart</code>, <code>/checkout</code>, <code>/newsletter</code>, <code>/search</code> and <code>?q=</code> / <code>?sort=</code> URLs, and points at the sitemap using <code>SITE_URL</code>.</p>
+<h3 id="canonical">Canonical rules</h3>
+<ul>
+<li>One URL per state: <code>/products?page=1</code>, <code>?sort=featured</code>, <code>?q=</code> and trailing slashes answer <strong>301</strong> to the canonical form. <code>/products?category=audio</code> &rarr; <code>/categories/audio</code>.</li>
+<li>Paginated pages 2+ are self-canonical and indexable with <code>rel=prev/next</code> (otherwise the products on them would be unreachable for crawlers).</li>
+<li>Sorted pages canonicalise to the unsorted page (no <code>noindex</code>, so there is no conflicting signal).</li>
+<li>Search results are <code>noindex, follow</code> and disallowed in <code>robots.txt</code>.</li>
+<li>Unknown slug, malformed slug or a page past the end: real <strong>404</strong>. A renamed product: add the old slug to <code>previousSlugs</code> and it 301s.</li>
+</ul>
+
+<h2 id="backend">Connect a real backend</h2>
+<p>Everything above <code>domain/</code> talks to repository <em>interfaces</em>:</p>
+<table>
+<tr><th>Interface</th><th>Stand-in</th><th>Replace with</th></tr>
+<tr><td><code>CatalogRepository</code></td><td><code>CatalogRepositoryImpl</code> + <code>CatalogStore</code></td><td>your products and inventory</td></tr>
+<tr><td><code>ReviewRepository</code></td><td><code>ReviewRepositoryImpl</code></td><td>your reviews</td></tr>
+<tr><td><code>CartRepository</code></td><td><code>CartRepositoryImpl</code> + <code>CartStore</code></td><td>Redis, Postgres, Firestore</td></tr>
+<tr><td><code>OrderRepository</code></td><td><code>OrderRepositoryImpl</code></td><td>your orders table</td></tr>
+<tr><td><code>NewsletterRepository</code></td><td><code>NewsletterRepositoryImpl</code></td><td>your ESP (Mailchimp, Resend, ...)</td></tr>
+</table>
+<p>The switch is one registration in <code>lib/di/service_locator.dart</code>.</p>
+<h3>Example: Postgres catalogue</h3>
+<pre><button class="copy" type="button">Copy</button><code>-- schema (sketch)
+create table products (
+  id text primary key, slug text unique not null, name text not null, brand text,
+  category_slug text not null, summary text, description jsonb, price_cents int not null,
+  compare_at_cents int, sku text unique, gtin text, images jsonb, tags text[],
+  featured bool default false, created_at timestamptz, updated_at timestamptz
+);
+create table variants (
+  id text primary key, product_id text references products(id), label text,
+  sku text unique, stock int not null check (stock &gt;= 0), price_cents int
+);
+create table product_slugs (old_slug text primary key, product_id text references products(id));</code></pre>
+<pre><button class="copy" type="button">Copy</button><code>// lib/data/catalog/postgres_catalog_repository.dart   (package:postgres)
+class PostgresCatalogRepository implements CatalogRepository {
+  PostgresCatalogRepository(this._db);
+  final Connection _db;
+
+  @override
+  Future&lt;Product?&gt; productBySlug(String slug) async {
+    final rows = await _db.execute(
+      Sql.named('select * from products where slug = @slug'), parameters: {'slug': slug});
+    if (rows.isEmpty) return null;
+    return _hydrate(rows.first.toColumnMap());   // join variants + ratings
+  }
+
+  @override
+  Future&lt;bool&gt; reserveStock(Map&lt;String, int&gt; qty) =&gt; _db.runTx((tx) async {
+    for (final e in qty.entries) {
+      final r = await tx.execute(
+        Sql.named('update variants set stock = stock - @n where id = @id and stock &gt;= @n'),
+        parameters: {'id': e.key, 'n': e.value});
+      if (r.affectedRows == 0) { tx.cancelTransaction(); return false; }  // roll back everything
+    }
+    return true;
+  });
+  // allProducts, productById, productByPreviousSlug (join product_slugs), categories ...
+}</code></pre>
+<p>Keep the contract: <code>reserveStock</code> is all-or-nothing and must not oversell (the <code>stock &gt;= n</code> guard in the <code>UPDATE</code> is what makes it safe under concurrency; <code>test/domain/checkout_test.dart</code> has the oversell scenario to port to your integration tests). Push filtering/sorting into SQL by implementing a <code>queryProducts</code> on the repository and keeping the same <code>ProductListing</code> result, or keep the in-memory <code>applyQuery</code> for catalogues of a few thousand rows and cache <code>allProducts()</code> for a minute.</p>
+<p><strong>REST:</strong> implement the same interfaces with <code>package:http</code> against your API, mapping JSON into the domain models in one mapper file. <strong>Firestore:</strong> store products as documents keyed by id; use a transaction for <code>reserveStock</code>; the sitemap and listing need all products, so cache them in memory with a short TTL.</p>
+<h3 id="stripe">Payments: Stripe Checkout and a webhook</h3>
+<div class="callout warn"><strong>The demo checkout never takes money</strong><p>It records an order and says so on every screen. To sell, replace the "place order" step with a redirect to a hosted payment page, and only mark an order paid from a verified webhook, never from the browser redirect.</p></div>
+<ol class="steps">
+<li><code>POST /checkout</code> validates the form and re-prices the cart (unchanged), saves an order with status <code>pending</code>, then creates a Stripe Checkout Session and redirects with <code>303</code> to its URL.</li>
+<li>Stripe collects the card on its own domain (your server never sees card data, so PCI scope stays minimal).</li>
+<li>Stripe calls <code>POST /webhooks/stripe</code>; you verify the signature and mark the order paid.</li>
+<li>The success URL (<code>/checkout/confirmation/:id</code>) shows the order, with "payment processing" until the webhook arrives.</li>
+</ol>
+<pre><button class="copy" type="button">Copy</button><code>// create the session (server only; STRIPE_SECRET_KEY from the environment)
+final response = await http.post(
+  Uri.https('api.stripe.com', '/v1/checkout/sessions'),
+  headers: {'Authorization': 'Bearer $stripeSecret'},
+  body: {
+    'mode': 'payment',
+    'success_url': '${config.origin}/checkout/confirmation/${order.id}',
+    'cancel_url': '${config.origin}/cart',
+    'client_reference_id': order.id,
+    'customer_email': order.email,
+    for (var i = 0; i &lt; order.lines.length; i++) ...{
+      'line_items[$i][quantity]': '${order.lines[i].quantity}',
+      'line_items[$i][price_data][currency]': config.currency.toLowerCase(),
+      'line_items[$i][price_data][unit_amount]': '${order.lines[i].unitCents}',
+      'line_items[$i][price_data][product_data][name]': order.lines[i].name,
+    },
+  },
+);
+final url = (jsonDecode(response.body) as Map)['url'] as String;
+return RedirectReply(url);   // 303</code></pre>
+<pre><button class="copy" type="button">Copy</button><code>// webhook: verify  Stripe-Signature: t=...,v1=...
+bool verifyStripe(String payload, String header, String secret, {Duration tolerance = const Duration(minutes: 5)}) {
+  final parts = {for (final p in header.split(',')) p.split('=')[0]: p.split('=')[1]};
+  final t = int.parse(parts['t']!);
+  final age = DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(t * 1000));
+  if (age.abs() &gt; tolerance) return false;
+  final mac = Hmac(sha256, utf8.encode(secret)).convert(utf8.encode('$t.$payload'));
+  return constantTimeEquals(mac.toString(), parts['v1']!);
+}
+// on event.type == 'checkout.session.completed': orders.markPaid(session.client_reference_id)
+// Make the handler idempotent (Stripe retries): ignore an order that is already paid.</code></pre>
+<p>Mount the webhook outside the same-origin guard (Stripe is a server, not a browser) by routing <code>/webhooks/stripe</code> in <code>app.dart</code> before the <code>isSameOriginPost</code> check, read the <strong>raw</strong> body, and exclude it from CSRF. Reserve stock when the order is created and release it when a session expires (<code>checkout.session.expired</code>). Amounts must come from <code>PriceCart</code> on the server, never from a form field.</p>
+
+<h2 id="cart">Cart cookie design &amp; security</h2>
+<p>The browser holds a single cookie, <code>cart</code> (<code>__Host-cart</code> over https), containing <code>&lt;id&gt;.&lt;tag&gt;</code>: a 128-bit random id and a 128-bit truncated HMAC-SHA256 tag. The cart itself (variant ids and quantities) lives on the server keyed by the SHA-256 of the id. No prices are stored anywhere a client can reach: they are recomputed from the catalogue on every read, so tampering cannot change what is charged.</p>
+<table>
+<tr><th>Choice</th><th>Reason</th></tr>
+<tr><td>Server-keyed cart, not a signed client cart</td><td>No 4 KB limit, expirable, inspectable, never trusts a client-held price, easy to merge or clear.</td></tr>
+<tr><td>Sign the id</td><td>Forged or junk ids are rejected before any lookup; rotating <code>CART_SECRET</code> invalidates all carts.</td></tr>
+<tr><td><code>HttpOnly</code></td><td>Script (including a compromised dependency) cannot read the cookie.</td></tr>
+<tr><td><code>SameSite=Lax</code> + <code>Origin</code> / <code>Sec-Fetch-Site</code> check on POSTs</td><td>Cross-site form posts neither carry the cookie nor pass the guard.</td></tr>
+<tr><td><code>Secure</code> + <code>__Host-</code> prefix on https</td><td>No overwriting by sibling subdomains; no plain-text transport.</td></tr>
+<tr><td>Hash-keyed, bounded, TTL store</td><td>A leaked dump has no usable ids; memory is capped (10,000 carts, 14 days, least-recent eviction).</td></tr>
+<tr><td>Cart created on first successful add only</td><td>Crawlers and prefetchers cannot allocate server memory.</td></tr>
+<tr><td>Order ids are 96-bit random</td><td>Confirmation URLs are unguessable; the page is <code>noindex</code> and <code>no-store</code>.</td></tr>
+</table>
+<p>Set <code>CART_SECRET</code> to a stable 32+ character random value in production. Without it a random per-process secret is used (safe, but carts reset on restart). If you add accounts, merge the anonymous cart into the account cart on login and rotate the id.</p>
+
+<h2 id="deploy">Deploy</h2>
+<h3>Docker</h3>
+<pre><button class="copy" type="button">Copy</button><code>docker build --build-arg SITE_URL=https://shop.example -t northgate-store .
+docker run -p 8080:8080 \
+  -e SITE_URL=https://shop.example -e CART_SECRET=$(openssl rand -hex 32) northgate-store</code></pre>
+<p>The multi-stage <code>Dockerfile</code> builds with <code>dart:3.12</code> and <code>jaspr_cli</code>, then copies <code>build/jaspr/app</code> and <code>build/jaspr/web</code> into a slim Debian image that runs as a non-root user. <code>SITE_URL</code> is also read at runtime, so one image can serve staging and production. Probe <code>GET /healthz</code>.</p>
+<div class="callout warn"><strong>One instance until you have a database</strong><p>The stand-in keeps carts, orders and stock in memory. With several instances each would have its own carts. Run exactly one (Cloud Run: <code>--min-instances 1 --max-instances 1</code>) until <code>lib/backend/</code> is replaced.</p></div>
+<h3>Cloud Run</h3>
+<pre><button class="copy" type="button">Copy</button><code>gcloud run deploy northgate-store --source . --region europe-west1 --allow-unauthenticated \
+  --set-env-vars SITE_URL=https://shop.example --set-secrets CART_SECRET=cart-secret:latest \
+  --min-instances 1 --max-instances 1</code></pre>
+<p>Cloud Run sets <code>PORT</code>; the server reads it at runtime.</p>
+<h3>Fly.io</h3>
+<pre><button class="copy" type="button">Copy</button><code>fly launch --no-deploy        # accept the Dockerfile
+# fly.toml: [http_service] internal_port = 8080 ; [[http_service.checks]] path = "/healthz"
+fly secrets set CART_SECRET=$(openssl rand -hex 32)
+fly deploy --build-arg SITE_URL=https://shop.example</code></pre>
+<h3>CDN caching</h3>
+<p>Catalogue pages send <code>public, max-age=60, s-maxage=300, stale-while-revalidate=86400</code>, a weak <code>ETag</code> and <code>Vary: Cookie, Accept-Encoding</code>. They are identical for every visitor (the cart count is an island), so a CDN may cache them. The HTML varies only by the <code>theme</code> cookie: set the cache key to include <strong>only that cookie</strong>, and never cache <code>/cart</code>, <code>/checkout</code>, <code>/newsletter</code> or <code>/cart/*</code> (they send <code>no-store</code>). Purge product URLs when you change a product, or accept the 5 minute staleness. Terminate TLS at the CDN or platform; the app emits HSTS when <code>SITE_URL</code> is https.</p>
+
+<h2 id="performance">Performance checklist</h2>
+<table>
+<tr><th>Item</th><th>Status</th></tr>
+<tr><td>No webfont (system stack)</td><td>Yes. A webfont is the largest LCP regression a store can add. If you add one, preload a single WOFF2 and use <code>font-display: swap</code>.</td></tr>
+<tr><td>One inline stylesheet, no blocking CSS request</td><td>Yes (about 6.7 KB gzipped).</td></tr>
+<tr><td>Zero blocking JavaScript</td><td>Yes. Island JS is <code>defer</code>red (47 KB gzipped).</td></tr>
+<tr><td>LCP image preloaded with <code>fetchpriority=high</code>, not lazy</td><td>Yes (hero, first product image).</td></tr>
+<tr><td>Explicit <code>width</code>/<code>height</code> on every image</td><td>Yes: no layout shift.</td></tr>
+<tr><td>Modern formats + responsive <code>srcset</code></td><td>WebP with JPEG fallback, 350/700 px (hero 640-1600).</td></tr>
+<tr><td>gzip</td><td>Yes (<code>shelf_gzip</code>). Add Brotli at your CDN.</td></tr>
+<tr><td>HTTP caching, ETag/304</td><td>Yes (see Deploy).</td></tr>
+<tr><td><code>prefers-reduced-motion</code></td><td>Yes: all transitions and animations are disabled.</td></tr>
+</table>
+<p>If you add third-party scripts (analytics, chat), load them after interaction or with <code>defer</code>, and extend the CSP deliberately; each one costs Core Web Vitals.</p>
+
+<h2 id="testing">Testing</h2>
+<pre><button class="copy" type="button">Copy</button><code>dart run build_runner build
+dart format --output=none --set-exit-if-changed .
+dart analyze --fatal-infos
+dart test                                   # 430 tests, no network
+dart run tool/seo_audit.dart                # in-process crawl of the sitemap</code></pre>
+<p>The tests use a small in-process "browser" (<code>test/support/harness.dart</code>) with a cookie jar and an HTML parser, so a flow test reads like a visitor: <code>browser.post('/cart/add', {...})</code>, follow the 303, parse the cart. Domain tests are plain Dart. Component tests render a component to an HTML fragment. Island tests use <code>jaspr_test</code>. <code>seo_audit_test.dart</code> also feeds the audit deliberately broken pages to prove each check can fail.</p>
+<div class="callout note"><strong>Test the built binary too</strong><p>Handler-level tests cannot see what Jaspr's own server layer does before your code runs. (For example, unknown file extensions are answered 404 before the app: <code>/robots.txt</code> was a 404 in production until <code>allowedPathSuffixes</code> was configured in <code>main.server.dart</code>.) Run <code>dart run tool/seo_audit.dart http://localhost:8080</code> against <code>build/jaspr/app</code> in CI.</p></div>
+
+<h2 id="migrate">Migration</h2>
+<h3>Upgrading Jaspr</h3>
+<ol class="steps">
+<li>Bump <code>jaspr</code>, <code>jaspr_builder</code>, <code>jaspr_test</code> together, and the global <code>jaspr_cli</code> to the same minor.</li>
+<li>Check <code>build_web_compilers</code>: it is pinned (<code>&gt;=4.8.0 &lt;4.8.1</code>) because later versions need a newer Dart than 3.12. Raise the pin only when your SDK allows it.</li>
+<li><code>dart run build_runner build</code>, then <code>dart analyze --fatal-infos</code> and <code>dart test</code>. Deprecations show up as analyzer infos (for example <code>fragment()</code> became <code>Component.fragment()</code>).</li>
+<li>Run the production build and <code>tool/seo_audit.dart</code> against it.</li>
+</ol>
+<h3>Moving from Flutter web</h3>
+<ul>
+<li><strong>Keep the domain layer.</strong> Models, use cases and repository interfaces here are plain Dart; a Flutter app's equivalents move across with imports changed. Delete anything that imports <code>package:flutter</code>.</li>
+<li><strong>Translate widgets to elements.</strong> <code>Column</code>/<code>Row</code> become <code>div</code> with flex CSS; <code>Text</code> becomes <code>p</code>/<code>span</code>/<code>h1</code>; <code>ElevatedButton</code> becomes <code>a.btn</code> or <code>button.btn</code>; <code>TextField</code> becomes a labelled <code>input</code>. The component names in <code>presentation/components</code> mirror the Cairn widgets.</li>
+<li><strong>Routes become server routes.</strong> There is no client router: add a case to <code>_route</code> in <code>app.dart</code>, a controller method that returns a <code>Reply</code>, and a page component.</li>
+<li><strong>State:</strong> Bloc/Provider state becomes request-scoped data (the server resolves it before render) plus small <code>StatefulComponent</code> islands for genuinely interactive bits.</li>
+<li><strong>Forms:</strong> prefer a real <code>&lt;form method="post"&gt;</code> and a 303 redirect, and enhance with an island only for instant feedback.</li>
+</ul>
+
+<h2 id="faq">Troubleshooting &amp; FAQ</h2>
+<h3><code>Undefined name 'defaultServerOptions'</code></h3>
+<p>The generated <code>lib/main.server.options.dart</code> is missing. Run <code>dart run build_runner build</code> before analyzing or testing.</p>
+<h3>"Incompatible options with current running build daemon"</h3>
+<p>A <code>jaspr serve</code> is still running. Stop it before <code>jaspr build</code> or <code>build_runner</code>.</p>
+<h3><code>/robots.txt</code> or another dotted path is 404 in production</h3>
+<p>Jaspr only passes extension-less paths and <code>html</code>, <code>htm</code>, <code>xml</code> to your handler. Add the suffix to <code>allowedPathSuffixes</code> in <code>main.server.dart</code> (already done for <code>txt</code> and <code>webmanifest</code>).</p>
+<h3>The skip link jumps to the home page</h3>
+<p>A <code>&lt;base href="/"&gt;</code> tag is present. <code>Document(base: null)</code> removes it (already set in <code>app.dart</code>).</p>
+<h3>The cart badge never shows a number</h3>
+<p>It is filled in by the <code>CartLink</code> island from <code>GET /cart/summary</code>. Check that <code>main.client.dart.js</code> loads (CSP <code>script-src 'self'</code>) and that the cart cookie is being sent (https sites need <code>Secure</code> cookies: serve over https or use <code>http://localhost</code>).</p>
+<h3>Add to cart redirects instead of updating in place</h3>
+<p>That is the no-JavaScript path working. If it happens with JavaScript enabled, the island did not hydrate: open the console and look for a blocked script or a failed <code>main.client.dart.js</code>.</p>
+<h3>Google shows the wrong price or no rich result</h3>
+<p>Run the Rich Results Test on the live URL. Common causes: <code>SITE_URL</code> still <code>localhost</code> (absolute URLs point nowhere), a missing GTIN, or <code>priceValidUntil</code> in the past (recomputed on every render in this template).</p>
+<h3>Why does a search page return <code>noindex</code> and also appear in <code>robots.txt</code>?</h3>
+<p>Belt and braces: the disallow stops crawling of the unbounded search space; the meta tag covers any such URL that is linked from elsewhere. The trade-off (a disallowed URL's <code>noindex</code> is not seen) is documented in the README.</p>
+<h3>Can I statically export it?</h3>
+<p>The catalogue pages are pure functions of the catalogue, so they can be pre-rendered, but cart, checkout, newsletter, <code>/cart/summary</code>, 304s and real status codes need the server. This template is tested in server mode only.</p>
+<h3>Where do I report a bug?</h3>
+<p>Open an issue on the <a href="https://github.com/rlphjyson/cairn_site/issues">cairn_site repository</a> with the Dart and Jaspr versions.</p>
+
+</main>
+</div>
+<script>
+
+(function(){
+  document.querySelectorAll('pre').forEach(function(pre){
+    var b=pre.querySelector('.copy'); if(!b) return;
+    b.addEventListener('click',function(){
+      var code=pre.querySelector('code').innerText;
+      var done=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1200)};
+      if(navigator.clipboard){navigator.clipboard.writeText(code).then(done,done)}else{done()}
+    });
+  });
+  var links=[].slice.call(document.querySelectorAll('nav.toc a'));
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){links.forEach(function(a){a.classList.remove('active')});var a=map[e.target.id];if(a)a.classList.add('active')}
+  })},{rootMargin:'-20% 0px -70% 0px'});
+  document.querySelectorAll('h2[id],h3[id]').forEach(function(h){io.observe(h)});
+  var root=document.documentElement, key='tpl-theme';
+  try{var s=localStorage.getItem(key);if(s)root.setAttribute('data-theme',s)}catch(e){}
+  document.getElementById('theme').addEventListener('click',function(){
+    var dark=root.getAttribute('data-theme')?root.getAttribute('data-theme')==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+    var next=dark?'light':'dark';root.setAttribute('data-theme',next);try{localStorage.setItem(key,next)}catch(e){}
+  });
+})();
+
+</script>
+</body>
+</html>

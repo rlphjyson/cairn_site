@@ -44,7 +44,12 @@ jobs:
         run: |
           for pkg in templates/*/; do
             echo "::group::$pkg"
-            (cd "$pkg" && flutter pub get && flutter analyze --fatal-infos --fatal-warnings && flutter test)
+            if grep -q '^  jaspr:' "$pkg/pubspec.yaml"; then
+              # A server-rendered Jaspr app: plain Dart, with generated options.
+              (cd "$pkg" && dart pub get && dart run build_runner build --delete-conflicting-outputs && dart analyze --fatal-infos && dart test)
+            else
+              (cd "$pkg" && flutter pub get && flutter analyze --fatal-infos --fatal-warnings && flutter test)
+            fi
             echo "::endgroup::"
           done
 

@@ -8,7 +8,9 @@ import '../app/routes.dart';
 import '../app/site_theme.dart';
 import '../data/components_catalog.dart';
 import '../data/templates_catalog.dart';
+import '../widgets/code_block.dart';
 import '../widgets/surfaces.dart';
+import '../widgets/syntax.dart';
 
 /// Full-app templates, built from Cairn components and nothing else.
 ///
@@ -196,7 +198,7 @@ class _TemplateView extends StatelessWidget {
       final Widget phone = Center(
         child: CairnMockupPhone(
           width: 360,
-          child: Builder(builder: entry.preview),
+          child: Builder(builder: entry.preview!),
         ),
       );
       if (!wide) {
@@ -220,12 +222,15 @@ class _TemplateView extends StatelessWidget {
     }
 
     // Web templates: a browser frame across the full width, details below.
+    final WidgetBuilder? preview = entry.preview;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         CairnMockupBrowser(
-          url: 'https://${entry.slug}.example.com',
-          child: SizedBox(height: 680, child: Builder(builder: entry.preview)),
+          url: 'https://${entry.slug.replaceAll('_', '-')}.example.com',
+          child: preview == null
+              ? _StaticPreview(entry: entry)
+              : SizedBox(height: 680, child: Builder(builder: preview)),
         ),
         const SizedBox(height: CairnSpacing.s10),
         info,
@@ -326,83 +331,85 @@ class _Info extends StatelessWidget {
       ],
     );
 
-    final Widget architecture = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text('Architecture', style: heading),
-        const SizedBox(height: CairnSpacing.s2),
-        Text(
-          'Clean architecture, organised by layer and then by feature: '
-          'presentation depends on domain, data depends on domain, and the '
-          'domain depends on nothing. State is flutter_bloc cubits, wired '
-          'with get_it and written out by hand, so there is no code '
-          'generation.',
-          style: muted,
-        ),
-        const SizedBox(height: CairnSpacing.s3),
-        const Wrap(
-          spacing: CairnSpacing.s2,
-          runSpacing: CairnSpacing.s2,
-          children: <Widget>[
-            CairnBadge(label: Text('Clean architecture')),
-            CairnBadge(label: Text('flutter_bloc')),
-            CairnBadge(label: Text('get_it')),
-            CairnBadge(label: Text('View models')),
-            CairnBadge(label: Text('Own package')),
-          ],
-        ),
-        const SizedBox(height: CairnSpacing.s4),
-        const CairnMockupCode(
-          lines: <String>[
-            'templates/<name>/',
-            '  pubspec.yaml   its own package',
-            '  assets/        its own images',
-            '  doc/           HTML documentation',
-            '  lib/',
-            '    core/        DI, navigation, shared widgets',
-            '    common/      constants and utils',
-            '    data/<feature>/          remote, repositories',
-            '    domain/<feature>/        models, mappers,',
-            '                             repositories, use_cases',
-            '    presentation/<feature>/  bloc, view_models,',
-            '                             views, widgets',
-          ],
-        ),
-        const SizedBox(height: CairnSpacing.s6),
-        Wrap(
-          spacing: CairnSpacing.s2,
-          runSpacing: CairnSpacing.s2,
-          children: <Widget>[
-            CairnButton(
-              onPressed: () => openExternal(templateDocsUrl(entry.slug)),
-              leading: const Icon(Icons.menu_book_outlined, size: 16),
-              child: const Text('Read the documentation'),
-            ),
-            CairnButton(
-              variant: CairnButtonVariant.outline,
-              onPressed: () => openExternal(
-                '${SiteLinks.siteRepo}/tree/main/${entry.packagePath}',
+    final Widget architecture = entry.serverRendered
+        ? _ServerArchitecture(entry: entry, muted: muted, heading: heading)
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text('Architecture', style: heading),
+              const SizedBox(height: CairnSpacing.s2),
+              Text(
+                'Clean architecture, organised by layer and then by feature: '
+                'presentation depends on domain, data depends on domain, and the '
+                'domain depends on nothing. State is flutter_bloc cubits, wired '
+                'with get_it and written out by hand, so there is no code '
+                'generation.',
+                style: muted,
               ),
-              child: const Text('Browse the source'),
-            ),
-            CairnButton(
-              variant: CairnButtonVariant.ghost,
-              onPressed: () => context.go(Routes.blocks),
-              child: const Text('Single-screen blocks'),
-            ),
-          ],
-        ),
-        const SizedBox(height: CairnSpacing.s4),
-        Text(
-          'Photographs from Pexels, used under the Pexels licence. The '
-          'documentation walks through changing the content, theming, '
-          'connecting a real backend and migrating.',
-          style: theme
-              .textStyle(CairnTypography.xs)
-              .copyWith(color: theme.mutedForeground),
-        ),
-      ],
-    );
+              const SizedBox(height: CairnSpacing.s3),
+              const Wrap(
+                spacing: CairnSpacing.s2,
+                runSpacing: CairnSpacing.s2,
+                children: <Widget>[
+                  CairnBadge(label: Text('Clean architecture')),
+                  CairnBadge(label: Text('flutter_bloc')),
+                  CairnBadge(label: Text('get_it')),
+                  CairnBadge(label: Text('View models')),
+                  CairnBadge(label: Text('Own package')),
+                ],
+              ),
+              const SizedBox(height: CairnSpacing.s4),
+              const CairnMockupCode(
+                lines: <String>[
+                  'templates/<name>/',
+                  '  pubspec.yaml   its own package',
+                  '  assets/        its own images',
+                  '  doc/           HTML documentation',
+                  '  lib/',
+                  '    core/        DI, navigation, shared widgets',
+                  '    common/      constants and utils',
+                  '    data/<feature>/          remote, repositories',
+                  '    domain/<feature>/        models, mappers,',
+                  '                             repositories, use_cases',
+                  '    presentation/<feature>/  bloc, view_models,',
+                  '                             views, widgets',
+                ],
+              ),
+              const SizedBox(height: CairnSpacing.s6),
+              Wrap(
+                spacing: CairnSpacing.s2,
+                runSpacing: CairnSpacing.s2,
+                children: <Widget>[
+                  CairnButton(
+                    onPressed: () => openExternal(templateDocsUrl(entry.slug)),
+                    leading: const Icon(Icons.menu_book_outlined, size: 16),
+                    child: const Text('Read the documentation'),
+                  ),
+                  CairnButton(
+                    variant: CairnButtonVariant.outline,
+                    onPressed: () => openExternal(
+                      '${SiteLinks.siteRepo}/tree/main/${entry.packagePath}',
+                    ),
+                    child: const Text('Browse the source'),
+                  ),
+                  CairnButton(
+                    variant: CairnButtonVariant.ghost,
+                    onPressed: () => context.go(Routes.blocks),
+                    child: const Text('Single-screen blocks'),
+                  ),
+                ],
+              ),
+              const SizedBox(height: CairnSpacing.s4),
+              Text(
+                'Photographs from Pexels, used under the Pexels licence. The '
+                'documentation walks through changing the content, theming, '
+                'connecting a real backend and migrating.',
+                style: theme
+                    .textStyle(CairnTypography.xs)
+                    .copyWith(color: theme.mutedForeground),
+              ),
+            ],
+          );
 
     final bool wide =
         MediaQuery.sizeOf(context).width >= SiteTokens.tabletBreakpoint;
@@ -512,7 +519,7 @@ class _Screenshots extends StatelessWidget {
                             mobile ? 0 : theme.radiusScale.lg,
                           ),
                           child: Image.asset(
-                            'assets/screenshots/${entry.slug}-${shot.file}-$mode.png',
+                            'assets/screenshots/${entry.slug}-${shot.file}-$mode.${entry.shotExt}',
                             semanticLabel:
                                 '${shot.caption} screen, $mode theme',
                             fit: BoxFit.fitWidth,
@@ -534,6 +541,96 @@ class _Screenshots extends StatelessWidget {
                 ),
             ],
           ),
+        ),
+      ],
+    );
+  }
+}
+
+/// A server-rendered template cannot run inside this Flutter page, so the
+/// browser frame shows its home page as captured from the running server.
+class _StaticPreview extends StatelessWidget {
+  const _StaticPreview({required this.entry});
+
+  final TemplateEntry entry;
+
+  @override
+  Widget build(BuildContext context) {
+    final CairnTheme theme = CairnTheme.of(context);
+    final String mode = theme.brightness == Brightness.dark ? 'dark' : 'light';
+    final TemplateShot first = entry.shots.first;
+    return Image.asset(
+      'assets/screenshots/${entry.slug}-${first.file}-$mode.${entry.shotExt}',
+      semanticLabel: '${entry.name} home page, $mode theme',
+      fit: BoxFit.fitWidth,
+      filterQuality: FilterQuality.medium,
+    );
+  }
+}
+
+/// The architecture note for a template that runs on the server.
+class _ServerArchitecture extends StatelessWidget {
+  const _ServerArchitecture({
+    required this.entry,
+    required this.muted,
+    required this.heading,
+  });
+
+  final TemplateEntry entry;
+  final TextStyle muted;
+  final TextStyle heading;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text('Server-rendered with Jaspr', style: heading),
+        const SizedBox(height: CairnSpacing.s2),
+        Text(
+          'This one is not a Flutter package. It is a Jaspr app: Dart that '
+          'renders real HTML on a server, so every page ships its own title, '
+          'meta tags, Open Graph data and JSON-LD to crawlers, works with '
+          'JavaScript switched off, and hydrates only three small islands. '
+          'Cairn\'s design tokens are carried over as CSS variables, so it '
+          'looks like the rest of the system. Flutter web cannot do this, '
+          'because it paints to a canvas.',
+          style: muted,
+        ),
+        const SizedBox(height: CairnSpacing.s3),
+        const Wrap(
+          spacing: CairnSpacing.s2,
+          runSpacing: CairnSpacing.s2,
+          children: <Widget>[
+            CairnBadge(label: Text('Jaspr')),
+            CairnBadge(label: Text('Server-side rendering')),
+            CairnBadge(label: Text('SEO')),
+            CairnBadge(label: Text('Works without JavaScript')),
+            CairnBadge(label: Text('Clean architecture')),
+          ],
+        ),
+        if (entry.runCommands != null) ...<Widget>[
+          const SizedBox(height: CairnSpacing.s4),
+          CodeBlock(entry.runCommands!, language: CodeLanguage.shell),
+        ],
+        const SizedBox(height: CairnSpacing.s6),
+        Wrap(
+          spacing: CairnSpacing.s2,
+          runSpacing: CairnSpacing.s2,
+          children: <Widget>[
+            CairnButton(
+              onPressed: () => openExternal(templateDocsUrl(entry.slug)),
+              leading: const Icon(Icons.menu_book_outlined, size: 16),
+              child: const Text('Read the documentation'),
+            ),
+            CairnButton(
+              variant: CairnButtonVariant.outline,
+              onPressed: () => openExternal(
+                '${SiteLinks.siteRepo}/tree/main/${entry.packagePath}',
+              ),
+              child: const Text('Browse the source'),
+            ),
+          ],
         ),
       ],
     );

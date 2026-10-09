@@ -2,6 +2,7 @@ import 'package:cairn_template_blog/cairn_template_blog.dart';
 import 'package:cairn_template_dashboard/cairn_template_dashboard.dart';
 import 'package:cairn_template_docs/cairn_template_docs.dart';
 import 'package:cairn_template_landing/cairn_template_landing.dart';
+import 'package:cairn_template_onboarding/cairn_template_onboarding.dart';
 import 'package:cairn_template_shop/cairn_template_shop.dart';
 import 'package:flutter/widgets.dart';
 
@@ -46,7 +47,10 @@ class TemplateEntry {
     required this.screens,
     required this.uses,
     required this.shots,
-    required this.preview,
+    this.preview,
+    this.shotExt = 'png',
+    this.serverRendered = false,
+    this.runCommands,
   });
 
   /// The URL segment and the package folder, e.g. `shop`.
@@ -73,8 +77,18 @@ class TemplateEntry {
   /// The screenshot gallery.
   final List<TemplateShot> shots;
 
-  /// Builds the live template.
-  final WidgetBuilder preview;
+  /// Builds the live template, or `null` for a template that cannot run
+  /// inside this Flutter page (a server-rendered one).
+  final WidgetBuilder? preview;
+
+  /// The screenshot file extension.
+  final String shotExt;
+
+  /// Whether it is a server-rendered Jaspr app rather than a Flutter package.
+  final bool serverRendered;
+
+  /// How to run a server-rendered template locally.
+  final String? runCommands;
 
   /// The package folder inside the repository.
   String get packagePath => 'templates/$slug';
@@ -295,6 +309,84 @@ final List<TemplateEntry> templateCatalog = <TemplateEntry>[
       const TemplateShot('4-faq', 'FAQ'),
     ],
     preview: (BuildContext context) => const LandingApp(),
+  ),
+  const TemplateEntry(
+    slug: 'jaspr_store',
+    name: 'Online store (SEO)',
+    kind: TemplateKind.web,
+    summary: 'Server-rendered, with full SEO',
+    serverRendered: true,
+    description:
+        'A web store rendered on the server with Jaspr, built for search: '
+        'every page has its own title, description, canonical, Open Graph '
+        'and JSON-LD (Product, Offer, Review, Breadcrumb, ItemList), a '
+        'dynamic sitemap and robots.txt, correct redirects and real 404s. '
+        'Cart, promo codes and checkout are plain forms that work with '
+        'JavaScript off; three small islands add instant feedback. The '
+        'tokens come across as CSS variables, in light and dark.',
+    screens: <(String, String)>[
+      ('Home', 'Hero, categories, featured products, newsletter.'),
+      ('Listing', 'Filters, search, sorting and pagination by URL.'),
+      ('Product', 'Responsive images, variants, reviews and structured data.'),
+      ('Cart', 'A signed, HttpOnly cookie; promo code; free-shipping bar.'),
+      ('Checkout', 'Server-side validation with inline errors.'),
+    ],
+    uses: <String>[],
+    shots: <TemplateShot>[
+      TemplateShot('1-home', 'Home'),
+      TemplateShot('2-listing', 'Listing'),
+      TemplateShot('3-product', 'Product'),
+      TemplateShot('4-cart', 'Cart'),
+      TemplateShot('5-checkout', 'Checkout'),
+    ],
+    shotExt: 'webp',
+    runCommands: '''
+cd templates/jaspr_store
+dart pub get
+dart pub global activate jaspr_cli
+jaspr serve        # http://localhost:8080
+dart run tool/seo_audit.dart''',
+  ),
+  TemplateEntry(
+    slug: 'onboarding',
+    name: 'Onboarding',
+    kind: TemplateKind.mobile,
+    summary: 'Swipeable intro, permissions, personalise',
+    description:
+        'A resumable first-run flow: a splash, four swipeable value pages '
+        'with photographs, notification and location permission cards with '
+        'allowed, denied and settings states, personalisation (interests, '
+        'goal, reminder) with validation, an account choice and a '
+        'summary. Progress is saved after every change, and the host '
+        'receives the result through a callback.',
+    screens: <(String, String)>[
+      ('Value pages', 'Swipe, dots, skip and back, with photographs.'),
+      ('Permissions', 'Explain the benefit, ask, handle denial.'),
+      ('Personalise', 'Interests, a goal and reminders, in steps.'),
+      ('Account', 'Create, sign in or continue as a guest.'),
+      ('Done', 'A summary and the hand-off to your app.'),
+    ],
+    uses: <String>[
+      'Button',
+      'Progress',
+      'Steps',
+      'Toggle',
+      'Radio Group',
+      'Select',
+      'Card',
+      'Badge',
+      'Alert',
+      'Link',
+      'Separator',
+    ],
+    shots: <TemplateShot>[
+      const TemplateShot('1-welcome', 'Welcome'),
+      const TemplateShot('2-value', 'Value page'),
+      const TemplateShot('3-permissions', 'Permissions'),
+      const TemplateShot('4-interests', 'Interests'),
+      const TemplateShot('5-done', 'Done'),
+    ],
+    preview: (BuildContext context) => const OnboardingApp(),
   ),
 ];
 

@@ -5,6 +5,7 @@ import 'package:cairn_template_blog/cairn_template_blog.dart';
 import 'package:cairn_template_dashboard/cairn_template_dashboard.dart';
 import 'package:cairn_template_docs/cairn_template_docs.dart';
 import 'package:cairn_template_landing/cairn_template_landing.dart';
+import 'package:cairn_template_onboarding/cairn_template_onboarding.dart';
 import 'package:cairn_template_shop/cairn_template_shop.dart';
 import 'package:cairn_ui/cairn_ui.dart';
 import 'package:flutter/widgets.dart';
@@ -39,7 +40,9 @@ void main() {
       await _settle(tester);
       for (final TemplateEntry t in templateCatalog) {
         expect(
-          find.bySemanticsLabel(RegExp('^${t.name} template, ${t.kind.label}')),
+          find.bySemanticsLabel(
+            RegExp('^${RegExp.escape(t.name)} template, ${t.kind.label}'),
+          ),
           findsOneWidget,
           reason: t.slug,
         );
@@ -53,6 +56,7 @@ void main() {
       'blog': BlogApp,
       'docs': DocsApp,
       'landing': LandingApp,
+      'onboarding': OnboardingApp,
     };
     for (final MapEntry<String, Type> e in apps.entries) {
       testWidgets('/templates/${e.key} mounts its template', (
@@ -78,6 +82,21 @@ void main() {
         expect(tester.takeException(), isNull);
       });
     }
+
+    testWidgets(
+      'a server-rendered template shows its screenshots, not an app',
+      (WidgetTester tester) async {
+        await pumpSite(
+          tester,
+          Routes.template('jaspr_store'),
+          surface: const Size(1440, 2600),
+        );
+        await _settle(tester);
+        expect(find.text('Server-rendered with Jaspr'), findsOneWidget);
+        expect(find.byType(CairnMockupBrowser), findsOneWidget);
+        expect(tester.takeException(), isNull);
+      },
+    );
 
     testWidgets('choosing a template swaps the preview', (
       WidgetTester tester,
