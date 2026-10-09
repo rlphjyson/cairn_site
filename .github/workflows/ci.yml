@@ -51,7 +51,7 @@ jobs:
       # The served copies of the template docs must match their sources.
       - name: Template docs are in sync
         run: |
-          ./tool/sync_template_docs.sh
+          bash tool/sync_template_docs.sh
           git diff --exit-code web/template-docs
 
   build:
