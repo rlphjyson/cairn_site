@@ -15,6 +15,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:cairn_site/src/app/site_theme.dart';
+import 'package:cairn_template_app_landing/cairn_template_app_landing.dart';
 import 'package:cairn_template_auth/cairn_template_auth.dart';
 import 'package:cairn_template_blog/cairn_template_blog.dart';
 import 'package:cairn_template_chat/cairn_template_chat.dart';
@@ -362,6 +363,24 @@ final List<_Script> _scripts = <_Script>[
       await tester.tap(find.text('Mina Park').first);
       await _settle(tester);
       await shot('4-thread');
+    },
+  ),
+  _Script(
+    slug: 'app_landing',
+    frame: _desktop,
+    size: const Size(1200, 800),
+    app: const AppLandingApp(),
+    run: (WidgetTester tester, _Shot shot) async {
+      await shot('1-hero');
+      for (final (String, String) s in <(String, String)>[
+        ('Features', '2-features'),
+        ('Reviews', '3-reviews'),
+        ('Pricing', '4-pricing'),
+      ]) {
+        await tester.tap(find.text(s.$1).first);
+        await _settle(tester, 15);
+        await shot(s.$2);
+      }
     },
   ),
 ];

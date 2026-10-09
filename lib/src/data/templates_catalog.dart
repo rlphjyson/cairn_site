@@ -1,3 +1,4 @@
+import 'package:cairn_template_app_landing/cairn_template_app_landing.dart';
 import 'package:cairn_template_auth/cairn_template_auth.dart';
 import 'package:cairn_template_blog/cairn_template_blog.dart';
 import 'package:cairn_template_chat/cairn_template_chat.dart';
@@ -474,6 +475,51 @@ dart run tool/seo_audit.dart''',
       const TemplateShot('4-thread', 'Thread'),
     ],
     preview: (BuildContext context) => const ChatApp(),
+  ),
+  TemplateEntry(
+    slug: 'app_landing',
+    name: 'App landing',
+    kind: TemplateKind.web,
+    summary: 'A page that sells a phone app',
+    description:
+        'A landing page for a mobile app: a hero with two live, overlapping '
+        'phones, feature tabs that switch the screen beside them, a '
+        'screenshot carousel, store-style reviews with a rating '
+        'distribution, free and premium pricing, an FAQ, and a "send me the '
+        'link" form with a QR card. The phone screens are real Cairn UIs, '
+        'not images, and all copy lives in one JSON document.',
+    screens: <(String, String)>[
+      ('Hero', 'Store buttons, rating line and two live phone screens.'),
+      ('Features', 'Tabs that swap the phone screen next to the copy.'),
+      ('Gallery', 'A carousel of five phones with captions.'),
+      ('Reviews', 'Store-style cards and a rating distribution.'),
+      ('Download', 'A validated send-me-the-link form and a QR card.'),
+    ],
+    uses: <String>[
+      'Mockup',
+      'Navbar',
+      'Button',
+      'Badge',
+      'Card',
+      'Avatar',
+      'Rating',
+      'Tabs',
+      'Carousel',
+      'Accordion',
+      'Input',
+      'Stat',
+      'Switch',
+      'Sheet',
+      'Progress',
+      'Radial Progress',
+    ],
+    shots: <TemplateShot>[
+      const TemplateShot('1-hero', 'Hero'),
+      const TemplateShot('2-features', 'Features'),
+      const TemplateShot('3-reviews', 'Reviews'),
+      const TemplateShot('4-pricing', 'Pricing'),
+    ],
+    preview: (BuildContext context) => const AppLandingApp(),
   ),
 ];
 

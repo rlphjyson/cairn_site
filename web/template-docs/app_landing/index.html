@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App landing page template — documentation</title>
+<meta name="description" content="How to install, customise, connect to SMS and email services, and ship the Cairn app landing page template.">
+<style>
+:root{--bg:#fff;--fg:#0a0a0a;--muted:#6b6b6b;--border:#e5e5e5;--card:#fafafa;--code:#f4f4f5;--accent:#0a0a0a;--accent-fg:#fafafa;--note:#eef6ff;--note-b:#bcd9f7;--warn:#fff7e6;--warn-b:#f2d18b;--ok:#ecfbf1;--ok-b:#a8e2bd}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0a0a0a;--fg:#fafafa;--muted:#a1a1a1;--border:#262626;--card:#111;--code:#171717;--accent:#fafafa;--accent-fg:#0a0a0a;--note:#0e1a2b;--note-b:#1f3a5c;--warn:#2a2007;--warn-b:#5c4710;--ok:#0b2316;--ok-b:#1c5233}}
+:root[data-theme=dark]{--bg:#0a0a0a;--fg:#fafafa;--muted:#a1a1a1;--border:#262626;--card:#111;--code:#171717;--accent:#fafafa;--accent-fg:#0a0a0a;--note:#0e1a2b;--note-b:#1f3a5c;--warn:#2a2007;--warn-b:#5c4710;--ok:#0b2316;--ok-b:#1c5233}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:inherit;text-decoration-color:var(--muted);text-underline-offset:3px}a:hover{text-decoration-color:currentColor}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);max-width:1180px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:28px 20px;border-right:1px solid var(--border);font-size:14px}
+nav.toc .brand{font-weight:650;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+nav.toc ol{list-style:none;margin:0;padding:0}nav.toc li{margin:2px 0}
+nav.toc a{display:block;padding:5px 10px;border-radius:8px;text-decoration:none;color:var(--muted)}
+nav.toc a:hover,nav.toc a.active{background:var(--card);color:var(--fg)}
+nav.toc ol ol{margin-left:12px}
+main{padding:48px 40px 96px;max-width:860px}
+h1{font-size:2.2rem;line-height:1.15;margin:0 0 8px;letter-spacing:-.02em}
+h2{font-size:1.5rem;margin:56px 0 12px;padding-top:24px;border-top:1px solid var(--border);letter-spacing:-.01em}
+h2:first-of-type{border-top:0}h3{font-size:1.1rem;margin:28px 0 8px}
+p,li{color:var(--fg)}.lead{color:var(--muted);font-size:1.1rem;margin:0 0 24px}
+code{font:13.5px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);padding:2px 6px;border-radius:6px}
+pre{position:relative;background:var(--code);border:1px solid var(--border);border-radius:12px;padding:16px 18px;overflow:auto;margin:14px 0}
+pre code{background:none;padding:0;font-size:13px;line-height:1.6;white-space:pre}
+.copy{position:absolute;top:8px;right:8px;border:1px solid var(--border);background:var(--bg);color:var(--muted);border-radius:8px;font-size:12px;padding:3px 9px;cursor:pointer}
+.copy:hover{color:var(--fg)}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+th{font-weight:600;background:var(--card)}
+.callout{border:1px solid;border-radius:12px;padding:12px 16px;margin:16px 0}.callout p{margin:4px 0}
+.callout.note{background:var(--note);border-color:var(--note-b)}.callout.warn{background:var(--warn);border-color:var(--warn-b)}.callout.ok{background:var(--ok);border-color:var(--ok-b)}
+.callout strong:first-child{display:block;margin-bottom:2px}
+.tree{white-space:pre;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.pill{display:inline-block;border:1px solid var(--border);border-radius:999px;padding:1px 10px;font-size:12px;color:var(--muted)}
+.steps{counter-reset:s;list-style:none;padding:0}.steps>li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.steps>li:before{content:counter(s);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-fg);display:grid;place-items:center;font-size:13px;font-weight:600}
+button.theme{border:1px solid var(--border);background:var(--bg);color:var(--fg);border-radius:8px;padding:3px 8px;cursor:pointer;font-size:12px}
+:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+@media (max-width:900px){.layout{display:block}nav.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border)}main{padding:28px 20px 64px}}
+@media print{nav.toc,.copy,button.theme{display:none}.layout{display:block}main{max-width:none;padding:0}pre{white-space:pre-wrap}a{text-decoration:none}h2{break-after:avoid}pre,table,.callout{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Contents">
+  <div class="brand"><span>App landing template</span><button class="theme" id="theme" type="button" aria-label="Toggle theme">Theme</button></div>
+  <ol>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#requirements">Requirements</a></li>
+    <li><a href="#install">Install</a></li>
+    <li><a href="#mount">Mount it</a></li>
+    <li><a href="#brand">Change the app, tagline and store links</a>
+      <ol><li><a href="#copy">Edit the copy</a></li><li><a href="#theme-brand">Colours and type</a></li><li><a href="#sections">Reorder sections</a></li></ol></li>
+    <li><a href="#screens">Features and live phone screens</a>
+      <ol><li><a href="#screen-shape">Screen JSON</a></li><li><a href="#new-screen">Build a new screen</a></li></ol></li>
+    <li><a href="#reviews">Reviews and rating data</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#qr">Replace the demo QR</a></li>
+    <li><a href="#link">Send me the link</a>
+      <ol><li><a href="#sms">SMS with Twilio</a></li><li><a href="#email">Email over REST</a></li></ol></li>
+    <li><a href="#deeplinks">Smart banners and deep links</a></li>
+    <li><a href="#attribution">Analytics and attribution</a></li>
+    <li><a href="#seo">SEO</a></li>
+    <li><a href="#navigation">Use go_router</a></li>
+    <li><a href="#l10n">Localisation</a></li>
+    <li><a href="#responsive">Responsive and accessible</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#migrate">Migration</a></li>
+    <li><a href="#faq">Troubleshooting</a></li>
+  </ol>
+</nav>
+<main>
+<h1>App landing page template</h1>
+<p class="lead">A one-page site that sells a phone app, built only from <code>cairn_ui</code>. This guide takes you from <em>copy it in</em> to <em>shipping it for your own app</em>.</p>
+
+<h2 id="overview">Overview &amp; architecture</h2>
+<p>The template is a Flutter package, <code>cairn_template_app_landing</code>, that exposes one widget: <code>AppLandingApp</code>. The demo app it promotes is invented: <strong>Ember</strong>, a habit coach. It has eleven sections in one scroll, under a sticky navbar whose links smooth-scroll and highlight the section in view (below 1000 px they move into a menu sheet):</p>
+<table>
+<tr><th>Id</th><th>Section</th><th>Built from</th></tr>
+<tr><td><code>hero</code></td><td>Headline, App Store and Google Play buttons, rating line, two overlapping live phones</td><td><code>CairnMockupPhone</code>, <code>CairnButton</code>, <code>CairnRating</code>, <code>CairnAvatarGroup</code></td></tr>
+<tr><td><code>trust</code></td><td>Press mentions as text wordmarks, award badges</td><td>text and Cairn tokens</td></tr>
+<tr><td><code>features</code></td><td>Four tabs, each switching the phone screen beside the copy</td><td><code>CairnTabs</code>, <code>CairnMockupPhone</code></td></tr>
+<tr><td><code>how-it-works</code></td><td>Three numbered steps</td><td><code>CairnCard</code></td></tr>
+<tr><td><code>gallery</code></td><td>Five phone frames with captions</td><td><code>CairnCarousel</code></td></tr>
+<tr><td><code>stats</code></td><td>A photo and four figures</td><td><code>CairnStats</code></td></tr>
+<tr><td><code>reviews</code></td><td>Rating summary, one bar per star count, review cards, a &ldquo;Write a review&rdquo; toast</td><td><code>CairnCard</code>, <code>CairnProgress</code>, <code>CairnRating</code>, <code>CairnAvatar</code>, <code>CairnToast</code></td></tr>
+<tr><td><code>pricing</code></td><td>Free and Premium with a monthly/yearly switch</td><td><code>CairnSwitch</code>, <code>CairnCard</code></td></tr>
+<tr><td><code>faq</code></td><td>Six questions</td><td><code>CairnAccordion</code></td></tr>
+<tr><td><code>download</code></td><td>Send-me-the-link form, QR card, store buttons</td><td><code>CairnInput</code>, <code>CairnButton</code>, <code>CairnSpinner</code></td></tr>
+<tr><td><code>footer</code></td><td>Link columns, social icons, legal links</td><td><code>CairnLink</code>, <code>CairnSeparator</code></td></tr>
+</table>
+<p>It is organised as <strong>clean architecture by layer, then by feature</strong>, with <code>flutter_bloc</code> for state and <code>get_it</code> for dependency injection. Nothing is generated.</p>
+<pre class="tree">lib/
+├─ app_landing_app.dart            entry widget (AppLandingApp)
+├─ core/
+│  ├─ infrastructure/di/           get_it registration
+│  └─ presentation/                navigation cubit, live phone screens, shared widgets
+├─ common/                         section ids, content keys, formatting, JSON reader
+├─ data/
+│  ├─ content/remote/              AppContentDataSource + the demo JSON
+│  ├─ download/remote/             DownloadLinkService + in-memory stand-in
+│  └─ &lt;feature&gt;/repositories/      implement the domain interfaces
+├─ domain/&lt;feature&gt;/               models, mappers, repository interfaces, use cases
+└─ presentation/&lt;feature&gt;/         bloc, view models, views, widgets (+ shell/)</pre>
+<div class="callout note"><strong>The one rule to remember</strong><p>Dependencies point inwards: presentation &rarr; domain &larr; data. To change where the copy or the download link goes you touch <code>data/</code> (or pass a parameter). To change how a section looks you touch <code>presentation/</code>.</p></div>
+<p>The logic worth testing is pure, in <code>domain/</code>: <code>GetFeatures</code>, <code>GetReviews</code> with <code>RatingDistribution</code>, <code>CalculatePrice</code>, <code>ValidateContact</code>, <code>SendDownloadLink</code> and <code>BuildQrPattern</code>.</p>
+
+<h2 id="requirements">Requirements</h2>
+<table>
+<tr><th>Tool</th><th>Version</th></tr>
+<tr><td>Flutter</td><td>3.44 or newer (Dart 3.12)</td></tr>
+<tr><td><code>cairn_ui</code></td><td>^0.2.0</td></tr>
+<tr><td><code>flutter_bloc</code>, <code>get_it</code>, <code>equatable</code></td><td>pulled in by the package</td></tr>
+<tr><td>Optional in your app</td><td><code>url_launcher</code> (to open the stores), <code>http</code> (for the link service), <code>go_router</code>, <code>qr_flutter</code></td></tr>
+</table>
+
+<h2 id="install">Install</h2>
+<h3>A. As a package (recommended)</h3>
+<pre><button class="copy">Copy</button><code># pubspec.yaml
+dependencies:
+  cairn_ui: ^0.2.0
+  cairn_template_app_landing:
+    git:
+      url: https://github.com/rlphjyson/cairn_site.git
+      path: templates/app_landing
+      ref: main            # pin a tag or commit for production</code></pre>
+<p>Or, from a local checkout: <code>path: ../cairn_site/templates/app_landing</code>.</p>
+<h3>B. Copy the source into your app</h3>
+<ol class="steps">
+<li>Copy <code>templates/app_landing/lib/</code> into <code>lib/landing/</code> and <code>assets/images/</code> into your app&rsquo;s <code>assets/images/</code>.</li>
+<li>Add <code>cairn_ui</code>, <code>flutter_bloc</code>, <code>get_it</code> and <code>equatable</code> to your <code>pubspec.yaml</code>, and declare <code>assets/images/</code>.</li>
+<li>In <code>lib/common/constants/app_landing_package.dart</code> set <code>AppLandingPackage.name</code> to <code>null</code>, so images resolve from your app instead of the package.</li>
+<li>Rewrite the <code>package:cairn_template_app_landing/&hellip;</code> imports to your app&rsquo;s package name. Files inside the template use relative imports, so only your own references change.</li>
+</ol>
+<div class="callout ok"><strong>Photographs</strong><p>The eight JPEGs in <code>assets/images/</code> (six reviewer portraits and two lifestyle photos, about 560 KB together) are from Pexels; see <code>NOTICE.md</code>. Replace them with your own and update the file names in the JSON (<code>avatar</code>, <code>photo</code>) and in <code>presentation/download/views/download_view.dart</code> (<code>DownloadView.photo</code>).</p></div>
+
+<h2 id="mount">Mount it</h2>
+<p>The template reads colours, radii and type from <code>CairnTheme</code>, so the host app must provide one. Here is a complete <code>main.dart</code> that opens the store listings and the other links with <code>url_launcher</code>:</p>
+<pre><button class="copy">Copy</button><code>import 'package:cairn_template_app_landing/cairn_template_app_landing.dart';
+import 'package:cairn_ui/cairn_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+void main() =&gt; runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Ember: build habits that stick',
+      debugShowCheckedModeBanner: false,
+      theme: CairnTheme.materialTheme(CairnTheme.light),
+      darkTheme: CairnTheme.materialTheme(CairnTheme.dark),
+      home: Scaffold(
+        body: AppLandingApp(
+          // The two store buttons.
+          onStoreTap: (StoreKind store, String href) =&gt;
+              launchUrl(Uri.parse(href), webOnlyWindowName: '_blank'),
+          // Pricing buttons, footer links... anything that is not a #anchor.
+          onCtaTap: (String href) =&gt; launchUrl(Uri.parse(href)),
+        ),
+      ),
+    );
+  }
+}</code></pre>
+<p><code>AppLandingApp</code> fills whatever space its parent gives it and adapts to that width (not the screen&rsquo;s), so put it in a <code>Scaffold</code> body, an <code>Expanded</code> or a fixed-height box. Each instance creates its own dependency container and disposes it, so two pages never share state. All parameters are optional:</p>
+<table>
+<tr><th>Parameter</th><th>Type</th><th>Does</th></tr>
+<tr><td><code>contentDataSource</code></td><td><code>AppContentDataSource?</code></td><td>Where every word of copy comes from; defaults to the in-memory demo</td></tr>
+<tr><td><code>linkService</code></td><td><code>DownloadLinkService?</code></td><td>Sends the download link by SMS or email; defaults to a stand-in</td></tr>
+<tr><td><code>onStoreTap</code></td><td><code>void Function(StoreKind, String)?</code></td><td>A store button was pressed; gets <code>StoreKind.appStore</code> or <code>StoreKind.googlePlay</code> and the URL from the content</td></tr>
+<tr><td><code>onCtaTap</code></td><td><code>ValueChanged&lt;String&gt;?</code></td><td>Any other link that is not a <code>#</code> anchor (pricing buttons, footer links, a navbar button that points away)</td></tr>
+<tr><td><code>initialSection</code></td><td><code>String?</code></td><td>Scroll to a section id shortly after the first build (see <code>SectionIds</code>)</td></tr>
+<tr><td><code>onSectionChanged</code></td><td><code>ValueChanged&lt;String&gt;?</code></td><td>The section at the top of the viewport changed</td></tr>
+<tr><td><code>overrides</code></td><td><code>void Function(GetIt)?</code></td><td>Swap any other registration before the page builds</td></tr>
+</table>
+<p>Links in the content that start with <code>#</code> scroll to that section; everything else goes to <code>onCtaTap</code>. Until you pass the callbacks, the buttons do nothing outward, so a store button without <code>onStoreTap</code> is inert, on purpose.</p>
+
+<h2 id="brand">Change the app name, tagline, copy and store links</h2>
+<p>Everything on the page, including the screens inside the phones, is one JSON-shaped document in <strong><code>lib/data/content/remote/app_content_json.dart</code></strong>. Each top-level key is one <code>ContentSections</code> entry. The name, the tagline and the store links are in the first one, <code>_site</code>:</p>
+<pre><button class="copy">Copy</button><code>const JsonMap _site = &lt;String, Object?&gt;{
+  'brandName': 'Ember',
+  'brandIcon': 'fire',                  // a name from AppLandingIcons
+  'tagline': 'Build habits that stick, one small win at a time.',
+  'navLinks': &lt;Object?&gt;[
+    &lt;String, Object?&gt;{'label': 'Features', 'href': '#features'},
+    // ...
+  ],
+  'cta': &lt;String, Object?&gt;{'label': 'Get the app', 'href': '#download'},
+  'appStore': &lt;String, Object?&gt;{
+    'caption': 'Download on the',
+    'label': 'App Store',
+    'icon': 'apple',                    // a generic phone glyph, not a logo
+    'href': 'https://apps.apple.com/app/id0000000000',
+  },
+  'googlePlay': &lt;String, Object?&gt;{
+    'caption': 'Get it on',
+    'label': 'Google Play',
+    'icon': 'play',
+    'href': 'https://play.google.com/store/apps/details?id=com.example.ember',
+  },
+};</code></pre>
+<p>The navbar, the hero, the download section and the footer all read this one object (through the session <code>ContentCubit&lt;SiteInfo&gt;</code>), so the app is named in exactly one place. The store buttons are ordinary <code>CairnButton</code>s with a Material glyph and a two-line label; no store logos are used. If your store guidelines require the official badges, replace <code>StoreButton</code> in <code>core/presentation/widgets/store_buttons.dart</code> with an <code>Image.asset</code> of the badge inside a <code>CairnLink</code>.</p>
+<h3 id="copy">Edit the copy</h3>
+<table>
+<tr><th>Key</th><th>Shapes</th></tr>
+<tr><td><code>hero</code></td><td><code>badge</code>, <code>headline</code> (use <code>\n</code> for a line break), <code>subcopy</code>, <code>secondaryCta {label, href}</code>, <code>rating</code>, <code>ratingText</code>, <code>ratingLabel</code>, <code>avatars[]</code>, <code>frontScreen</code>, <code>backScreen</code></td></tr>
+<tr><td><code>trust</code></td><td><code>heading</code>, <code>press[] {name, style: bold|light|italic|spaced, quote}</code>, <code>awards[] {title, issuer, icon}</code></td></tr>
+<tr><td><code>features</code></td><td><code>eyebrow</code>, <code>title</code>, <code>subtitle</code>, <code>items[] {id, tabLabel, icon, title, body, bullets[], screen}</code></td></tr>
+<tr><td><code>howItWorks</code></td><td><code>eyebrow</code>, <code>title</code>, <code>subtitle</code>, <code>steps[] {icon, title, description}</code></td></tr>
+<tr><td><code>gallery</code></td><td><code>eyebrow</code>, <code>title</code>, <code>subtitle</code>, <code>slides[] {title, caption, screen}</code></td></tr>
+<tr><td><code>stats</code></td><td><code>title</code>, <code>caption</code>, <code>photo</code>, <code>photoLabel</code>, <code>stats[] {label, value, description}</code></td></tr>
+<tr><td><code>reviews</code></td><td>see <a href="#reviews">Reviews</a></td></tr>
+<tr><td><code>pricing</code></td><td>see <a href="#pricing">Pricing</a></td></tr>
+<tr><td><code>faq</code></td><td><code>eyebrow</code>, <code>title</code>, <code>subtitle</code>, <code>items[] {id, question, answer}</code>, <code>contactText</code>, <code>contact {label, href}</code></td></tr>
+<tr><td><code>download</code></td><td><code>eyebrow</code>, <code>title</code>, <code>subtitle</code>, <code>formTitle</code>, <code>placeholder</code>, <code>buttonLabel</code>, <code>privacyNote</code>, <code>successTitle</code>, <code>successMessage</code>, <code>storesHeading</code>, <code>qr {title, caption, badge, demoNote, payload}</code></td></tr>
+<tr><td><code>footer</code></td><td><code>description</code>, <code>columns[] {title, links[]}</code>, <code>social[] {label, icon, href}</code>, <code>copyright</code>, <code>legal[]</code></td></tr>
+</table>
+<p>A missing or mistyped key throws a <code>FormatException</code> that names it, so a typo fails loudly instead of rendering a blank. Icon names (<code>fire</code>, <code>bell</code>, <code>award</code>&hellip;) are resolved by <code>core/presentation/app_landing_icons.dart</code>; add one there to use it anywhere. Unknown names fall back to a dot.</p>
+<h3>Serve the content from somewhere else</h3>
+<p>The page only knows <code>AppContentDataSource</code>, which has one method. Implement it with a CMS, an API or a bundled JSON file and pass it in:</p>
+<pre><button class="copy">Copy</button><code>class AssetContent implements AppContentDataSource {
+  const AssetContent(this.locale);
+  final String locale;
+
+  @override
+  Future&lt;JsonMap&gt; fetchSection(String section) async {
+    final String text = await rootBundle.loadString('assets/content/$locale.json');
+    final Map&lt;String, Object?&gt; all = jsonDecode(text) as Map&lt;String, Object?&gt;;
+    return (all[section]! as Map).cast&lt;String, Object?&gt;();
+  }
+}
+
+AppLandingApp(contentDataSource: const AssetContent('en'))</code></pre>
+<p><code>section</code> is one of the <code>ContentSections</code> constants: <code>site</code>, <code>hero</code>, <code>trust</code>, <code>features</code>, <code>howItWorks</code>, <code>gallery</code>, <code>stats</code>, <code>reviews</code>, <code>pricing</code>, <code>faq</code>, <code>download</code>, <code>footer</code>.</p>
+<h3 id="theme-brand">Colours and type</h3>
+<p>Everything resolves through <code>CairnTheme</code>; there are no hard-coded colours (the only fixed colours are the dark gradient and the white caption over the photograph in the stats section). Brand it where you build the theme:</p>
+<pre><button class="copy">Copy</button><code>final CairnTheme brand = CairnTheme.light.copyWith(
+  primary: const Color(0xFFE8590C),
+  primaryForeground: const Color(0xFFFFFFFF),
+  radius: 12,            // every corner rescales from this one number
+  fontFamily: 'Inter',
+);
+MaterialApp(theme: CairnTheme.materialTheme(brand), ...);</code></pre>
+<p>The phones, the avatars&rsquo; rings, the progress bars and the store buttons all follow the theme, in light and dark.</p>
+<h3 id="sections">Reorder, add or remove a section</h3>
+<p>Edit the list in <code>presentation/shell/app_landing_page.dart</code> and the matching id in <code>common/constants/section_ids.dart</code> (<code>SectionIds.all</code> is the order the navbar uses to work out which section is active). A section with no <code>navLinks</code> entry is simply not in the navbar.</p>
+
+<h2 id="screens">Edit features and the live phone screens</h2>
+<p>The phones are not screenshots. Each one is a real Cairn UI, laid out once at 260 &times; 587 logical pixels and scaled into a <code>CairnMockupPhone</code>, so it is sharp at any size, follows light and dark, and cannot overflow. Five kinds exist (<code>ScreenKind</code>): <code>today</code>, <code>progress</code>, <code>calendar</code>, <code>settings</code> and <code>goals</code>. The hero uses two of them, the features section four and the gallery five, all defined once in the JSON file (<code>_todayScreen</code>, <code>_progressScreen</code>, <code>_calendarScreen</code>, <code>_settingsScreen</code>, <code>_goalsScreen</code>) and referenced by name.</p>
+<h3 id="screen-shape">Screen JSON</h3>
+<table>
+<tr><th>Field</th><th>Used by</th><th>Meaning</th></tr>
+<tr><td><code>kind</code></td><td>all</td><td><code>today</code> | <code>progress</code> | <code>calendar</code> | <code>settings</code> | <code>goals</code></td></tr>
+<tr><td><code>title</code>, <code>subtitle</code></td><td>all</td><td>The large title and the line under it</td></tr>
+<tr><td><code>description</code></td><td>all</td><td>What a screen reader announces for the phone (required)</td></tr>
+<tr><td><code>tab</code></td><td>all</td><td>Which of the four dock tabs is highlighted, 0 to 3</td></tr>
+<tr><td><code>dock</code></td><td>all</td><td>Optional four dock labels; default <code>Today, Progress, Calendar, Settings</code></td></tr>
+<tr><td><code>headline</code>, <code>caption</code></td><td>today, progress, calendar, goals, settings</td><td>The big phrase and its small line (on settings: the user&rsquo;s name and a line under it; on goals: the button label and a note)</td></tr>
+<tr><td><code>items[] {label, detail, icon, value, done, on}</code></td><td>today, progress, settings, goals</td><td>Rows. <code>done</code> ticks a habit or selects a goal, <code>on</code> switches a setting, <code>value</code> (0&ndash;1) fills a progress bar</td></tr>
+<tr><td><code>bars[]</code>, <code>barLabels[]</code></td><td>progress</td><td>Bar heights from 0 to 1 and their labels</td></tr>
+<tr><td><code>monthLabel</code>, <code>daysInMonth</code>, <code>startWeekday</code> (1 = Monday), <code>activeDays[]</code>, <code>today</code></td><td>calendar</td><td>The month grid; active days are filled, <code>today</code> is ringed</td></tr>
+<tr><td><code>badge</code>, <code>footnote</code></td><td>settings</td><td>The badge next to the user and the small print at the foot</td></tr>
+</table>
+<p>Change a value and the phone changes: set a habit&rsquo;s <code>done</code> to <code>true</code> and the ring on the Today screen fills (it is computed from the rows).</p>
+<h3 id="new-screen">Build a new mock screen from Cairn widgets</h3>
+<p>Say you want a <strong>Streak Freeze</strong> screen.</p>
+<ol class="steps">
+<li>Add a value to <code>ScreenKind</code> in <code>domain/shared/models/app_screen.dart</code> (<code>freeze</code>). The mapper matches the JSON <code>kind</code> against the enum names, so nothing else changes there.</li>
+<li>Write the body in <code>core/presentation/mock/app_screen_view.dart</code>. The helpers <code>_Bordered</code>, <code>_Row</code>, <code>_IconTile</code>, <code>_Title</code> and <code>_Caption</code> are sized for the phone; combine them with any Cairn widget (<code>CairnProgress</code>, <code>CairnRadialProgress</code>, <code>CairnBadge</code>, <code>CairnButton</code>&hellip;).</li>
+<li>Add a case to the <code>switch (screen.kind)</code> in <code>AppScreenView.build</code>. The compiler tells you if you forget: the switch is exhaustive.</li>
+<li>Add a map with <code>'kind': 'freeze'</code> to the JSON file and reference it from a feature (<code>'screen': _freezeScreen</code>) or a gallery slide.</li>
+</ol>
+<pre><button class="copy">Copy</button><code>// core/presentation/mock/app_screen_view.dart
+class _FreezeBody extends StatelessWidget {
+  const _FreezeBody({required this.screen});
+
+  final AppScreen screen;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: &lt;Widget&gt;[
+        _Bordered(
+          children: &lt;Widget&gt;[
+            for (final ScreenItem item in screen.items)
+              _Row(
+                leading: _IconTile(item.icon, active: item.done),
+                title: item.label,
+                detail: item.detail,
+                trailing: CairnBadge(
+                  variant: CairnBadgeVariant.secondary,
+                  label: Text(screen.badge),
+                ),
+              ),
+          ],
+        ),
+        const Spacer(),
+        CairnButton(expand: true, onPressed: () {}, child: Text(screen.headline)),
+        const SizedBox(height: 10),
+      ],
+    );
+  }
+}
+
+// ... and in AppScreenView.build:
+ScreenKind.freeze =&gt; _FreezeBody(screen: screen),</code></pre>
+<div class="callout note"><strong>Keep the design size</strong><p>Lay the body out for a 228 px wide column (the 260 px design width minus 16 px padding each side). Whatever fits there fits every phone, because the whole screen is scaled as one picture. <code>MockPhone</code> excludes it from focus, pointer input and the semantics tree and describes it with <code>description</code> instead, so interactive Cairn widgets inside it are safe.</p></div>
+<h3>Use a real screenshot instead</h3>
+<p>Replace <code>MockPhone</code> where you need a photograph of your app: <code>CairnMockupPhone(child: Image.asset('assets/shots/today.png', fit: BoxFit.cover))</code>. The hero, the features and the gallery each build their phone in one place (<code>hero_phones.dart</code>, <code>features_view.dart</code>, <code>gallery_view.dart</code>). Give the image a <code>semanticLabel</code>.</p>
+
+<h2 id="reviews">Reviews and rating data</h2>
+<p>You supply five numbers; the page derives everything else. That is deliberate: the average, the total, the width of every bar and the line &ldquo;120K ratings&rdquo; cannot disagree.</p>
+<pre><button class="copy">Copy</button><code>const JsonMap _reviews = &lt;String, Object?&gt;{
+  'eyebrow': 'Reviews',
+  'title': 'Rated 4.8 by people who stuck with it',
+  'subtitle': 'Real words from the App Store and Google Play.',
+  // How many people gave each star count. Total, average and bars are derived.
+  'distribution': &lt;String, Object?&gt;{
+    '5': 103200, '4': 10800, '3': 3000, '2': 1200, '1': 1800,
+  },
+  'reviews': &lt;Object?&gt;[
+    &lt;String, Object?&gt;{
+      'id': 'r1',
+      'title': 'My 200 day streak says it all',
+      'body': 'I have tried every habit app...',
+      'author': 'Priya S.',
+      'date': '2026-09-28',               // ISO 8601
+      'rating': 5,                          // 1 to 5
+      'avatar': 'assets/images/avatar-priya.jpg',   // optional: initials if absent
+    },
+  ],
+  'writeReview': &lt;String, Object?&gt;{
+    'label': 'Write a review',
+    'toastTitle': 'Thanks for sharing',
+    'toastMessage': 'Reviews are written in the app...',
+  },
+};</code></pre>
+<ul>
+<li><code>RatingDistribution</code> (<code>domain/reviews/models/reviews_content.dart</code>) exposes <code>total</code>, <code>average</code>, <code>averageLabel</code> (<code>4.8</code>), <code>countFor(star)</code> and <code>shareFor(star)</code>. The five rows of <code>CairnProgress</code> use <code>shareFor</code>.</li>
+<li><code>GetReviews</code> sorts the cards newest first, so the JSON can be in any order.</li>
+<li>The hero&rsquo;s <code>rating</code> and <code>ratingText</code> are separate strings. Keep them in step with the distribution (a test in <code>domain_test.dart</code> fails if the demo content drifts; add the same check for your numbers).</li>
+<li>&ldquo;Write a review&rdquo; shows a <code>CairnToast</code>. Stores only accept reviews from people who installed the app, so the demo points to the app. To link straight to the store&rsquo;s review page instead, change the button in <code>presentation/reviews/views/reviews_view.dart</code> to call <code>AppLandingActions.of(context).openStore(StoreKind.appStore, href)</code>.</li>
+</ul>
+<div class="callout warn"><strong>Do not invent reviews for a real app</strong><p>The demo reviews are fictional. For a real product show real, attributed reviews, and consider the consumer-protection rules in your market on testimonials and ratings.</p></div>
+
+<h2 id="pricing">Pricing</h2>
+<p>Two plans in <code>_pricing</code>. <code>monthlyPrice</code> is the list price per month (<code>0</code> is free, absent means &ldquo;Custom&rdquo;); <code>yearlyDiscountPercent</code> is taken off for yearly billing. <code>CalculatePrice</code> rounds to the cent: at 6.99 and 40% the yearly price is <code>$4.19</code> a month, billed <code>$50.28</code> a year, saving <code>$33.60</code>. A plan&rsquo;s button <code>href</code> may contain <code>{period}</code>, which becomes <code>monthly</code> or <code>yearly</code> before it reaches <code>onCtaTap</code>:</p>
+<pre><button class="copy">Copy</button><code>'cta': &lt;String, Object?&gt;{
+  'label': 'Start free trial',
+  'href': 'https://ember.example/trial?plan=premium&amp;period={period}',
+},</code></pre>
+<p>Both the &ldquo;Monthly&rdquo;/&ldquo;Yearly&rdquo; labels and the switch toggle the same state. Store subscriptions are normally bought inside the app, so a link like this usually opens the store or your own checkout; payments are not part of this template.</p>
+
+<h2 id="qr">Replace the demo QR</h2>
+<p>The card draws a QR-<em>looking</em> pattern (<code>BuildQrPattern</code> seeds it from <code>qr.payload</code>; <code>QrPainter</code> paints it) and labels itself as a demo. <strong>It will not scan.</strong> Before launch, encode your smart link for real. With <code>qr_flutter</code>:</p>
+<pre><button class="copy">Copy</button><code>// presentation/download/widgets/qr_card.dart: replace the CustomPaint
+// (and drop the Demo badge and note) with:
+import 'package:qr_flutter/qr_flutter.dart';
+
+SizedBox.square(
+  dimension: 152,
+  child: QrImageView(
+    data: content.payload,            // e.g. https://ember.example/get
+    backgroundColor: theme.card,
+    eyeStyle: QrEyeStyle(color: theme.foreground),
+    dataModuleStyle: QrDataModuleStyle(color: theme.foreground),
+  ),
+)</code></pre>
+<p>Or generate the code once (PNG or SVG) and show it with <code>Image.asset</code>. Two rules for scannable codes: keep a light background behind a dark code (in dark mode use a fixed white tile instead of <code>theme.card</code>), and point it at <strong>one smart link</strong> on your own domain that redirects by platform (see <a href="#deeplinks">Smart banners and deep links</a>), so printed codes survive a store change.</p>
+
+<h2 id="link">Wire &ldquo;send me the link&rdquo; to SMS and email</h2>
+<p>The form accepts an email address <em>or</em> a phone number. <code>ValidateContact</code> checks it (an email has one <code>@</code> and a dotted domain; a phone has 7 to 15 digits with an optional <code>+</code>), <code>SendDownloadLink</code> runs the validation and calls the repository, and the repository calls your <code>DownloadLinkService</code>:</p>
+<pre><button class="copy">Copy</button><code>abstract interface class DownloadLinkService {
+  Future&lt;void&gt; send(Contact contact);   // throws DownloadLinkException
+}
+
+class Contact {            // Contact(ContactKind.email | ContactKind.phone, value)
+  final ContactKind kind;
+  final String value;      // emails trimmed; phones as digits with a leading + if typed
+}</code></pre>
+<p>The default <code>InMemoryDownloadLinkService</code> waits 700 ms and accepts everything except addresses ending <code>@fail.example</code> and numbers ending <code>0000</code>, so you can see the error state. Throw <code>DownloadLinkException(message)</code> with a sentence a visitor can read; any other exception becomes a generic message.</p>
+<div class="callout warn"><strong>Never put provider keys in the app</strong><p>A Flutter web bundle is public. SMS and email providers must be called from <strong>your backend</strong>, which also rate-limits and keeps abuse (SMS pumping) in check. The service below only talks to your own endpoint.</p></div>
+<pre><button class="copy">Copy</button><code>// lib/data/download/http_download_link_service.dart
+import 'dart:convert';
+
+import 'package:cairn_template_app_landing/cairn_template_app_landing.dart';
+import 'package:http/http.dart' as http;
+
+class HttpDownloadLinkService implements DownloadLinkService {
+  HttpDownloadLinkService(this._client, {required this.endpoint});
+
+  final http.Client _client;
+  final Uri endpoint;
+
+  @override
+  Future&lt;void&gt; send(Contact contact) async {
+    final http.Response res = await _client.post(
+      endpoint,
+      headers: &lt;String, String&gt;{'Content-Type': 'application/json'},
+      body: jsonEncode(&lt;String, String&gt;{
+        'channel': contact.kind.name,      // 'email' or 'phone'
+        'to': contact.value,
+      }),
+    );
+    if (res.statusCode == 202) return;
+    if (res.statusCode == 429) {
+      throw const DownloadLinkException(
+        'Too many requests. Please try again in a minute.',
+      );
+    }
+    if (res.statusCode == 422) {
+      throw const DownloadLinkException(
+        'We could not use that address. Please check it and try again.',
+      );
+    }
+    throw const DownloadLinkException(
+      'We could not send the link right now. Please try again in a moment.',
+    );
+  }
+}
+
+// main.dart
+AppLandingApp(
+  linkService: HttpDownloadLinkService(
+    http.Client(),
+    endpoint: Uri.parse('https://api.example.com/download-link'),
+  ),
+)</code></pre>
+<h3 id="sms">SMS with Twilio (backend)</h3>
+<p>An endpoint for the service above, in Node with Express and Twilio&rsquo;s helper library. The phone arrives with only digits (and a <code>+</code> if the visitor typed one), so the backend decides the country: parse with <code>libphonenumber-js</code> and a default region, and reject anything that is not a valid mobile number.</p>
+<pre><button class="copy">Copy</button><code>import express from 'express';
+import rateLimit from 'express-rate-limit';
+import twilio from 'twilio';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
+
+const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+const app = express();
+app.use(express.json());
+
+const limiter = rateLimit({ windowMs: 60_000, limit: 3 });   // per IP
+
+app.post('/download-link', limiter, async (req, res) =&gt; {
+  const { channel, to } = req.body ?? {};
+  const link = 'https://ember.example/get?utm_source=landing&amp;utm_medium=sms';
+
+  if (channel === 'phone') {
+    const phone = parsePhoneNumberFromString(String(to), 'US');   // default region
+    if (!phone?.isValid()) return res.status(422).end();
+    await client.messages.create({
+      to: phone.number,                     // E.164
+      from: process.env.TWILIO_FROM,        // your number or messaging service
+      body: `Get Ember: ${link}`,
+    });
+    return res.status(202).end();
+  }
+  if (channel === 'email') return sendEmail(String(to), link, res);
+  return res.status(422).end();
+});</code></pre>
+<p>Check your SMS provider&rsquo;s rules on consent and sender registration (for example 10DLC in the US) and keep the message to a single link, which is what the form&rsquo;s privacy note promises.</p>
+<h3 id="email">Email over a REST endpoint</h3>
+<p>Most transactional email providers expose a REST call. Keep it on the same backend route:</p>
+<pre><button class="copy">Copy</button><code>async function sendEmail(to, link, res) {
+  const r = await fetch('https://api.mail-provider.example/v1/messages', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${process.env.MAIL_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: 'Ember &lt;hello@ember.example&gt;',
+      to: [to],
+      subject: 'Your Ember download link',
+      text: `Here is your link: ${link}\n\nYou will not hear from us again unless you sign up.`,
+    }),
+  });
+  return res.status(r.ok ? 202 : 502).end();
+}</code></pre>
+<p>If you would rather skip the backend for email, a no-code form endpoint works the same way: implement <code>DownloadLinkService</code> with a <code>POST</code> to it and map its status codes to <code>DownloadLinkException</code>s. The visitor-facing states (sending spinner, inline error, success panel, toast) are all driven by the cubit and need no changes.</p>
+
+<h2 id="deeplinks">Smart app banners and deep links</h2>
+<p>These live in the host app&rsquo;s <code>web/</code> folder, not in the template.</p>
+<h3>iOS smart app banner</h3>
+<p>Safari on iPhone shows a native banner when <code>web/index.html</code> has this tag in <code>&lt;head&gt;</code>:</p>
+<pre><button class="copy">Copy</button><code>&lt;meta name="apple-itunes-app"
+      content="app-id=0000000000, app-argument=https://ember.example/get"&gt;</code></pre>
+<h3>Android</h3>
+<p>Chrome&rsquo;s install prompt reads the web manifest. To point it at your Play listing, add to <code>web/manifest.json</code>:</p>
+<pre><button class="copy">Copy</button><code>"prefer_related_applications": true,
+"related_applications": [
+  { "platform": "play", "id": "com.example.ember",
+    "url": "https://play.google.com/store/apps/details?id=com.example.ember" }
+]</code></pre>
+<h3>Universal Links and App Links</h3>
+<p>So that your smart link opens the app when it is installed and the store when it is not, host both association files on your domain:</p>
+<table>
+<tr><th>Platform</th><th>File</th><th>Notes</th></tr>
+<tr><td>iOS</td><td><code>/.well-known/apple-app-site-association</code></td><td>JSON, no extension, <code>application/json</code>; lists your team id and bundle id and the paths (<code>/get*</code>)</td></tr>
+<tr><td>Android</td><td><code>/.well-known/assetlinks.json</code></td><td>Lists your package name and the SHA-256 of your signing certificate</td></tr>
+</table>
+<p>Then make <code>https://ember.example/get</code> a tiny server route that redirects by user agent (iPhone to the App Store, Android to Google Play, everything else back to the landing page). Use that one URL as the QR payload, in the SMS and in the emails.</p>
+<h3>One button that picks the right store</h3>
+<p>On a phone you may want a single primary button. Decide in <code>onStoreTap</code> or build your own button with <code>defaultTargetPlatform</code>:</p>
+<pre><button class="copy">Copy</button><code>import 'package:flutter/foundation.dart';
+
+StoreKind preferredStore() =&gt; switch (defaultTargetPlatform) {
+  TargetPlatform.android =&gt; StoreKind.googlePlay,
+  _ =&gt; StoreKind.appStore,
+};</code></pre>
+
+<h2 id="attribution">Analytics and attribution links</h2>
+<p>The page reports what matters through callbacks; it ships no analytics SDK. Wire them to yours:</p>
+<pre><button class="copy">Copy</button><code>AppLandingApp(
+  onSectionChanged: (String id) =&gt; analytics.log('section_view', {'id': id}),
+  onStoreTap: (StoreKind store, String href) {
+    analytics.log('store_tap', {'store': store.name});
+    launchUrl(withCampaign(store, Uri.parse(href)));
+  },
+  onCtaTap: (String href) =&gt; analytics.log('cta_tap', {'href': href}),
+)</code></pre>
+<p>Attribution happens in the store link. App Store Connect uses a provider token and campaign token; Google Play passes a <code>referrer</code> string through to the install:</p>
+<pre><button class="copy">Copy</button><code>Uri withCampaign(StoreKind store, Uri base, {String campaign = 'landing'}) {
+  final Map&lt;String, String&gt; q = &lt;String, String&gt;{...base.queryParameters};
+  switch (store) {
+    case StoreKind.appStore:
+      q['pt'] = '123456';          // your provider token
+      q['ct'] = campaign;          // campaign token
+      q['mt'] = '8';
+    case StoreKind.googlePlay:
+      q['referrer'] =
+          'utm_source=landing&amp;utm_medium=web&amp;utm_campaign=$campaign';
+  }
+  return base.replace(queryParameters: q);
+}</code></pre>
+<p>If you use a smart-link service or your own redirect (previous section), add the UTM parameters to the <strong>JSON hrefs</strong> instead and keep <code>onStoreTap</code> a plain launcher. Remember that analytics on a page that collects an email or phone number may need consent under your local privacy rules.</p>
+
+<h2 id="seo">SEO notes for Flutter web</h2>
+<div class="callout warn"><strong>Be realistic</strong><p>A Flutter web app paints to a canvas. Search engines and link-preview bots read the HTML your server sends, and for a Flutter app that is almost empty. This template is excellent for a product microsite, a campaign page or an internal demo; it is not the best choice when organic search is the main channel.</p></div>
+<p>What you can do inside Flutter web:</p>
+<ul>
+<li>Fill in <code>web/index.html</code>: <code>&lt;title&gt;</code>, <code>&lt;meta name="description"&gt;</code>, canonical link, Open Graph and Twitter card tags (with a 1200 &times; 630 image) so shared links preview well. These are static, so one page equals one set of tags.</li>
+<li>Add <code>&lt;noscript&gt;</code> or a visually hidden fallback with the headline, the pitch and the store links, and a <code>sitemap.xml</code> and <code>robots.txt</code>.</li>
+<li>Add <code>SoftwareApplication</code> JSON-LD (name, operating system, rating, offers) to <code>web/index.html</code>. The rating must match your stores.</li>
+<li>Keep the headings: the template marks titles with <code>Semantics(header: true)</code>, and the semantics tree is built for assistive technology (it can be enabled for crawlers that understand it, but do not depend on it).</li>
+<li>Serve the build with real status codes and fast first paint: <code>flutter build web --release</code>, CDN, compression.</li>
+</ul>
+<p><strong>When to pick a server-rendered page instead:</strong> if the page must rank, needs one URL per section with its own title and description, must be readable with JavaScript off, or must load instantly on slow phones, render it on the server. This repository has a worked example of that approach for a storefront, <code>templates/jaspr_store</code>, built with Jaspr (Dart rendered to HTML). The copy in <code>app_content_json.dart</code> is plain data, so you can reuse it as the source for a server-rendered version and keep this Flutter page for in-app promotion and demos.</p>
+
+<h2 id="navigation">Use go_router</h2>
+<p>The page has its own scroll navigation (<code>AppLandingNavigationCubit</code>) so it runs in any app. If you want a URL per section, keep the page mounted <em>once</em> and let the URL follow the scroll without navigating, so the page state survives:</p>
+<pre><button class="copy">Copy</button><code>final GoRouter router = GoRouter(
+  routes: &lt;RouteBase&gt;[
+    GoRoute(
+      path: '/',
+      builder: (_, GoRouterState s) =&gt; const LandingScreen(),
+      routes: &lt;RouteBase&gt;[
+        GoRoute(
+          path: ':section',                       // /pricing, /faq, ...
+          builder: (_, GoRouterState s) =&gt;
+              LandingScreen(section: s.pathParameters['section']),
+        ),
+      ],
+    ),
+  ],
+);
+
+class LandingScreen extends StatelessWidget {
+  const LandingScreen({super.key, this.section});
+  final String? section;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: AppLandingApp(
+        initialSection: section,                   // deep link: scroll there
+        onSectionChanged: (String id) =&gt; SystemNavigator.routeInformationUpdated(
+          uri: Uri.parse(id == SectionIds.hero ? '/' : '/$id'),
+          replace: true,                           // update the URL, do not navigate
+        ),
+        onCtaTap: (String href) =&gt; launchUrl(Uri.parse(href)),
+      ),
+    );
+  }
+}</code></pre>
+<p><code>SectionIds</code> and <code>ContentSections</code> are exported from the barrel, so you can build the paths from the same ids the navbar uses.</p>
+
+<h2 id="l10n">Localisation</h2>
+<p>Because every word of content comes through <code>AppContentDataSource</code>, localising the page is mostly a data job: pick the data source by locale (see the <code>AssetContent</code> example), and give each locale its own JSON with its own store URLs.</p>
+<p>A short list of strings lives in the widgets rather than the JSON. Move them to <code>AppLocalizations</code> (or any <code>intl</code> setup) when you ship a second language:</p>
+<table>
+<tr><th>File</th><th>Strings</th></tr>
+<tr><td><code>presentation/shell/app_landing_navbar.dart</code></td><td><code>Open menu</code></td></tr>
+<tr><td><code>presentation/gallery/views/gallery_view.dart</code></td><td><code>Screenshots</code>, the counter <code>2 of 5: Check in</code></td></tr>
+<tr><td><code>presentation/pricing/**</code></td><td><code>Save 40%</code>, <code>Bill yearly</code>, <code>Free</code>, <code>Billed monthly</code>, <code>Billed &hellip; yearly, save &hellip;</code>; prices come from <code>formatPrice</code> (<code>common/utils/price_format.dart</code>)</td></tr>
+<tr><td><code>presentation/reviews/**</code></td><td><code>&hellip; ratings</code>, the spoken rating summaries; dates come from <code>formatDate</code> and counts from <code>formatCount</code> (<code>common/utils/</code>); use <code>intl</code>&rsquo;s <code>DateFormat</code> and <code>NumberFormat.compact</code></td></tr>
+<tr><td><code>presentation/download/**</code></td><td><code>Could not send the link</code>, <code>Email address or phone number</code>, <code>Sending</code>, <code>Email:</code> / <code>SMS:</code>, <code>Send to a different address</code></td></tr>
+<tr><td><code>domain/download/use_cases/validate_contact.dart</code>, <code>data/download/remote/download_link_service.dart</code></td><td>The validation and failure messages</td></tr>
+<tr><td><code>presentation/how_it_works/views/how_it_works_view.dart</code>, <code>core/presentation/widgets/content_view.dart</code></td><td><code>Step 1: &hellip;</code>, <code>Could not load this section. Retry</code></td></tr>
+</table>
+<p>The previous and next buttons of the carousel (<code>Previous slide</code>, <code>Next slide</code>) are <code>cairn_ui</code>&rsquo;s own labels. For right-to-left languages wrap the page in a <code>Directionality</code>; layouts use start/end alignment where it matters, but check the phone mockups: a scaled screen is laid out in the ambient direction.</p>
+
+<h2 id="responsive">Responsive and accessible</h2>
+<table>
+<tr><th>Width</th><th>Behaviour</th></tr>
+<tr><td>&ge; 1024</td><td>Two-column hero, features and download; all six navbar links; reviews summary beside two columns of cards; the carousel shows about three phones</td></tr>
+<tr><td>1000&ndash;1023</td><td>Navbar links still shown; single-column sections</td></tr>
+<tr><td>&lt; 1000</td><td>Navbar links move into a menu sheet (the button keeps &ldquo;Get the app&rdquo;)</td></tr>
+<tr><td>640&ndash;1023</td><td>Centred hero with the phones below; two-column review cards; the carousel shows two phones</td></tr>
+<tr><td>&lt; 640</td><td>One column, feature tabs without icons (and horizontally scrollable if needed), one phone per carousel page, the form stacks its button</td></tr>
+</table>
+<p>Layout follows the width the page is <em>given</em>, not the screen. Accessibility details worth knowing:</p>
+<ul>
+<li>Every control is a real Cairn control: focus rings, arrow-key navigation in the tabs, and previous/next buttons on the carousel (it also drags with touch, mouse and trackpad).</li>
+<li>The mock phones are described by one sentence each and skipped by focus; the live counter under the carousel (<code>2 of 5: Check in</code>) is a live region, as are the form errors and the success panel.</li>
+<li>The page honours the platform&rsquo;s reduced-motion setting: entrance animations (<code>Reveal</code>, the hero phones) and smooth scrolling are skipped. Nothing loops.</li>
+<li>Press names and awards are text wordmarks with a spoken label; avatars are decorative.</li>
+</ul>
+
+<h2 id="testing">Testing</h2>
+<pre><button class="copy">Copy</button><code>cd templates/app_landing
+flutter pub get
+dart format .
+flutter analyze --fatal-infos --fatal-warnings
+flutter test</code></pre>
+<p>The suite has three layers: <strong>domain</strong> (pricing, rating maths, contact validation, the send use case, the QR pattern, mappers), <strong>session</strong> (cubits through the real container, no widgets) and <strong>widget</strong> tests that mount <code>AppLandingApp</code> at 390, 768 and 1280 px in light and dark. They drive the navbar, the feature tabs, the carousel, the pricing toggle, the FAQ, the send-link form (invalid, valid, refused), the phone menu and the host callbacks, and fail on any layout overflow. Use small <code>tester.pump(Duration)</code> steps, never <code>pumpAndSettle</code>: Cairn has repeating animations (spinners), so it would never return.</p>
+<pre><button class="copy">Copy</button><code>// test a real backend wiring without a network
+await pumpAppLanding(
+  tester,
+  linkService: InMemoryDownloadLinkService(latency: Duration.zero),
+  onStoreTap: (StoreKind s, String href) =&gt; taps.add((s, href)),
+);</code></pre>
+<p>When you replace a data source, keep the in-memory one for tests and register it in a test container with <code>createAppLandingLocator(contentDataSource: ..., linkService: ...)</code>.</p>
+
+<h2 id="migrate">Migration notes</h2>
+<table>
+<tr><th>When you&hellip;</th><th>Do this</th></tr>
+<tr><td>Upgrade <code>cairn_ui</code> to a new minor</td><td>Bump the constraint, run <code>flutter analyze</code>. Components added in a minor do not break this template; read the library&rsquo;s CHANGELOG for renames.</td></tr>
+<tr><td>Move from copied source to the package</td><td>Delete your copy, add the dependency, restore <code>AppLandingPackage.name</code>, change imports back to <code>package:cairn_template_app_landing/&hellip;</code> and move your edits (nearly always only <code>app_content_json.dart</code> and your link service) into your own wrapper and data sources.</td></tr>
+<tr><td>Pull template updates into a copy</td><td>Diff <code>templates/app_landing/lib</code> between your last sync tag and the new one; because dependencies point inwards, changes are almost always inside one layer.</td></tr>
+<tr><td>Replace the SaaS-style landing template</td><td>Section ids differ (<code>trust</code>, <code>gallery</code>, <code>reviews</code>, <code>download</code>); update any deep links and <code>initialSection</code> values.</td></tr>
+<tr><td>Change state management</td><td>Cubits are plain streams of immutable states. Views only call <code>vm.cubit.method()</code> and read <code>state</code>, so Riverpod or Provider can replace <code>BlocBuilder</code> view by view.</td></tr>
+</table>
+
+<h2 id="faq">Troubleshooting</h2>
+<h3>&ldquo;No AppLandingScope above this context&rdquo;</h3>
+<p>You built a view or <code>ViewModelBuilder</code> outside <code>AppLandingApp</code>. Mount <code>AppLandingApp</code> (it provides the scope) or wrap your tree in an <code>AppLandingScope</code> with a locator from <code>createAppLandingLocator()</code>.</p>
+<h3>The store buttons do nothing</h3>
+<p>Pass <code>onStoreTap</code>. The template deliberately has no URL-launching dependency; the host decides how to open links.</p>
+<h3>Everything is black and white and unstyled</h3>
+<p>The host app has no <code>CairnTheme</code>. Use <code>CairnTheme.materialTheme(...)</code> or add <code>CairnTheme.light</code> to <code>ThemeData.extensions</code>.</p>
+<h3>A photo is blank or an asset error appears</h3>
+<p>If you copied the source into your app, set <code>AppLandingPackage.name</code> to <code>null</code> and declare <code>assets/images/</code> in your pubspec. If you use the package, nothing needs declaring.</p>
+<h3>&ldquo;FormatException: Expected a string at &hellip;&rdquo;</h3>
+<p>A key is missing or has the wrong type in the content JSON. The message names the key; compare with the shapes above.</p>
+<h3>&ldquo;RenderFlex overflowed&rdquo; in tests</h3>
+<p>Flutter&rsquo;s test font is wide. Load your real font in <code>test/flutter_test_config.dart</code> (the template does this for Geist when it finds it) and set <code>fontFamily</code> on the test theme.</p>
+<h3>The page jumps to a section on load</h3>
+<p>You passed <code>initialSection</code>; the page waits about 600 ms for the sections to load before scrolling. Remove it for a normal visit.</p>
+<h3>The link service never finishes</h3>
+<p>The spinner shows until <code>send</code> completes. Put a timeout on your HTTP call (<code>.timeout(const Duration(seconds: 10))</code>) and throw a <code>DownloadLinkException</code> from the <code>catch</code>.</p>
+<h3>Where do I report a bug?</h3>
+<p>Open an issue on the <a href="https://github.com/rlphjyson/cairn_site/issues">cairn_site repository</a> with the Flutter and <code>cairn_ui</code> versions.</p>
+</main>
+</div>
+<script>
+(function(){
+  document.querySelectorAll('pre').forEach(function(pre){
+    var b=pre.querySelector('.copy'); if(!b) return;
+    b.addEventListener('click',function(){
+      var code=pre.querySelector('code').innerText;
+      var done=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1200)};
+      if(navigator.clipboard){navigator.clipboard.writeText(code).then(done,done)}else{done()}
+    });
+  });
+  var links=[].slice.call(document.querySelectorAll('nav.toc a'));
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){links.forEach(function(a){a.classList.remove('active')});var a=map[e.target.id];if(a)a.classList.add('active')}
+  })},{rootMargin:'-20% 0px -70% 0px'});
+  document.querySelectorAll('h2[id],h3[id]').forEach(function(h){io.observe(h)});
+  var root=document.documentElement, key='tpl-theme';
+  try{var s=localStorage.getItem(key);if(s)root.setAttribute('data-theme',s)}catch(e){}
+  document.getElementById('theme').addEventListener('click',function(){
+    var dark=root.getAttribute('data-theme')?root.getAttribute('data-theme')==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+    var next=dark?'light':'dark';root.setAttribute('data-theme',next);try{localStorage.setItem(key,next)}catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

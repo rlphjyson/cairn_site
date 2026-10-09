@@ -14,6 +14,8 @@ dependencies:
   # when the lockfile is deliberately bumped.
   # The sample apps live in their own packages under templates/, so each one
   # can be copied out and used on its own. The site only mounts them.
+  cairn_template_app_landing:
+    path: templates/app_landing
   cairn_template_auth:
     path: templates/auth
   cairn_template_blog:
