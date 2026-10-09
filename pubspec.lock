@@ -25,10 +25,24 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  cairn_template_auth:
+    dependency: "direct main"
+    description:
+      path: "templates/auth"
+      relative: true
+    source: path
+    version: "1.0.0"
   cairn_template_blog:
     dependency: "direct main"
     description:
       path: "templates/blog"
+      relative: true
+    source: path
+    version: "1.0.0"
+  cairn_template_chat:
+    dependency: "direct main"
+    description:
+      path: "templates/chat"
       relative: true
     source: path
     version: "1.0.0"

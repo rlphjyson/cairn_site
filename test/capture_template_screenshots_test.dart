@@ -15,7 +15,9 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:cairn_site/src/app/site_theme.dart';
+import 'package:cairn_template_auth/cairn_template_auth.dart';
 import 'package:cairn_template_blog/cairn_template_blog.dart';
+import 'package:cairn_template_chat/cairn_template_chat.dart';
 import 'package:cairn_template_dashboard/cairn_template_dashboard.dart';
 import 'package:cairn_template_docs/cairn_template_docs.dart';
 import 'package:cairn_template_landing/cairn_template_landing.dart';
@@ -300,6 +302,66 @@ final List<_Script> _scripts = <_Script>[
       await tapAny('Continue');
       await tapAny('Create account');
       await shot('5-done');
+    },
+  ),
+  _Script(
+    slug: 'auth',
+    frame: _phone,
+    size: const Size(520, 900),
+    pixelRatio: 2,
+    app: const AuthApp(showDemoHint: true),
+    run: (WidgetTester tester, _Shot shot) async {
+      Future<void> tapAny(String text) async {
+        await tester.tap(find.text(text).first);
+        await _settle(tester);
+      }
+
+      Future<void> type(int index, String text) async {
+        final Finder f = find.byType(EditableText).at(index);
+        await tester.ensureVisible(f);
+        await tester.enterText(f, text);
+        await _settle(tester, 2);
+      }
+
+      await shot('1-welcome');
+      await tapAny('Sign in with email');
+      await type(0, 'ada@example.com');
+      await type(1, 'Cairn-demo-1');
+      await shot('2-signin');
+      await tapAny('Sign in');
+      await shot('3-signed-in');
+      await tapAny('Sign out');
+      await tapAny('Create an account');
+      await type(0, 'Grace Hopper');
+      await type(1, 'grace@example.com');
+      await type(2, 'Compile-r-1');
+      // Typing scrolls the form; bring the title back before the shot.
+      await tester.drag(_vertical(), const Offset(0, 1000));
+      await _settle(tester, 4);
+      await shot('4-signup');
+    },
+  ),
+  _Script(
+    slug: 'chat',
+    frame: _phone,
+    size: const Size(520, 900),
+    pixelRatio: 2,
+    app: const ChatApp(replyLatency: Duration.zero),
+    run: (WidgetTester tester, _Shot shot) async {
+      Future<void> tapAny(String text) async {
+        await tester.tap(find.text(text).last);
+        await _settle(tester);
+      }
+
+      await shot('1-chats');
+      await tapAny('Contacts');
+      await shot('2-contacts');
+      await tapAny('Profile');
+      await shot('3-profile');
+      await tapAny('Chats');
+      await tester.tap(find.text('Mina Park').first);
+      await _settle(tester);
+      await shot('4-thread');
     },
   ),
 ];

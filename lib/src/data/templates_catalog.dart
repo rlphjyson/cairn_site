@@ -1,4 +1,6 @@
+import 'package:cairn_template_auth/cairn_template_auth.dart';
 import 'package:cairn_template_blog/cairn_template_blog.dart';
+import 'package:cairn_template_chat/cairn_template_chat.dart';
 import 'package:cairn_template_dashboard/cairn_template_dashboard.dart';
 import 'package:cairn_template_docs/cairn_template_docs.dart';
 import 'package:cairn_template_landing/cairn_template_landing.dart';
@@ -387,6 +389,91 @@ dart run tool/seo_audit.dart''',
       const TemplateShot('5-done', 'Done'),
     ],
     preview: (BuildContext context) => const OnboardingApp(),
+  ),
+  TemplateEntry(
+    slug: 'auth',
+    name: 'Authentication',
+    kind: TemplateKind.mobile,
+    summary: 'Sign in, sign up and recovery',
+    description:
+        'Seven calm screens for getting into an app: welcome, sign in, sign '
+        'up with a live password-strength meter, forgot password, a six-digit '
+        'code with paste and a resend countdown, reset, and signed in. '
+        'Validation, rate limiting and lockout are pure, tested logic; the '
+        'server is an in-memory stand-in you replace. Try ada@example.com with '
+        'Cairn-demo-1, and the code 123456.',
+    screens: <(String, String)>[
+      ('Welcome', 'Social buttons, email entry and legal links.'),
+      ('Sign in', 'Show/hide password, remember me, lockout messaging.'),
+      ('Sign up', 'Strength meter, rule checklist, terms.'),
+      ('Verify', 'Six-digit code, paste, resend cooldown, attempts.'),
+      ('Reset', 'A new password, then back to sign in.'),
+    ],
+    uses: <String>[
+      'Input',
+      'Input OTP',
+      'Button',
+      'Checkbox',
+      'Alert',
+      'Progress',
+      'Status',
+      'Link',
+      'Separator',
+      'Avatar',
+      'Spinner',
+    ],
+    shots: <TemplateShot>[
+      const TemplateShot('1-welcome', 'Welcome'),
+      const TemplateShot('2-signin', 'Sign in'),
+      const TemplateShot('3-signed-in', 'Signed in'),
+      const TemplateShot('4-signup', 'Sign up'),
+    ],
+    preview: (BuildContext context) => const AuthApp(showDemoHint: true),
+  ),
+  TemplateEntry(
+    slug: 'chat',
+    name: 'Chat',
+    kind: TemplateKind.mobile,
+    summary: 'Conversations, threads and groups',
+    description:
+        'A messaging app that behaves like one: a searchable conversation '
+        'list with pinned and archived chats, threads with grouped bubbles, '
+        'date separators, delivery ticks, replies, reactions, photos and '
+        'typing, new one-to-one and group chats, and contact and group '
+        'info. A demo contact answers after a short delay. On a tablet it '
+        'becomes two panes.',
+    screens: <(String, String)>[
+      ('Chats', 'Search, pinned, unread badges, archive, mute, delete.'),
+      ('Thread', 'Bubbles, replies, reactions, photos, history paging.'),
+      ('New chat', 'Pick a contact or build a group.'),
+      ('Info', 'Contact or group details, members, block and leave.'),
+      ('Profile', 'Your status, availability and settings.'),
+    ],
+    uses: <String>[
+      'Chat Bubble',
+      'Avatar',
+      'Indicator',
+      'Status',
+      'Badge',
+      'Textarea',
+      'Button',
+      'Dock',
+      'List',
+      'Dropdown Menu',
+      'Context Menu',
+      'Sheet',
+      'Alert Dialog',
+      'Skeleton',
+      'Empty',
+      'Switch',
+    ],
+    shots: <TemplateShot>[
+      const TemplateShot('1-chats', 'Chats'),
+      const TemplateShot('2-contacts', 'Contacts'),
+      const TemplateShot('3-profile', 'Profile'),
+      const TemplateShot('4-thread', 'Thread'),
+    ],
+    preview: (BuildContext context) => const ChatApp(),
   ),
 ];
 

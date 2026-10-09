@@ -1,0 +1,1073 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chat template — documentation</title>
+<meta name="description" content="How to install, customise, connect to a real-time backend and migrate the Cairn chat template.">
+<style>
+:root{--bg:#fff;--fg:#0a0a0a;--muted:#6b6b6b;--border:#e5e5e5;--card:#fafafa;--code:#f4f4f5;--accent:#0a0a0a;--accent-fg:#fafafa;--note:#eef6ff;--note-b:#bcd9f7;--warn:#fff7e6;--warn-b:#f2d18b;--ok:#ecfbf1;--ok-b:#a8e2bd}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0a0a0a;--fg:#fafafa;--muted:#a1a1a1;--border:#262626;--card:#111;--code:#171717;--accent:#fafafa;--accent-fg:#0a0a0a;--note:#0e1a2b;--note-b:#1f3a5c;--warn:#2a2007;--warn-b:#5c4710;--ok:#0b2316;--ok-b:#1c5233}}
+:root[data-theme=dark]{--bg:#0a0a0a;--fg:#fafafa;--muted:#a1a1a1;--border:#262626;--card:#111;--code:#171717;--accent:#fafafa;--accent-fg:#0a0a0a;--note:#0e1a2b;--note-b:#1f3a5c;--warn:#2a2007;--warn-b:#5c4710;--ok:#0b2316;--ok-b:#1c5233}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:inherit;text-decoration-color:var(--muted);text-underline-offset:3px}a:hover{text-decoration-color:currentColor}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);max-width:1180px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:28px 20px;border-right:1px solid var(--border);font-size:14px}
+nav.toc .brand{font-weight:650;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+nav.toc ol{list-style:none;margin:0;padding:0}nav.toc li{margin:2px 0}
+nav.toc a{display:block;padding:5px 10px;border-radius:8px;text-decoration:none;color:var(--muted)}
+nav.toc a:hover,nav.toc a.active{background:var(--card);color:var(--fg)}
+nav.toc ol ol{margin-left:12px}
+main{padding:48px 40px 96px;max-width:860px}
+h1{font-size:2.2rem;line-height:1.15;margin:0 0 8px;letter-spacing:-.02em}
+h2{font-size:1.5rem;margin:56px 0 12px;padding-top:24px;border-top:1px solid var(--border);letter-spacing:-.01em}
+h2:first-of-type{border-top:0}h3{font-size:1.1rem;margin:28px 0 8px}
+p,li{color:var(--fg)}.lead{color:var(--muted);font-size:1.1rem;margin:0 0 24px}
+code{font:13.5px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);padding:2px 6px;border-radius:6px}
+pre{position:relative;background:var(--code);border:1px solid var(--border);border-radius:12px;padding:16px 18px;overflow:auto;margin:14px 0}
+pre code{background:none;padding:0;font-size:13px;line-height:1.6;white-space:pre}
+.copy{position:absolute;top:8px;right:8px;border:1px solid var(--border);background:var(--bg);color:var(--muted);border-radius:8px;font-size:12px;padding:3px 9px;cursor:pointer}
+.copy:hover{color:var(--fg)}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+th{font-weight:600;background:var(--card)}
+.callout{border:1px solid;border-radius:12px;padding:12px 16px;margin:16px 0}.callout p{margin:4px 0}
+.callout.note{background:var(--note);border-color:var(--note-b)}.callout.warn{background:var(--warn);border-color:var(--warn-b)}.callout.ok{background:var(--ok);border-color:var(--ok-b)}
+.callout strong:first-child{display:block;margin-bottom:2px}
+.tree{white-space:pre;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.pill{display:inline-block;border:1px solid var(--border);border-radius:999px;padding:1px 10px;font-size:12px;color:var(--muted)}
+.steps{counter-reset:s;list-style:none;padding:0}.steps>li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.steps>li:before{content:counter(s);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-fg);display:grid;place-items:center;font-size:13px;font-weight:600}
+button.theme{border:1px solid var(--border);background:var(--bg);color:var(--fg);border-radius:8px;padding:3px 8px;cursor:pointer;font-size:12px}
+@media (max-width:900px){.layout{display:block}nav.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border)}main{padding:28px 20px 64px}}
+@media print{nav.toc,.copy,button.theme{display:none}.layout{display:block}main{max-width:none;padding:0}pre{white-space:pre-wrap}a{text-decoration:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Contents">
+  <div class="brand"><span>Chat template</span><button class="theme" id="theme" type="button" aria-label="Toggle theme">Theme</button></div>
+  <ol>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#requirements">Requirements</a></li>
+    <li><a href="#install">Install</a></li>
+    <li><a href="#mount">Mount it</a></li>
+    <li><a href="#model">Data model &amp; JSON shapes</a>
+      <ol><li><a href="#shape-contact">Contact</a></li><li><a href="#shape-conversation">Conversation</a></li><li><a href="#shape-message">Message</a></li><li><a href="#shape-events">Live events</a></li></ol></li>
+    <li><a href="#seed">Change the demo data</a></li>
+    <li><a href="#backend">Replace the demo bot</a>
+      <ol><li><a href="#rest">REST + WebSocket</a></li><li><a href="#sse">Server-sent events</a></li><li><a href="#firebase">Firebase</a></li></ol></li>
+    <li><a href="#push">Push notifications</a></li>
+    <li><a href="#uploads">Attachments upload</a></li>
+    <li><a href="#receipts">Read receipts &amp; presence</a></li>
+    <li><a href="#paging">Pagination</a></li>
+    <li><a href="#theme">Theming &amp; bubbles</a></li>
+    <li><a href="#deeplinks">go_router deep links</a></li>
+    <li><a href="#tablet">Two-pane layout</a></li>
+    <li><a href="#l10n">Localisation</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#faq">Troubleshooting</a></li>
+    <li><a href="#migrate">Migration</a></li>
+</ol>
+</nav>
+<main>
+<h1>Chat template</h1>
+<p class="lead">A mobile chat app built only from <code>cairn_ui</code>. This guide takes you from <em>copy it in</em> to <em>talking to your own server in real time</em>.</p>
+
+<h2 id="overview">Overview</h2>
+<p>The template is a Flutter package, <code>cairn_template_chat</code>, that exposes one widget: <code>ChatApp</code>. It has a bottom dock with three tabs and three screens that open over them:</p>
+<ul>
+<li><strong>Chats</strong> &ndash; the conversation list: presence dots, previews, relative times, unread badges, a pinned section, an archive, search and a per-row menu (pin, mute, mark read or unread, archive, delete).</li>
+<li><strong>Thread</strong> &ndash; grouped bubbles with date separators, delivery ticks, reply quotes, photos, files, locations, links, emoji-only messages, reactions, a typing indicator, a growing composer, an attach sheet, a scroll-to-latest button and paging of older history.</li>
+<li><strong>New chat</strong> &ndash; contacts in alphabetical sections; start a one-to-one chat or build a group with chips and a name.</li>
+<li><strong>Info</strong> &ndash; contact or group details, shared photos, mute, members, leave or block.</li>
+<li><strong>Contacts</strong> and <strong>Profile</strong> tabs &ndash; the directory, and your own name, status line, availability and settings.</li>
+</ul>
+<p>On a phone it is one column; from 700 px wide it is two panes (list left, thread right). It is organised as <strong>clean architecture by layer, then by feature</strong>, with <code>flutter_bloc</code> for state and <code>get_it</code> for dependency injection. Nothing is generated.</p>
+<pre class="tree">lib/
+├─ chat_app.dart                   entry widget
+├─ core/
+│  ├─ infrastructure/di/           get_it registration (chat_injection.dart)
+│  └─ presentation/                navigation cubit, shared widgets, ViewModel
+├─ common/                         limits, reaction emoji, demo replies, date helpers
+├─ data/
+│  ├─ chat/remote/                 ChatRemoteDataSource, in-memory backend, bot, seed
+│  └─ &lt;feature&gt;/repositories/      implement the domain interfaces
+├─ domain/&lt;feature&gt;/               models, mappers, repository interfaces, use cases
+└─ presentation/&lt;feature&gt;/         bloc, view models, views, widgets (+ shell/)</pre>
+<div class="callout note"><strong>The one rule to remember</strong><p>Dependencies point inwards: presentation &rarr; domain &larr; data. To change where messages come from you write one class that implements <code>ChatRemoteDataSource</code> and pass it to <code>ChatApp</code>. To change how they look you touch <code>presentation/</code>.</p></div>
+
+<h2 id="requirements">Requirements</h2>
+<table>
+<tr><th>Tool</th><th>Version</th></tr>
+<tr><td>Flutter</td><td>3.44 or newer (Dart 3.12)</td></tr>
+<tr><td><code>cairn_ui</code></td><td>^0.2.0</td></tr>
+<tr><td><code>flutter_bloc</code>, <code>get_it</code>, <code>equatable</code></td><td>pulled in by the package</td></tr>
+<tr><td>Your backend</td><td>Nothing for the demo. For a real one: an HTTP API for history and actions, and a WebSocket or SSE channel (or Firestore) for live events. See <a href="#backend">Replace the demo bot</a>.</td></tr>
+</table>
+
+<h2 id="install">Install</h2>
+<h3>A. As a package (recommended)</h3>
+<p>Keeping it a package means you can pull in fixes later with a version bump.</p>
+<pre><button class="copy" type="button">Copy</button><code># pubspec.yaml
+dependencies:
+  cairn_ui: ^0.2.0
+  cairn_template_chat:
+    git:
+      url: https://github.com/rlphjyson/cairn_site.git
+      path: templates/chat
+      ref: main            # pin a tag or commit for production</code></pre>
+<p>Or, from a local checkout: <code>path: ../cairn_site/templates/chat</code>. The package declares its images, so there is nothing to add to your <code>pubspec.yaml</code>.</p>
+<h3>B. Copy the source into your app</h3>
+<ol class="steps">
+<li>Copy <code>templates/chat/lib/</code> into <code>lib/chat/</code> in your app and <code>templates/chat/assets/images/</code> into your own assets folder.</li>
+<li>Add <code>cairn_ui</code>, <code>flutter_bloc</code>, <code>get_it</code> and <code>equatable</code> to your <code>pubspec.yaml</code> and declare the images under <code>flutter: assets:</code>.</li>
+<li>In <code>lib/common/constants/chat_package.dart</code> set <code>static const String? name = null;</code> so images resolve from your app instead of the package. If you keep the demo avatars, keep their folder as <code>assets/images/</code>, or change the paths in <code>chat_seed.dart</code> and <code>demo_replies.dart</code>.</li>
+<li>Rewrite the <code>package:cairn_template_chat/…</code> imports to your app&rsquo;s package name (a find-and-replace). Files inside the template use relative imports, so only your own references change.</li>
+</ol>
+<div class="callout warn"><strong>Pexels photos</strong><p>The avatars and pictures are under the Pexels licence (see <code>NOTICE.md</code>). They are there for the demo; remove them, and the demo seed, before you ship, and do not present them as your users.</p></div>
+
+<h2 id="mount">Mount it</h2>
+<p>The template reads colours, radii and type from <code>CairnTheme</code>, so the host app must provide one. Cairn leaves <code>fontFamily</code> unset in its tokens, so set yours.</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'package:cairn_template_chat/cairn_template_chat.dart';
+import 'package:cairn_ui/cairn_ui.dart';
+import 'package:flutter/material.dart';
+
+void main() =&gt; runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Acme Chat',
+      theme: CairnTheme.materialTheme(
+        CairnTheme.light.copyWith(fontFamily: 'Inter'),
+      ),
+      darkTheme: CairnTheme.materialTheme(
+        CairnTheme.dark.copyWith(fontFamily: 'Inter'),
+      ),
+      home: const Scaffold(body: SafeArea(child: ChatApp())),
+    );
+  }
+}</code></pre>
+<p><code>ChatApp</code> fills whatever space its parent gives it (320 by 640 and up). Each instance creates its own dependency container and disposes it, so two chats on one screen never share state. It brings its own toaster, so copy, attach and save toasts work in any host.</p>
+<table>
+<tr><th>Parameter</th><th>Default</th><th>What it does</th></tr>
+<tr><td><code>chatDataSource</code></td><td>in-memory demo</td><td>Your backend. A data source you pass in stays yours to dispose.</td></tr>
+<tr><td><code>currentUserId</code></td><td><code>'me'</code></td><td>Who is signed in. Messages from this id are drawn as sent (right, dark bubble); everyone else&rsquo;s as received.</td></tr>
+<tr><td><code>onMessageSent</code></td><td>none</td><td>Called with every <code>Message</code> the backend accepted. Analytics, drafts, anything of yours.</td></tr>
+<tr><td><code>replyLatency</code></td><td>900 ms</td><td>How long the demo bot takes to answer. Ignored with your own data source. Use <code>Duration.zero</code> in tests.</td></tr>
+<tr><td><code>now</code></td><td><code>DateTime.now</code></td><td>The clock. Tests pass a fixed one so &ldquo;Today&rdquo; is stable.</td></tr>
+<tr><td><code>initialConversationId</code></td><td>none</td><td>Opens that conversation, now and whenever it changes. See <a href="#deeplinks">deep links</a>.</td></tr>
+<tr><td><code>onConversationOpened</code></td><td>none</td><td>Reports the open conversation id, or <code>null</code> when the thread closes.</td></tr>
+</table>
+
+<h2 id="model">Data model &amp; JSON shapes</h2>
+<p>The data source returns <em>decoded JSON</em>, exactly what <code>jsonDecode</code> gives you. Mappers in <code>domain/&lt;feature&gt;/mappers/</code> are the only code that reads these keys, so if your API names fields differently you change a mapper, never a view. Unknown keys are ignored and missing optional keys fall back to defaults, so a server can add fields without breaking the app. Timestamps are ISO-8601 strings.</p>
+<h3 id="shape-contact">Contact</h3>
+<table>
+<tr><th>Key</th><th>Type</th><th>Notes</th></tr>
+<tr><td><code>id</code></td><td>string</td><td>required</td></tr>
+<tr><td><code>name</code></td><td>string</td><td>required; initials are derived from it</td></tr>
+<tr><td><code>about</code></td><td>string</td><td>the status line</td></tr>
+<tr><td><code>avatar</code></td><td>string or null</td><td>an <code>http(s)</code> URL, or an asset path; null shows initials</td></tr>
+<tr><td><code>presence</code></td><td><code>online</code> | <code>away</code> | <code>dnd</code> | <code>offline</code></td><td>unknown values read as offline</td></tr>
+<tr><td><code>lastSeen</code></td><td>ISO-8601 or null</td><td>shown as &ldquo;last seen 12m ago&rdquo; while offline</td></tr>
+<tr><td><code>blocked</code></td><td>bool</td><td>blocked people are left out of the directory</td></tr>
+</table>
+<pre><button class="copy" type="button">Copy</button><code>{
+  "id": "u_mina", "name": "Mina Park", "about": "Hiking this weekend",
+  "avatar": "https://cdn.example.com/u/mina.jpg", "presence": "offline",
+  "lastSeen": "2026-10-09T09:12:00.000", "blocked": false
+}</code></pre>
+<h3 id="shape-conversation">Conversation</h3>
+<table>
+<tr><th>Key</th><th>Type</th><th>Notes</th></tr>
+<tr><td><code>id</code></td><td>string</td><td>required</td></tr>
+<tr><td><code>type</code></td><td><code>direct</code> | <code>group</code></td><td></td></tr>
+<tr><td><code>title</code></td><td>string</td><td>the other person&rsquo;s name, or the group&rsquo;s. Denormalised so the list needs no second request.</td></tr>
+<tr><td><code>avatar</code></td><td>string or null</td><td>the peer&rsquo;s avatar; groups use a glyph</td></tr>
+<tr><td><code>peerId</code></td><td>string or null</td><td>the other person, for presence dots; null for groups</td></tr>
+<tr><td><code>memberIds</code></td><td>string list</td><td>everyone, you included</td></tr>
+<tr><td><code>pinned</code>, <code>muted</code>, <code>archived</code>, <code>markedUnread</code></td><td>bool</td><td>per-user flags</td></tr>
+<tr><td><code>unread</code></td><td>int</td><td>messages you have not read</td></tr>
+<tr><td><code>updatedAt</code></td><td>ISO-8601</td><td>the list is ordered by it (pinned first)</td></tr>
+<tr><td><code>lastMessage</code></td><td>message or null</td><td>for the preview</td></tr>
+</table>
+<h3 id="shape-message">Message, attachment, reaction</h3>
+<table>
+<tr><th>Key</th><th>Type</th><th>Notes</th></tr>
+<tr><td><code>id</code>, <code>conversationId</code>, <code>senderId</code>, <code>sentAt</code></td><td>string</td><td>required</td></tr>
+<tr><td><code>text</code></td><td>string</td><td>the body, or the caption of an attachment</td></tr>
+<tr><td><code>status</code></td><td><code>sending</code> | <code>sent</code> | <code>read</code> | <code>failed</code></td><td>ticks; only drawn on your own messages</td></tr>
+<tr><td><code>replyTo</code></td><td><code>{messageId, senderId, text}</code> or null</td><td>embedded so the quote draws without loading the original</td></tr>
+<tr><td><code>attachment</code></td><td>object or null</td><td><code>type</code> (<code>image</code> | <code>file</code> | <code>location</code>), <code>url</code> or <code>asset</code>, <code>name</code>, <code>size</code> (bytes), <code>aspectRatio</code> (width/height, reserves the space before an image loads)</td></tr>
+<tr><td><code>reactions</code></td><td>list</td><td><code>{emoji, userIds: [...]}</code> in the order they first appeared</td></tr>
+</table>
+<pre><button class="copy" type="button">Copy</button><code>{
+  "id": "m_1042", "conversationId": "c_mina", "senderId": "u_mina",
+  "text": "The lake at the halfway point", "sentAt": "2026-10-09T08:37:00.000",
+  "status": "read",
+  "replyTo": { "messageId": "m_1040", "senderId": "me", "text": "Dinner?" },
+  "attachment": { "type": "image", "url": "https://cdn.example.com/p/9f.jpg",
+                  "aspectRatio": 1.333 },
+  "reactions": [ { "emoji": "👍", "userIds": ["me", "u_omar"] } ]
+}</code></pre>
+<p>A page of history is <code>{ "messages": [ ...oldest first... ], "hasMore": true }</code>.</p>
+<h3 id="shape-events">Live events</h3>
+<p>Everything that happens without the app asking arrives as a JSON frame with a <code>type</code>, decoded by <code>ChatEventMapper</code>. Unknown types are ignored, so a newer server never breaks an older client.</p>
+<table>
+<tr><th><code>type</code></th><th>Other keys</th><th>Effect</th></tr>
+<tr><td><code>message</code></td><td><code>message</code></td><td>A message from someone else: appended to the open thread, counted as unseen when you are scrolled up, announced to screen readers; the list reorders and updates its badge.</td></tr>
+<tr><td><code>message.updated</code></td><td><code>message</code></td><td>A status or reaction change: replaces the message by id (this is how a double tick turns blue).</td></tr>
+<tr><td><code>message.removed</code></td><td><code>conversationId</code>, <code>messageId</code></td><td>Removes it from the open thread.</td></tr>
+<tr><td><code>typing</code></td><td><code>conversationId</code>, <code>userId</code>, <code>typing</code> (bool)</td><td>Shows or hides the typing indicator and &ldquo;typing...&rdquo; in the header.</td></tr>
+<tr><td><code>presence</code></td><td><code>contact</code></td><td>Updates presence dots and &ldquo;last seen&rdquo;.</td></tr>
+<tr><td><code>conversation</code></td><td><code>conversationId</code></td><td>Something about a list entry changed; the list reloads. The id may be anything when you only want a refresh.</td></tr>
+</table>
+
+<h2 id="seed">Change the demo data</h2>
+<p>The demo backend, <code>InMemoryChatDataSource</code>, is built from a <code>ChatSeed</code>: contacts, conversations and messages as the JSON above. <code>ChatSeed.build</code> writes the built-in cast (eleven contacts besides you, two groups, about 250 messages) relative to <em>now</em>, so &ldquo;Today&rdquo; and &ldquo;Yesterday&rdquo; are always there. To use your own people:</p>
+<pre><button class="copy" type="button">Copy</button><code>final InMemoryChatDataSource source = InMemoryChatDataSource(
+  currentUserId: 'me',
+  replyLatency: const Duration(milliseconds: 600),
+  seed: ChatSeed(
+    contacts: &lt;Map&lt;String, Object?&gt;&gt;[
+      &lt;String, Object?&gt;{'id': 'me', 'name': 'Sam Lee', 'presence': 'online'},
+      &lt;String, Object?&gt;{'id': 'u_ada', 'name': 'Ada Lovelace', 'presence': 'away'},
+    ],
+    conversations: &lt;Map&lt;String, Object?&gt;&gt;[
+      &lt;String, Object?&gt;{
+        'id': 'c_ada', 'type': 'direct', 'title': 'Ada Lovelace',
+        'peerId': 'u_ada', 'memberIds': &lt;String&gt;['me', 'u_ada'],
+        'createdAt': DateTime(2026, 10, 1).toIso8601String(),
+      },
+    ],
+    messages: &lt;String, List&lt;Map&lt;String, Object?&gt;&gt;&gt;{
+      'c_ada': &lt;Map&lt;String, Object?&gt;&gt;[
+        &lt;String, Object?&gt;{
+          'id': 'm1', 'conversationId': 'c_ada', 'senderId': 'u_ada',
+          'text': 'Welcome aboard', 'sentAt': DateTime(2026, 10, 1, 9).toIso8601String(),
+        },
+      ],
+    },
+  ),
+);
+
+runApp(MaterialApp(home: Scaffold(body: ChatApp(chatDataSource: source))));</code></pre>
+<p>A one-to-one chat appears in the list once it has a message; a group appears as soon as it exists. Pass a seed with only yourself to see the empty states. Remember to call <code>source.dispose()</code> when you pass the source in yourself.</p>
+<table>
+<tr><th>To change</th><th>Edit</th></tr>
+<tr><td>Who the bot is and what it says</td><td><code>common/constants/demo_replies.dart</code> (the phrases) and <code>data/chat/remote/demo_bot.dart</code> (which one is picked: greetings, thanks, food, questions, photos, an emoji now and then)</td></tr>
+<tr><td>How fast it answers</td><td><code>ChatApp(replyLatency: …)</code>. The bot marks your message read after a quarter of it, starts typing, and sends the reply at the end.</td></tr>
+<tr><td>The built-in cast</td><td><code>data/chat/remote/chat_seed.dart</code></td></tr>
+</table>
+
+<h2 id="backend">Replace the demo bot</h2>
+<p>Implement <code>ChatRemoteDataSource</code> and pass it as <code>chatDataSource</code>. It has nineteen methods: eleven for contacts and conversations, six for messages, <code>events()</code> and <code>dispose()</code>. Each documents the REST call it stands for. Nothing else in the template changes: cubits, views and tests keep working because they only see the repository interfaces.</p>
+<div class="callout note"><strong>The real-time extension point</strong><p>Request/response methods are for history and actions. Everything that happens <em>to</em> an open thread without you asking (new messages, read receipts, typing, presence, list changes) must come from <code>events()</code>, a broadcast stream of decoded frames. Repositories expose it as <code>MessageRepository.watchConversation</code>, <code>ConversationRepository.watchChanges</code> and <code>ContactRepository.watchPresence</code>. The demo backs it with a <code>StreamController</code>; below it is a socket.</p></div>
+<h3 id="rest">REST for history, WebSocket for live messages</h3>
+<p>Add <code>http</code> and <code>web_socket_channel</code> to your app. The class below is complete: it signs requests with a token, reconnects the socket with backoff, and nudges the list to reload after a reconnect so nothing stays stale.</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'dart:async';
+import 'dart:convert';
+import 'dart:math' as math;
+
+import 'package:cairn_template_chat/cairn_template_chat.dart';
+import 'package:http/http.dart' as http;
+import 'package:web_socket_channel/web_socket_channel.dart';
+
+typedef Json = Map&lt;String, Object?&gt;;
+
+class ChatHttpException implements Exception {
+  const ChatHttpException(this.statusCode, this.path);
+
+  final int statusCode;
+  final String path;
+
+  @override
+  String toString() =&gt; 'ChatHttpException($statusCode $path)';
+}
+
+class RestChatDataSource implements ChatRemoteDataSource {
+  RestChatDataSource({
+    required this.baseUrl,     // https://api.example.com/v1
+    required this.socketUrl,   // wss://api.example.com/v1/live
+    required this.tokenProvider,
+    http.Client? client,
+  }) : _client = client ?? http.Client() {
+    unawaited(_connect());
+  }
+
+  final String baseUrl;
+  final String socketUrl;
+  final Future&lt;String&gt; Function() tokenProvider;
+  final http.Client _client;
+
+  final StreamController&lt;Json&gt; _events = StreamController&lt;Json&gt;.broadcast();
+  StreamSubscription&lt;Object?&gt;? _socket;
+  Timer? _retry;
+  int _attempt = 0;
+  bool _closed = false;
+
+  // ---- real time -----------------------------------------------------------
+
+  Future&lt;void&gt; _connect() async {
+    if (_closed) return;
+    final String token = await tokenProvider();
+    final WebSocketChannel channel = WebSocketChannel.connect(
+      Uri.parse('$socketUrl?token=${Uri.encodeQueryComponent(token)}'),
+    );
+    _socket = channel.stream.listen(
+      (Object? frame) {
+        if (_attempt &gt; 0) {
+          // Reconnected: whatever happened meanwhile, refresh the list.
+          _events.add(&lt;String, Object?&gt;{'type': 'conversation', 'conversationId': ''});
+        }
+        _attempt = 0;
+        final Object? json = jsonDecode(frame! as String);
+        if (json is Map&lt;String, dynamic&gt;) _events.add(Json.from(json));
+      },
+      onDone: _reconnect,
+      onError: (Object _) =&gt; _reconnect(),
+    );
+  }
+
+  void _reconnect() {
+    if (_closed) return;
+    final Duration wait = Duration(seconds: math.min(30, 1 &lt;&lt; math.min(_attempt++, 5)));
+    _retry = Timer(wait, () =&gt; unawaited(_connect()));
+  }
+
+  @override
+  Stream&lt;Json&gt; events() =&gt; _events.stream;
+
+  @override
+  void dispose() {
+    _closed = true;
+    _retry?.cancel();
+    unawaited(_socket?.cancel());
+    _client.close();
+    unawaited(_events.close());
+  }
+
+  /// Hand a frame to the app, for example from a push notification.
+  void push(Json frame) =&gt; _events.add(frame);
+
+  // ---- HTTP plumbing -------------------------------------------------------
+
+  Future&lt;Object?&gt; _call(
+    String method,
+    String path, {
+    Json? body,
+    Map&lt;String, String&gt;? query,
+  }) async {
+    final Uri uri = Uri.parse('$baseUrl$path').replace(queryParameters: query);
+    final http.Request request = http.Request(method, uri)
+      ..headers['Authorization'] = 'Bearer ${await tokenProvider()}'
+      ..headers['Content-Type'] = 'application/json';
+    if (body != null) request.body = jsonEncode(body);
+    final http.Response response = await http.Response.fromStream(
+      await _client.send(request),
+    );
+    if (response.statusCode &gt;= 400) {
+      throw ChatHttpException(response.statusCode, path);
+    }
+    return response.body.isEmpty ? null : jsonDecode(response.body);
+  }
+
+  Future&lt;Json&gt; _json(String method, String path, {Json? body, Map&lt;String, String&gt;? query}) async =&gt;
+      Json.from(await _call(method, path, body: body, query: query) as Map&lt;String, dynamic&gt;);
+
+  Future&lt;List&lt;Json&gt;&gt; _list(String path) async =&gt; &lt;Json&gt;[
+    for (final Object? e in await _call('GET', path) as List&lt;Object?&gt;)
+      Json.from(e! as Map&lt;String, dynamic&gt;),
+  ];
+
+  // ---- profile and contacts ------------------------------------------------
+
+  @override
+  Future&lt;Json&gt; fetchCurrentUser() =&gt; _json('GET', '/me');
+
+  @override
+  Future&lt;List&lt;Json&gt;&gt; fetchContacts() =&gt; _list('/contacts');
+
+  @override
+  Future&lt;Json&gt; patchProfile(Json changes) =&gt;
+      _json('PATCH', '/me', body: &lt;String, Object?&gt;{...changes}..removeWhere((String _, Object? v) =&gt; v == null));
+
+  @override
+  Future&lt;void&gt; blockContact(String contactId) =&gt;
+      _call('POST', '/contacts/$contactId/block');
+
+  // ---- conversations -------------------------------------------------------
+
+  @override
+  Future&lt;List&lt;Json&gt;&gt; fetchConversations() =&gt; _list('/conversations');
+
+  @override
+  Future&lt;Json?&gt; fetchConversation(String id) async {
+    try {
+      return await _json('GET', '/conversations/$id');
+    } on ChatHttpException catch (e) {
+      if (e.statusCode == 404) return null;
+      rethrow;
+    }
+  }
+
+  @override
+  Future&lt;Json&gt; openDirectConversation(String contactId) =&gt; _json(
+    'POST', '/conversations',
+    body: &lt;String, Object?&gt;{'type': 'direct', 'peerId': contactId},
+  );
+
+  @override
+  Future&lt;Json&gt; createGroupConversation({
+    required String name,
+    required List&lt;String&gt; memberIds,
+  }) =&gt; _json(
+    'POST', '/conversations',
+    body: &lt;String, Object?&gt;{'type': 'group', 'title': name, 'memberIds': memberIds},
+  );
+
+  @override
+  Future&lt;Json&gt; patchConversation(String id, Json changes) =&gt; _json(
+    'PATCH', '/conversations/$id',
+    body: &lt;String, Object?&gt;{...changes}..removeWhere((String _, Object? v) =&gt; v == null),
+  );
+
+  @override
+  Future&lt;void&gt; deleteConversation(String id) =&gt; _call('DELETE', '/conversations/$id');
+
+  @override
+  Future&lt;void&gt; leaveConversation(String id) =&gt; _call('POST', '/conversations/$id/leave');
+
+  // ---- messages ------------------------------------------------------------
+
+  @override
+  Future&lt;Json&gt; fetchMessages(String conversationId, {String? beforeId, required int limit}) =&gt;
+      _json(
+        'GET', '/conversations/$conversationId/messages',
+        query: &lt;String, String&gt;{'limit': '$limit', if (beforeId != null) 'before': beforeId},
+      );
+
+  @override
+  Future&lt;Json&gt; postMessage(Json body) =&gt;
+      _json('POST', '/conversations/${body['conversationId']}/messages', body: body);
+
+  @override
+  Future&lt;void&gt; postRead(String conversationId) =&gt;
+      _call('POST', '/conversations/$conversationId/read');
+
+  @override
+  Future&lt;Json&gt; postReaction(String conversationId, String messageId, String emoji) =&gt;
+      _json('PUT', '/messages/$messageId/reactions/${Uri.encodeComponent(emoji)}');
+
+  @override
+  Future&lt;void&gt; deleteMessage(String conversationId, String messageId) =&gt;
+      _call('DELETE', '/messages/$messageId');
+
+  @override
+  Future&lt;List&lt;Json&gt;&gt; fetchMedia(String conversationId) =&gt;
+      _list('/conversations/$conversationId/media');
+}</code></pre>
+<p>Own the lifecycle in the host, and pass the signed-in id:</p>
+<pre><button class="copy" type="button">Copy</button><code>class ChatScreen extends StatefulWidget {
+  const ChatScreen({super.key, required this.session});
+
+  final Session session; // your auth object
+
+  @override
+  State&lt;ChatScreen&gt; createState() =&gt; _ChatScreenState();
+}
+
+class _ChatScreenState extends State&lt;ChatScreen&gt; {
+  late final RestChatDataSource _source = RestChatDataSource(
+    baseUrl: 'https://api.example.com/v1',
+    socketUrl: 'wss://api.example.com/v1/live',
+    tokenProvider: widget.session.freshToken,
+  );
+
+  @override
+  void dispose() {
+    _source.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) =&gt; ChatApp(
+    chatDataSource: _source,
+    currentUserId: widget.session.userId,
+    onMessageSent: (Message m) =&gt; analytics.log('message_sent'),
+  );
+}</code></pre>
+<div class="callout warn"><strong>Server contract in one paragraph</strong><p><code>POST /conversations/{id}/messages</code> returns the stored message (with a server id and <code>status: sent</code>) and must <em>not</em> also push it back to the sender as a <code>message</code> frame, or the sender sees it twice (the template ignores an echo only while its own send is in flight). Frames to <em>other</em> members are <code>message</code>; later changes to a message are <code>message.updated</code>. <code>POST …/read</code> should zero <code>unread</code>, flip the sender&rsquo;s messages to <code>read</code> and emit <code>message.updated</code> to them.</p></div>
+<h3 id="sse">Server-sent events instead of a socket</h3>
+<p>If your server speaks SSE, only the <code>_connect</code> part changes. Frames are the same JSON, one per <code>data:</code> line:</p>
+<pre><button class="copy" type="button">Copy</button><code>Future&lt;void&gt; _connect() async {
+  if (_closed) return;
+  final http.Request request = http.Request('GET', Uri.parse('$baseUrl/events'))
+    ..headers['Accept'] = 'text/event-stream'
+    ..headers['Authorization'] = 'Bearer ${await tokenProvider()}';
+  final http.StreamedResponse response = await _client.send(request);
+  _socket = response.stream
+      .transform(utf8.decoder)
+      .transform(const LineSplitter())
+      .listen(
+        (String line) {
+          if (!line.startsWith('data:')) return;
+          _attempt = 0;
+          final Object? json = jsonDecode(line.substring(5).trim());
+          if (json is Map&lt;String, dynamic&gt;) _events.add(Json.from(json));
+        },
+        onDone: _reconnect,
+        onError: (Object _) =&gt; _reconnect(),
+      );
+}</code></pre>
+<h3 id="firebase">Firebase (Cloud Firestore)</h3>
+<p>Firestore needs no socket: its snapshot listeners are the live channel. Model each conversation as a document with a <code>messages</code> sub-collection, and translate documents to the JSON shapes above. This is the core of an adapter; reactions, deletes and the profile calls follow the same read-translate-write pattern.</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'dart:async';
+
+import 'package:cairn_template_chat/cairn_template_chat.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+typedef Json = Map&lt;String, Object?&gt;;
+
+class FirestoreChatDataSource implements ChatRemoteDataSource {
+  FirestoreChatDataSource(this._db, this._uid) {
+    // New messages in any of my conversations, from now on.
+    _subs.add(
+      _db
+          .collectionGroup('messages')
+          .where('memberIds', arrayContains: _uid)
+          .where('sentAt', isGreaterThan: Timestamp.now())
+          .snapshots()
+          .listen((QuerySnapshot&lt;Json&gt; snap) {
+            for (final DocumentChange&lt;Json&gt; change in snap.docChanges) {
+              final Json message = _message(change.doc);
+              if (change.type == DocumentChangeType.added &amp;&amp; message['senderId'] != _uid) {
+                _events.add(&lt;String, Object?&gt;{'type': 'message', 'message': message});
+              } else if (change.type == DocumentChangeType.modified) {
+                _events.add(&lt;String, Object?&gt;{'type': 'message.updated', 'message': message});
+              }
+            }
+          }),
+    );
+    // Any change to my conversations (last message, unread, flags).
+    _subs.add(
+      _db
+          .collection('conversations')
+          .where('memberIds', arrayContains: _uid)
+          .snapshots()
+          .listen((QuerySnapshot&lt;Json&gt; snap) {
+            for (final DocumentChange&lt;Json&gt; change in snap.docChanges) {
+              _events.add(&lt;String, Object?&gt;{
+                'type': 'conversation',
+                'conversationId': change.doc.id,
+              });
+            }
+          }),
+    );
+  }
+
+  final FirebaseFirestore _db;
+  final String _uid;
+  final StreamController&lt;Json&gt; _events = StreamController&lt;Json&gt;.broadcast();
+  final List&lt;StreamSubscription&lt;Object?&gt;&gt; _subs = &lt;StreamSubscription&lt;Object?&gt;&gt;[];
+
+  CollectionReference&lt;Json&gt; get _conversations =&gt; _db.collection('conversations');
+
+  static String _iso(Object? t) =&gt; (t! as Timestamp).toDate().toIso8601String();
+
+  Json _message(DocumentSnapshot&lt;Json&gt; doc) {
+    final Json data = doc.data()!;
+    return &lt;String, Object?&gt;{
+      ...data,
+      'id': doc.id,
+      'conversationId': doc.reference.parent.parent!.id,
+      'sentAt': _iso(data['sentAt']),
+    };
+  }
+
+  Json _conversation(DocumentSnapshot&lt;Json&gt; doc) {
+    final Json data = doc.data()!;
+    final Map&lt;String, Object?&gt; unread = (data['unread'] as Map&lt;String, Object?&gt;?) ?? &lt;String, Object?&gt;{};
+    final Map&lt;String, Object?&gt;? last = data['lastMessage'] as Map&lt;String, Object?&gt;?;
+    final Map&lt;String, Object?&gt;? mine = (data['flags'] as Map&lt;String, Object?&gt;?)?[_uid] as Map&lt;String, Object?&gt;?;
+    return &lt;String, Object?&gt;{
+      ...data,
+      ...?mine, // my pinned, muted, archived and markedUnread
+      'id': doc.id,
+      'unread': unread[_uid] ?? 0,
+      'updatedAt': _iso(data['updatedAt']),
+      'lastMessage': last == null
+          ? null
+          : &lt;String, Object?&gt;{...last, 'conversationId': doc.id, 'sentAt': _iso(last['sentAt'])},
+    };
+  }
+
+  @override
+  Future&lt;List&lt;Json&gt;&gt; fetchConversations() async {
+    final QuerySnapshot&lt;Json&gt; snap = await _conversations
+        .where('memberIds', arrayContains: _uid)
+        .get();
+    return &lt;Json&gt;[for (final QueryDocumentSnapshot&lt;Json&gt; d in snap.docs) _conversation(d)];
+  }
+
+  @override
+  Future&lt;Json&gt; fetchMessages(String conversationId, {String? beforeId, required int limit}) async {
+    final CollectionReference&lt;Json&gt; messages = _conversations.doc(conversationId).collection('messages');
+    Query&lt;Json&gt; query = messages.orderBy('sentAt', descending: true).limit(limit + 1);
+    if (beforeId != null) {
+      query = query.startAfterDocument(await messages.doc(beforeId).get());
+    }
+    final List&lt;QueryDocumentSnapshot&lt;Json&gt;&gt; docs = (await query.get()).docs;
+    return &lt;String, Object?&gt;{
+      'hasMore': docs.length &gt; limit,
+      // Newest first from Firestore; the template wants oldest first.
+      'messages': &lt;Json&gt;[
+        for (final QueryDocumentSnapshot&lt;Json&gt; d in docs.take(limit).toList().reversed)
+          if (!((d.data()['deletedFor'] as List&lt;Object?&gt;?) ?? &lt;Object?&gt;[]).contains(_uid)) _message(d),
+      ],
+    };
+  }
+
+  @override
+  Future&lt;Json&gt; postMessage(Json body) async {
+    final String id = body['conversationId']! as String;
+    final DocumentReference&lt;Json&gt; ref = _conversations.doc(id).collection('messages').doc();
+    final Json stored = &lt;String, Object?&gt;{
+      'senderId': _uid,
+      'text': body['text'],
+      'replyTo': body['replyTo'],
+      'attachment': body['attachment'],
+      'reactions': &lt;Object?&gt;[],
+      'status': 'sent',
+      'sentAt': FieldValue.serverTimestamp(),
+      'memberIds': (await _conversations.doc(id).get()).data()!['memberIds'],
+    };
+    await ref.set(stored);
+    return _message(await ref.get(const GetOptions(serverTimestampBehavior: ServerTimestampBehavior.estimate)));
+  }
+
+  @override
+  Future&lt;void&gt; postRead(String conversationId) =&gt;
+      _conversations.doc(conversationId).update(&lt;String, Object?&gt;{'unread.$_uid': 0});
+
+  @override
+  Stream&lt;Json&gt; events() =&gt; _events.stream;
+
+  @override
+  void dispose() {
+    for (final StreamSubscription&lt;Object?&gt; s in _subs) {
+      unawaited(s.cancel());
+    }
+    unawaited(_events.close());
+  }
+
+  // ---- people --------------------------------------------------------------
+
+  Json _contact(DocumentSnapshot&lt;Json&gt; doc, {bool blocked = false}) {
+    final Json data = doc.data()!;
+    return &lt;String, Object?&gt;{
+      ...data,
+      'id': doc.id,
+      'blocked': blocked,
+      'lastSeen': data['lastSeen'] == null ? null : _iso(data['lastSeen']),
+    };
+  }
+
+  DocumentReference&lt;Json&gt; get _me =&gt; _db.collection('users').doc(_uid);
+
+  @override
+  Future&lt;Json&gt; fetchCurrentUser() async =&gt; _contact(await _me.get());
+
+  @override
+  Future&lt;List&lt;Json&gt;&gt; fetchContacts() async {
+    final Set&lt;String&gt; blocked = (await _me.collection('blocked').get()).docs
+        .map((QueryDocumentSnapshot&lt;Json&gt; d) =&gt; d.id)
+        .toSet();
+    final QuerySnapshot&lt;Json&gt; users = await _db.collection('users').get();
+    return &lt;Json&gt;[
+      for (final QueryDocumentSnapshot&lt;Json&gt; d in users.docs)
+        _contact(d, blocked: blocked.contains(d.id)),
+    ];
+  }
+
+  @override
+  Future&lt;Json&gt; patchProfile(Json changes) async {
+    await _me.update(&lt;String, Object?&gt;{...changes}..removeWhere((String _, Object? v) =&gt; v == null));
+    return _contact(await _me.get());
+  }
+
+  @override
+  Future&lt;void&gt; blockContact(String contactId) =&gt;
+      _me.collection('blocked').doc(contactId).set(&lt;String, Object?&gt;{});
+
+  // ---- conversations -------------------------------------------------------
+
+  @override
+  Future&lt;Json?&gt; fetchConversation(String id) async {
+    final DocumentSnapshot&lt;Json&gt; doc = await _conversations.doc(id).get();
+    return doc.exists ? _conversation(doc) : null;
+  }
+
+  @override
+  Future&lt;Json&gt; openDirectConversation(String contactId) async {
+    // One document per pair, so opening it twice finds the same chat.
+    final String id = (&lt;String&gt;[_uid, contactId]..sort()).join('_');
+    final DocumentReference&lt;Json&gt; ref = _conversations.doc(id);
+    if (!(await ref.get()).exists) {
+      final Json peer = _contact(await _db.collection('users').doc(contactId).get());
+      await ref.set(&lt;String, Object?&gt;{
+        'type': 'direct',
+        'title': peer['name'],
+        'avatar': peer['avatar'],
+        'peerId': contactId,
+        'memberIds': &lt;String&gt;[_uid, contactId],
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    }
+    return _conversation(await ref.get(const GetOptions(serverTimestampBehavior: ServerTimestampBehavior.estimate)));
+  }
+
+  @override
+  Future&lt;Json&gt; createGroupConversation({required String name, required List&lt;String&gt; memberIds}) async {
+    final DocumentReference&lt;Json&gt; ref = _conversations.doc();
+    await ref.set(&lt;String, Object?&gt;{
+      'type': 'group',
+      'title': name,
+      'memberIds': &lt;String&gt;[_uid, ...memberIds],
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+    return _conversation(await ref.get(const GetOptions(serverTimestampBehavior: ServerTimestampBehavior.estimate)));
+  }
+
+  @override
+  Future&lt;Json&gt; patchConversation(String id, Json changes) async {
+    // Flags are per user: flags.&lt;uid&gt;.pinned and so on.
+    await _conversations.doc(id).update(&lt;String, Object?&gt;{
+      for (final MapEntry&lt;String, Object?&gt; e in changes.entries)
+        if (e.value != null) 'flags.$_uid.${e.key}': e.value,
+      if (changes['markedUnread'] == false) 'unread.$_uid': 0,
+    });
+    return _conversation(await _conversations.doc(id).get());
+  }
+
+  @override
+  Future&lt;void&gt; deleteConversation(String id) =&gt; leaveConversation(id);
+
+  @override
+  Future&lt;void&gt; leaveConversation(String id) =&gt;
+      _conversations.doc(id).update(&lt;String, Object?&gt;{'memberIds': FieldValue.arrayRemove(&lt;String&gt;[_uid])});
+
+  // ---- messages ------------------------------------------------------------
+
+  @override
+  Future&lt;Json&gt; postReaction(String conversationId, String messageId, String emoji) async {
+    final DocumentReference&lt;Json&gt; ref = _conversations.doc(conversationId).collection('messages').doc(messageId);
+    await _db.runTransaction&lt;void&gt;((Transaction tx) async {
+      final List&lt;Object?&gt; reactions = List&lt;Object?&gt;.of((await tx.get(ref)).data()!['reactions'] as List&lt;Object?&gt;);
+      final int at = reactions.indexWhere((Object? r) =&gt; (r! as Map&lt;String, Object?&gt;)['emoji'] == emoji);
+      if (at &lt; 0) {
+        reactions.add(&lt;String, Object?&gt;{'emoji': emoji, 'userIds': &lt;String&gt;[_uid]});
+      } else {
+        final Map&lt;String, Object?&gt; r = Map&lt;String, Object?&gt;.of(reactions[at]! as Map&lt;String, Object?&gt;);
+        final List&lt;String&gt; users = List&lt;String&gt;.of((r['userIds']! as List&lt;Object?&gt;).cast&lt;String&gt;());
+        users.contains(_uid) ? users.remove(_uid) : users.add(_uid);
+        users.isEmpty ? reactions.removeAt(at) : reactions[at] = &lt;String, Object?&gt;{'emoji': emoji, 'userIds': users};
+      }
+      tx.update(ref, &lt;String, Object?&gt;{'reactions': reactions});
+    });
+    return _message(await ref.get());
+  }
+
+  @override
+  Future&lt;void&gt; deleteMessage(String conversationId, String messageId) =&gt;
+      _conversations.doc(conversationId).collection('messages').doc(messageId).update(
+        &lt;String, Object?&gt;{'deletedFor': FieldValue.arrayUnion(&lt;String&gt;[_uid])},
+      );
+
+  @override
+  Future&lt;List&lt;Json&gt;&gt; fetchMedia(String conversationId) async {
+    final QuerySnapshot&lt;Json&gt; snap = await _conversations
+        .doc(conversationId)
+        .collection('messages')
+        .where('attachment.type', isEqualTo: 'image')
+        .orderBy('sentAt')
+        .get();
+    return &lt;Json&gt;[for (final QueryDocumentSnapshot&lt;Json&gt; d in snap.docs) _message(d)];
+  }
+}</code></pre>
+<div class="callout note"><strong>Security rules and denormalisation</strong><p>Store <code>memberIds</code> on each message (as above) so one collection-group query and one security rule (<code>request.auth.uid in resource.data.memberIds</code>) cover reads. Keep per-user flags (<code>pinned</code>, <code>muted</code>, <code>archived</code>) in a map keyed by user id on the conversation, and pick yours out in <code>_conversation</code>, as is done for <code>unread</code>. Typing and presence are best kept in Realtime Database (or a short-lived document) and translated to <code>typing</code> and <code>presence</code> frames.</p></div>
+
+<h2 id="push">Push notifications</h2>
+<p>The template draws no notifications; it gives you the hooks. A push has three jobs: wake the app, show text, and open the right thread when tapped.</p>
+<table>
+<tr><th>Hook</th><th>Where</th><th>Use it to</th></tr>
+<tr><td>Register a device</td><td>your code, when you create the data source</td><td>Fetch the FCM or APNs token and <code>POST /devices</code> it with the signed-in user.</td></tr>
+<tr><td>Foreground push</td><td><code>FirebaseMessaging.onMessage</code> &rarr; your data source&rsquo;s <code>push(...)</code></td><td>Normally ignore it: the socket already delivered the message. Use it only when the socket is down.</td></tr>
+<tr><td>Tap on a push</td><td><code>onMessageOpenedApp</code> &rarr; your router</td><td>Open the thread with <code>initialConversationId</code> (see <a href="#deeplinks">deep links</a>).</td></tr>
+<tr><td>Muted chats</td><td>the server</td><td>The <code>muted</code> flag is sent by <code>PATCH /conversations/{id}</code>; do not push for muted conversations.</td></tr>
+<tr><td>Settings switches</td><td><code>ProfileCubit</code> (<code>notifications</code>, <code>previews</code>)</td><td>They are in memory. Persist them with your preferences store and send them to the server, which decides whether to include the text in the push.</td></tr>
+<tr><td>Sent hook</td><td><code>ChatApp(onMessageSent: …)</code></td><td>Anything you need to do after the server accepted a message.</td></tr>
+</table>
+<pre><button class="copy" type="button">Copy</button><code>// In the host app, once:
+FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage m) {
+  final String? id = m.data['conversationId'] as String?;
+  if (id != null) router.go('/chat?c=$id');
+});
+
+// Cold start from a push:
+final RemoteMessage? initial = await FirebaseMessaging.instance.getInitialMessage();
+if (initial != null) router.go('/chat?c=${initial.data['conversationId']}');</code></pre>
+<p>The app-icon badge is your server&rsquo;s job: it knows each user&rsquo;s total unread count and sends it in the push payload. The in-app dock badge is <code>ConversationInbox.unreadTotal</code>: unread messages in conversations that are neither muted nor archived, counting a conversation you marked unread as one.</p>
+
+<h2 id="uploads">Attachments upload</h2>
+<p>In the demo, the <code>+</code> button opens a sheet (photo library, camera, file, location) and any choice toasts that it is a demo. The template does not ship pickers, so it stays free of platform plugins. To make it real, replace the body of <code>_attach</code> in <code>presentation/thread/views/thread_view.dart</code>. A message with an <code>Attachment</code> is sent through the same path as text, so replies, ticks, reactions and the preview in the list already work.</p>
+<pre><button class="copy" type="button">Copy</button><code>Future&lt;void&gt; _attach() async {
+  final AttachOption? option = await showAttachSheet(context);
+  if (option == null || !mounted) return;
+  final ThreadCubit thread = context.read&lt;ThreadCubit&gt;();
+
+  switch (option) {
+    case AttachOption.photo:
+    case AttachOption.camera:
+      final XFile? picked = await ImagePicker().pickImage(
+        source: option == AttachOption.photo ? ImageSource.gallery : ImageSource.camera,
+        maxWidth: 1600,
+      );
+      if (picked == null) return;
+      final Upload up = await uploads.upload(picked.path); // your service
+      await thread.send(
+        '',
+        attachment: Attachment(
+          kind: AttachmentKind.image,
+          url: up.url,
+          aspectRatio: up.width / up.height,
+        ),
+      );
+    case AttachOption.file:
+      final FilePickerResult? result = await FilePicker.platform.pickFiles();
+      final PlatformFile? file = result?.files.single;
+      if (file == null || file.path == null) return;
+      final Upload up = await uploads.upload(file.path!);
+      await thread.send(
+        '',
+        attachment: Attachment(
+          kind: AttachmentKind.file,
+          url: up.url,
+          name: file.name,
+          sizeBytes: file.size,
+        ),
+      );
+    case AttachOption.location:
+      final Position here = await Geolocator.getCurrentPosition();
+      await thread.send(
+        '',
+        attachment: Attachment(
+          kind: AttachmentKind.location,
+          name: '${here.latitude.toStringAsFixed(4)}, ${here.longitude.toStringAsFixed(4)}',
+        ),
+      );
+  }
+}</code></pre>
+<p>A typical upload service does <code>POST /uploads</code> (multipart) and returns <code>{ "url": ..., "width": ..., "height": ... }</code>; the message then carries the URL. Two refinements worth making: show a progress indicator while uploading (upload first, then send, so a failed upload never leaves a ghost message), and extend <code>Attachment</code> with <code>latitude</code> and <code>longitude</code> (plus the key in <code>MessageMapper</code>) so a location bubble can open a map.</p>
+<p>Photos are drawn with <code>Image</code> from <code>chatImage(...)</code> (<code>lib/core/presentation/chat_images.dart</code>): an <code>http(s)</code> URL becomes a <code>NetworkImage</code>, anything else an asset. Swap it for <code>CachedNetworkImageProvider</code> there to get a disk cache everywhere at once.</p>
+
+<h2 id="receipts">Read receipts &amp; presence</h2>
+<h3>Ticks</h3>
+<p>Your own messages show a clock while <code>sending</code>, one tick when <code>sent</code>, two blue ticks when <code>read</code> and &ldquo;Not sent&rdquo; when <code>failed</code>. The thread sets <code>sending</code> locally and replaces the message with the server&rsquo;s when the call returns. <code>read</code> arrives as a <code>message.updated</code> frame after the other person&rsquo;s app calls <code>MarkRead</code>.</p>
+<p><code>MarkRead</code> runs when a thread opens, and again whenever a message arrives while you are at the bottom of the list or you scroll back down (<code>ThreadCubit.setAtBottom</code>). It does <em>not</em> run for messages that arrive while you are scrolled up; they are counted on the scroll-to-latest button instead.</p>
+<div class="callout note"><strong>The &ldquo;Read receipts&rdquo; switch</strong><p>The switch on the Profile tab is kept in memory in <code>ProfileCubit</code>. To honour it, pass it to the server: make <code>MarkRead</code> take a <code>sendReceipt</code> flag, add it to <code>MessageRepository.markRead</code> and the <code>POST …/read</code> body, and read <code>ProfileCubit.state.readReceipts</code> where the thread calls it.</p></div>
+<h3>Presence and last seen</h3>
+<p>The dot comes from <code>Contact.presence</code> (green online, amber away, red do not disturb, none when offline). A thread header shows the label, or &ldquo;last seen 12m ago&rdquo; from <code>lastSeen</code>. Presence changes arrive as <code>presence</code> frames and update every dot at once through <code>ContactsCubit</code>. Your own choice on the Profile tab is <code>PATCH /me</code>; your server decides what others see (typically it sets <code>offline</code> and <code>lastSeen</code> when your socket closes).</p>
+<h3>Typing</h3>
+<p>Incoming <code>typing</code> frames drive the dots and the header text. <strong>Sending</strong> your own typing is not wired up: add <code>sendTyping(conversationId)</code> to <code>MessageRepository</code>, call it from the composer&rsquo;s <code>onChanged</code> at most every three seconds, and send <code>PUT /conversations/{id}/typing</code> from the data source.</p>
+
+<h2 id="paging">Pagination</h2>
+<p>A thread opens with the newest <code>ChatLimits.pageSize</code> messages (30). When the list is scrolled to within 400 px of its older end, or the loaded messages do not fill the screen, <code>ThreadCubit.loadOlder</code> asks for the page before the oldest message by id (<code>GET …/messages?before=&lt;id&gt;&amp;limit=30</code>) and prepends it; <code>hasMore: false</code> stops the requests and shows &ldquo;Start of the conversation&rdquo;. The list is a reversed <code>ListView</code> with stable keys, so prepending does not move what you are reading.</p>
+<ul>
+<li>Pages are oldest first; <code>GetMessages</code> sorts and removes duplicates anyway, so a sloppy backend cannot scramble a thread.</li>
+<li>Use ids (or opaque cursors) rather than offsets: messages arriving while you page would shift offsets.</li>
+<li>Change the page size in <code>common/constants/chat_limits.dart</code>.</li>
+</ul>
+
+<h2 id="theme">Theming &amp; bubbles</h2>
+<p>Everything resolves through <code>CairnTheme</code>; the only literal colours are translucent overlays computed from a bubble&rsquo;s own text colour.</p>
+<table>
+<tr><th>Thing</th><th>Token</th></tr>
+<tr><td>Sent bubble</td><td><code>primary</code> fill, <code>primaryForeground</code> text</td></tr>
+<tr><td>Received bubble</td><td><code>secondary</code>, <code>secondaryForeground</code></td></tr>
+<tr><td>Bubble corners</td><td><code>radius</code> (the tail corner is <code>radiusScale.sm</code>, the rest <code>radiusScale.xl</code>)</td></tr>
+<tr><td>Read ticks</td><td><code>CairnTone.info</code>; failed in <code>destructive</code></td></tr>
+<tr><td>Presence dots</td><td><code>CairnTone.success</code> / <code>warning</code> / <code>destructive</code></td></tr>
+<tr><td>Own reaction chip</td><td><code>accent</code> with a <code>ring</code> border; others <code>muted</code></td></tr>
+<tr><td>Unread badge</td><td><code>CairnBadge</code> primary (secondary when muted)</td></tr>
+</table>
+<pre><button class="copy" type="button">Copy</button><code>final CairnTheme brand = CairnTheme.light.copyWith(
+  primary: const Color(0xFF0B6BFF),            // sent bubbles, badges, primary buttons
+  primaryForeground: const Color(0xFFFFFFFF),
+  secondary: const Color(0xFFEFF2F6),          // received bubbles
+  radius: 8,                                   // every corner rescales from this one number
+  fontFamily: 'Inter',
+);</code></pre>
+<h3>Customising a bubble</h3>
+<p>Every bubble is built in one file, <code>presentation/thread/widgets/message_bubble.dart</code>, around <code>CairnChatBubble</code>; its contents are in <code>message_content.dart</code>. Common changes:</p>
+<table>
+<tr><th>I want</th><th>Change</th></tr>
+<tr><td>A time on every message, not only the last of a run</td><td>In <code>_footer</code>, replace <code>item.endsRun</code> with <code>true</code> (it appears twice).</td></tr>
+<tr><td>Avatars in one-to-one chats too</td><td>In <code>build</code>, replace <code>!mine &amp;&amp; isGroup</code> with <code>!mine</code>; names then show in one-to-one chats too, so split <code>showAvatar</code> into two flags to keep names for groups only.</td></tr>
+<tr><td>A wider or narrower bubble</td><td><code>CairnChatBubble</code> caps width at 75% of the row. Wrap it in a <code>FractionallySizedBox</code> or build the bubble yourself and keep <code>MessageContent</code>.</td></tr>
+<tr><td>Different run window</td><td><code>ChatLimits.runWindow</code> (five minutes).</td></tr>
+<tr><td>Different emoji</td><td><code>common/constants/reaction_emoji.dart</code>. Keep it to six so the sheet fits one row at 320 px.</td></tr>
+<tr><td>Markdown or rich text</td><td>Replace <code>LinkifiedText</code> in <code>MessageContent</code> with your renderer; it receives the plain <code>text</code>.</td></tr>
+<tr><td>Open links for real</td><td><code>_openLink</code> in <code>thread_view.dart</code> currently toasts the address; call <code>launchUrl</code> there.</td></tr>
+<tr><td>A bigger emoji-only message</td><td>The size is in <code>MessageContent</code>; the rule is <code>isEmojiOnly</code> in <code>common/utils/emoji.dart</code> (one to three emoji).</td></tr>
+</table>
+
+<h2 id="deeplinks">go_router deep links to a thread</h2>
+<p>The template keeps its own navigation so it runs in any app. To make a thread addressable, give <code>ChatApp</code> the conversation the URL names and tell the router what the user opens. Use <em>one</em> route with a query parameter, so changing the conversation updates the same <code>ChatApp</code> instead of remounting it.</p>
+<pre><button class="copy" type="button">Copy</button><code>final GoRouter router = GoRouter(
+  routes: &lt;RouteBase&gt;[
+    GoRoute(
+      path: '/chat',
+      builder: (BuildContext context, GoRouterState state) {
+        final String? id = state.uri.queryParameters['c'];
+        return Scaffold(
+          body: SafeArea(
+            child: ChatApp(
+              chatDataSource: chatSource,
+              currentUserId: session.userId,
+              initialConversationId: id,
+              // Keep the address bar in step with what is open.
+              onConversationOpened: (String? open) {
+                if (open == id) return;
+                context.go(open == null ? '/chat' : '/chat?c=$open');
+              },
+            ),
+          ),
+        );
+      },
+    ),
+  ],
+);</code></pre>
+<p>Opening <code>/chat?c=c_mina</code> (a push, a shared link) opens the thread. Tapping a conversation inside the app calls <code>onConversationOpened</code>, the router updates the URL, the builder runs again with the same id, and <code>ChatApp</code> sees nothing to do. The back button of a thread closes it and reports <code>null</code>, which returns the URL to <code>/chat</code>. Info and new chat screens are not in the URL; add a second parameter the same way if you need that.</p>
+<p>To replace the navigation cubit entirely, keep every view and replace <code>ChatNavigationCubit</code> (<code>selectTab</code>, <code>openThread</code>, <code>openInfo</code>, <code>openNewChat</code>, <code>back</code>, <code>clear</code>, <code>closeConversation</code>) with calls to your router, and render <code>ThreadView(conversationId: …, showBack: true)</code>, <code>InfoView</code> and <code>NewChatView</code> from your routes.</p>
+
+<h2 id="tablet">Two-pane layout</h2>
+<p><code>ChatShell</code> (<code>presentation/shell/chat_shell.dart</code>) chooses the layout from the width it is given, not from the device:</p>
+<table>
+<tr><th>Width</th><th>Layout</th></tr>
+<tr><td>&lt; 700</td><td>One column. The tab fills the screen above a dock; opening a thread, info or new chat covers the tab and the dock, and Back returns.</td></tr>
+<tr><td>&ge; 700</td><td>A 320 px pane on the left with the tab and the dock, a hairline, and the open screen on the right (or &ldquo;Select a conversation&rdquo;). The thread has no back button, the open conversation is highlighted in the list, and opening another one swaps the right pane.</td></tr>
+</table>
+<p>Both numbers are in <code>common/constants/chat_limits.dart</code> (<code>twoPaneBreakpoint</code>, <code>listPaneWidth</code>). Because the choice is by width, a phone frame in a web page (such as <code>CairnMockupPhone</code>) gets the phone layout and a wide window gets two panes, with no platform checks. On very wide screens the right pane simply grows; wrap <code>ChatApp</code> in a <code>ConstrainedBox</code> if you prefer a maximum width.</p>
+
+<h2 id="l10n">Localisation</h2>
+<p>All visible text is English string literals in the views, and all dates are formatted by two small files. That keeps the template readable; to localise it:</p>
+<ol class="steps">
+<li><strong>Strings.</strong> Search <code>presentation/</code> and <code>core/presentation/</code> for <code>Text('</code> and <code>label:</code>; move each into your <code>AppLocalizations</code> (or a <code>ChatStrings</code> class) and pass the localisations in through the widget tree or read them with <code>AppLocalizations.of(context)</code>. Domain messages (<code>GroupProblem.message</code>) are plain strings: map the enum in the view instead.</li>
+<li><strong>Dates.</strong> <code>formatDayLabel</code>, <code>weekdayShort</code>, <code>dayMonth</code> and <code>formatClock</code> (<code>common/utils/dates.dart</code>), and <code>FormatRelativeTime</code> (&ldquo;12m&rdquo;, &ldquo;Yesterday&rdquo;, &ldquo;last seen&hellip;&rdquo;) are pure functions with the clock passed in. Reimplement them with <code>intl</code> (<code>DateFormat.MMMEd(locale)</code>, <code>DateFormat.Hm(locale)</code>); their unit tests show the cases to keep.</li>
+<li><strong>Plurals.</strong> &ldquo;1 photo / 3 photos&rdquo;, &ldquo;1 chat / 2 chats&rdquo;, &ldquo;1 new message&rdquo; are written with a small conditional in the views; use <code>Intl.plural</code>.</li>
+<li><strong>Right-to-left.</strong> Not mirrored. <code>CairnChatBubble</code> aligns sent bubbles to the physical right, and a few paddings use <code>left</code>/<code>right</code>. Treat RTL as work to do and test, not a switch.</li>
+</ol>
+
+<h2 id="testing">Testing</h2>
+<pre><button class="copy">Copy</button><code>cd templates/chat
+flutter pub get
+dart format .
+flutter analyze --fatal-infos --fatal-warnings
+flutter test</code></pre>
+<p>The suite has three layers: <strong>domain</strong> (ordering, search, paging, grouping, date labels, relative time, validation, reactions, mappers, seed, bot), <strong>session</strong> (cubits through the real container, no widgets) and <strong>widget</strong> tests that mount <code>ChatApp</code> at 320, 360, 390 and 700 pixels in light and dark and drive the whole journey.</p>
+<ul>
+<li><strong>Fix the clock and the latency:</strong> <code>ChatApp(now: () =&gt; DateTime(2026, 10, 9, 12), replyLatency: Duration.zero)</code>. With zero latency the bot answers on the next event-loop turns; pump a few short frames and it has replied.</li>
+<li><strong>Never <code>pumpAndSettle</code>.</strong> Cairn has repeating animations (spinner, skeleton, typing dots), so it never returns. Pump <code>tester.pump(const Duration(milliseconds: 100))</code> a handful of times.</li>
+<li><strong>Use real font metrics.</strong> <code>test/flutter_test_config.dart</code> loads Geist when it can find it, and the harness sets <code>fontFamily: 'Geist'</code> on the test theme; otherwise Flutter&rsquo;s test font draws every glyph as a wide box and reports overflows real text never has. With your own font, load it there the same way.</li>
+<li><strong>Push events by hand.</strong> <code>test/support/fake_sources.dart</code> has <code>WrappedSource</code>, a data source that wraps the in-memory one and adds <code>push(frame)</code>, a gate that holds the list back (to see skeletons) and a switch that makes sending fail. It is also the smallest example of a custom <code>ChatRemoteDataSource</code>.</li>
+<li><strong>Test your backend class</strong> by pointing <code>http.Client</code> at a <code>MockClient</code> and asserting on the JSON it returns; the mappers already have round-trip tests for every shape.</li>
+</ul>
+<pre><button class="copy" type="button">Copy</button><code>testWidgets('a pushed message shows up in the open thread', (tester) async {
+  final WrappedSource source = WrappedSource(InMemoryChatDataSource(
+    replyLatency: Duration.zero,
+    now: () =&gt; DateTime(2026, 10, 9, 12),
+  ));
+  addTearDown(source.dispose);
+  await mountChat(tester, dataSource: source);   // test/support/chat_harness.dart
+  await tester.tap(find.widgetWithText(ConversationTile, 'Mina Park'));
+  await pumpFrames(tester);
+
+  source.pushIncoming(
+    conversationId: 'c_mina',
+    senderId: 'u_mina',
+    text: 'Brand new message',
+  );
+  await pumpFrames(tester);
+
+  expect(find.text('Brand new message'), findsOneWidget);
+});</code></pre>
+
+<h2 id="faq">Troubleshooting</h2>
+<h3>My messages appear on the left</h3>
+<p><code>currentUserId</code> does not match the <code>senderId</code> your server puts on your messages. Pass the same id to <code>ChatApp</code> (and to the in-memory source, if you use it).</p>
+<h3>A message shows twice</h3>
+<p>Your server sent a <code>message</code> frame to the sender as well as returning it from the POST. Send the frame only to the other members, or make the frame carry the same <code>id</code> as the POST response; the template replaces by id.</p>
+<h3>Nothing updates until I reopen the screen</h3>
+<p><code>events()</code> must be a <em>broadcast</em> stream (<code>StreamController.broadcast()</code>), and frames must be <code>Map&lt;String, Object?&gt;</code>: convert <code>jsonDecode</code>&rsquo;s <code>Map&lt;String, dynamic&gt;</code> with <code>Json.from(...)</code> (the REST example does).</p>
+<h3>The list never leaves its skeleton</h3>
+<p><code>fetchConversations</code> threw or never completed. A failure on the first load shows &ldquo;Could not load your chats&rdquo; with a retry; a request that hangs shows skeletons forever, so give your HTTP client a timeout.</p>
+<h3>Images are missing after I copied the source</h3>
+<p>Set <code>ChatPackage.name = null</code> and declare the assets in your own <code>pubspec.yaml</code> (see <a href="#install">Install</a>).</p>
+<h3>Emoji draw as empty boxes</h3>
+<p>The font has no emoji and the platform provided no fallback (common in tests and some web builds). Add a colour emoji font to <code>CairnTheme.fontFamilyFallback</code>.</p>
+<h3>&ldquo;No ChatScope above this context&rdquo;</h3>
+<p>A view or <code>ViewModelBuilder</code> was built outside <code>ChatApp</code>. Mount <code>ChatApp</code> (it provides the scope), or wrap your tree in a <code>ChatScope</code> with a locator from <code>createChatLocator</code>.</p>
+<h3>&ldquo;A Timer is still pending&rdquo; in a test</h3>
+<p>You passed <code>chatDataSource</code> and did not dispose it. A data source you pass in is yours: <code>addTearDown(source.dispose)</code>. The built-in one is disposed with the app.</p>
+<h3>Everything is black and white and unstyled</h3>
+<p>The host app has no <code>CairnTheme</code>. Use <code>CairnTheme.materialTheme(...)</code> or add <code>CairnTheme.light</code> to <code>ThemeData.extensions</code>.</p>
+<h3>Toasts do nothing</h3>
+<p>A toast needs a <code>CairnToaster</code> above its caller. <code>ChatApp</code> provides one for its own screens; sheets and dialogs open on the root navigator, so the template shows toasts after they close.</p>
+
+<h2 id="migrate">Migration</h2>
+<table>
+<tr><th>When you&hellip;</th><th>Do this</th></tr>
+<tr><td>Upgrade <code>cairn_ui</code> to a new minor</td><td>Bump the constraint, run <code>flutter analyze</code> and <code>flutter test</code>. Components added in a minor never break this template; read the library&rsquo;s CHANGELOG for renames.</td></tr>
+<tr><td>Move from copied source to the package</td><td>Delete your copy, add the dependency, change imports back to <code>package:cairn_template_chat/…</code>, and move your edits (usually only your data source and the demo seed) into your own wrapper widget.</td></tr>
+<tr><td>Pull template updates into a copy</td><td>Diff <code>templates/chat/lib</code> between your last sync tag and the new one. Because dependencies point inwards, changes are almost always inside one layer.</td></tr>
+<tr><td>Add a field to a message (say <code>edited</code>)</td><td>Add it to <code>Message</code> and <code>props</code>; read and write it in <code>MessageMapper</code>; add it to your API; draw it in <code>message_bubble.dart</code>. The cubits and repositories do not change.</td></tr>
+<tr><td>Rename your JSON keys</td><td>Change the mappers (<code>domain/*/mappers</code>) only.</td></tr>
+<tr><td>Change state management</td><td>Cubits are plain streams of immutable states. Views only call <code>cubit.method()</code> and read <code>state</code>, so Riverpod or Provider can replace <code>BlocBuilder</code> view by view.</td></tr>
+<tr><td>Replace the navigation</td><td>See <a href="#deeplinks">deep links</a>: swap <code>ChatNavigationCubit</code> for your router and keep the views.</td></tr>
+<tr><td>Add a tab or a screen</td><td>Add a value to <code>ChatTab</code> (or a route to <code>ChatRoute</code>); the compiler then points at every <code>switch</code> in <code>chat_shell.dart</code> that needs a case.</td></tr>
+</table>
+<p>Version 1.0.0 is the first release; there is nothing to migrate from yet.</p>
+</main>
+</div>
+<script>
+(function(){
+  document.querySelectorAll('pre').forEach(function(pre){
+    var b=pre.querySelector('.copy'); if(!b) return;
+    b.addEventListener('click',function(){
+      var code=pre.querySelector('code').innerText;
+      var done=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1200)};
+      if(navigator.clipboard){navigator.clipboard.writeText(code).then(done,done)}else{done()}
+    });
+  });
+  var links=[].slice.call(document.querySelectorAll('nav.toc a'));
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){links.forEach(function(a){a.classList.remove('active')});var a=map[e.target.id];if(a)a.classList.add('active')}
+  })},{rootMargin:'-20% 0px -70% 0px'});
+  document.querySelectorAll('h2[id],h3[id]').forEach(function(h){io.observe(h)});
+  var root=document.documentElement, key='tpl-theme';
+  try{var s=localStorage.getItem(key);if(s)root.setAttribute('data-theme',s)}catch(e){}
+  document.getElementById('theme').addEventListener('click',function(){
+    var dark=root.getAttribute('data-theme')?root.getAttribute('data-theme')==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+    var next=dark?'light':'dark';root.setAttribute('data-theme',next);try{localStorage.setItem(key,next)}catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,7 +1,9 @@
 import 'package:cairn_site/src/app/routes.dart';
 import 'package:cairn_site/src/data/templates_catalog.dart';
 import 'package:cairn_site/src/pages/templates_page.dart';
+import 'package:cairn_template_auth/cairn_template_auth.dart';
 import 'package:cairn_template_blog/cairn_template_blog.dart';
+import 'package:cairn_template_chat/cairn_template_chat.dart';
 import 'package:cairn_template_dashboard/cairn_template_dashboard.dart';
 import 'package:cairn_template_docs/cairn_template_docs.dart';
 import 'package:cairn_template_landing/cairn_template_landing.dart';
@@ -57,6 +59,8 @@ void main() {
       'docs': DocsApp,
       'landing': LandingApp,
       'onboarding': OnboardingApp,
+      'auth': AuthApp,
+      'chat': ChatApp,
     };
     for (final MapEntry<String, Type> e in apps.entries) {
       testWidgets('/templates/${e.key} mounts its template', (

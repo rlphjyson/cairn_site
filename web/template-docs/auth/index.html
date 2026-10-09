@@ -1,0 +1,1006 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Auth template — documentation</title>
+<meta name="description" content="How to install, customise, connect to a backend, add social sign-in and secure sessions in the Cairn auth template.">
+<style>
+:root{--bg:#fff;--fg:#0a0a0a;--muted:#6b6b6b;--border:#e5e5e5;--card:#fafafa;--code:#f4f4f5;--accent:#0a0a0a;--accent-fg:#fafafa;--note:#eef6ff;--note-b:#bcd9f7;--warn:#fff7e6;--warn-b:#f2d18b;--ok:#ecfbf1;--ok-b:#a8e2bd}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0a0a0a;--fg:#fafafa;--muted:#a1a1a1;--border:#262626;--card:#111;--code:#171717;--accent:#fafafa;--accent-fg:#0a0a0a;--note:#0e1a2b;--note-b:#1f3a5c;--warn:#2a2007;--warn-b:#5c4710;--ok:#0b2316;--ok-b:#1c5233}}
+:root[data-theme=dark]{--bg:#0a0a0a;--fg:#fafafa;--muted:#a1a1a1;--border:#262626;--card:#111;--code:#171717;--accent:#fafafa;--accent-fg:#0a0a0a;--note:#0e1a2b;--note-b:#1f3a5c;--warn:#2a2007;--warn-b:#5c4710;--ok:#0b2316;--ok-b:#1c5233}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:inherit;text-decoration-color:var(--muted);text-underline-offset:3px}a:hover{text-decoration-color:currentColor}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);max-width:1180px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:28px 20px;border-right:1px solid var(--border);font-size:14px}
+nav.toc .brand{font-weight:650;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+nav.toc ol{list-style:none;margin:0;padding:0}nav.toc li{margin:2px 0}
+nav.toc a{display:block;padding:5px 10px;border-radius:8px;text-decoration:none;color:var(--muted)}
+nav.toc a:hover,nav.toc a.active{background:var(--card);color:var(--fg)}
+nav.toc ol ol{margin-left:12px}
+main{padding:48px 40px 96px;max-width:860px}
+h1{font-size:2.2rem;line-height:1.15;margin:0 0 8px;letter-spacing:-.02em}
+h2{font-size:1.5rem;margin:56px 0 12px;padding-top:24px;border-top:1px solid var(--border);letter-spacing:-.01em}
+h2:first-of-type{border-top:0}h3{font-size:1.1rem;margin:28px 0 8px}
+p,li{color:var(--fg)}.lead{color:var(--muted);font-size:1.1rem;margin:0 0 24px}
+code{font:13.5px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);padding:2px 6px;border-radius:6px}
+pre{position:relative;background:var(--code);border:1px solid var(--border);border-radius:12px;padding:16px 18px;overflow:auto;margin:14px 0}
+pre code{background:none;padding:0;font-size:13px;line-height:1.6;white-space:pre}
+.copy{position:absolute;top:8px;right:8px;border:1px solid var(--border);background:var(--bg);color:var(--muted);border-radius:8px;font-size:12px;padding:3px 9px;cursor:pointer}
+.copy:hover{color:var(--fg)}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+th{font-weight:600;background:var(--card)}
+.callout{border:1px solid;border-radius:12px;padding:12px 16px;margin:16px 0}.callout p{margin:4px 0}
+.callout.note{background:var(--note);border-color:var(--note-b)}.callout.warn{background:var(--warn);border-color:var(--warn-b)}.callout.ok{background:var(--ok);border-color:var(--ok-b)}
+.callout strong:first-child{display:block;margin-bottom:2px}
+.tree{white-space:pre;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.pill{display:inline-block;border:1px solid var(--border);border-radius:999px;padding:1px 10px;font-size:12px;color:var(--muted)}
+.steps{counter-reset:s;list-style:none;padding:0}.steps>li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+.steps>li:before{content:counter(s);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-fg);display:grid;place-items:center;font-size:13px;font-weight:600}
+button.theme{border:1px solid var(--border);background:var(--bg);color:var(--fg);border-radius:8px;padding:3px 8px;cursor:pointer;font-size:12px}
+@media (max-width:900px){.layout{display:block}nav.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border)}main{padding:28px 20px 64px}}
+@media print{nav.toc,.copy,button.theme{display:none}.layout{display:block}main{max-width:none;padding:0}pre{white-space:pre-wrap}a{text-decoration:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Contents">
+  <div class="brand"><span>Auth template</span><button class="theme" id="theme" type="button" aria-label="Toggle theme">Theme</button></div>
+  <ol>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#requirements">Requirements</a></li>
+    <li><a href="#install">Install</a></li>
+    <li><a href="#mount">Mount it</a></li>
+    <li><a href="#flows">The flows</a></li>
+    <li><a href="#customise">Copy, brand and rules</a></li>
+    <li><a href="#backend">Connect a backend</a>
+      <ol><li><a href="#contract">The contract</a></li><li><a href="#rest">REST example</a></li><li><a href="#firebase">Firebase Auth example</a></li><li><a href="#di">Registering it</a></li></ol></li>
+    <li><a href="#social">Social sign-in</a></li>
+    <li><a href="#storage">Secure session storage</a></li>
+    <li><a href="#abuse">Enumeration and rate limits</a></li>
+    <li><a href="#deeplinks">Deep links for reset</a></li>
+    <li><a href="#navigation">Use go_router</a></li>
+    <li><a href="#l10n">Localisation</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#faq">Troubleshooting</a></li>
+    <li><a href="#migrate">Migration</a></li>
+  </ol>
+</nav>
+<main>
+<h1>Auth template</h1>
+<p class="lead">Authentication screens for a mobile app, built only from <code>cairn_ui</code>. This guide takes you from <em>copy it in</em> to <em>shipping it against your own backend</em>.</p>
+
+<h2 id="overview">Overview</h2>
+<p>The template is a Flutter package, <code>cairn_template_auth</code>, that exposes one widget: <code>AuthApp</code>. It has seven screens with their own back stack and transitions:</p>
+<ul>
+<li><strong>Welcome</strong> – brand mark and tagline, <em>Continue with Google</em> and <em>Continue with Apple</em> buttons, <em>Sign in with email</em>, <em>Create an account</em> and the legal links.</li>
+<li><strong>Sign in</strong> – email, password (show/hide), remember me, forgot password, inline validation, a loading state, a wrong-credentials alert and a rate limit with a text countdown.</li>
+<li><strong>Sign up</strong> – name, email, a password with a strength meter (<code>CairnProgress</code> plus Too short, Weak, Fair or Strong) and a live rules checklist, confirmation, terms, and an &ldquo;already registered&rdquo; error.</li>
+<li><strong>Forgot password</strong> – email, then <em>Check your inbox</em>, which is the same whether or not the account exists.</li>
+<li><strong>Verify code</strong> – a six-digit <code>CairnInputOtp</code> with paste, a wrong-code message, an attempts limit and a resend cooldown.</li>
+<li><strong>Reset password</strong> – a new password with the meter, a confirmation and a success state.</li>
+<li><strong>Signed in</strong> – a placeholder with avatar initials, the person&rsquo;s name, sign out and a note about the <code>onAuthenticated</code> hook.</li>
+</ul>
+<p>It is organised as <strong>clean architecture by layer, then by feature</strong>, with <code>flutter_bloc</code> for state and <code>get_it</code> for dependency injection. Nothing is generated.</p>
+<pre class="tree">lib/
+├─ cairn_template_auth.dart        barrel: AuthApp and the types a host needs
+├─ auth_app.dart                   entry widget
+├─ core/
+│  ├─ infrastructure/di/           get_it registration (auth_injection.dart)
+│  └─ presentation/                navigation cubit, widgets, copy, ViewModel
+├─ common/                         policy numbers, demo account, clock, ticker
+├─ data/auth/                      remote data source (+ in-memory server), repository
+├─ domain/&lt;feature&gt;/               models, mappers, repository interface, use cases
+└─ presentation/&lt;feature&gt;/         bloc, view models, views, widgets (+ shell/)</pre>
+<div class="callout note"><strong>The one rule to remember</strong><p>Dependencies point inwards: presentation &rarr; domain &larr; data. To connect a server you write one class, <code>AuthRemoteDataSource</code>, and touch nothing else. To change how a screen looks you touch <code>presentation/</code>.</p></div>
+<p>Accessibility is part of the design: fields, buttons and stand-alone links have 44 px tap areas, icon buttons have labels, an error is part of its field&rsquo;s spoken name and is announced when it appears, focus rings come from Cairn, nothing overflows at 320 px or with large system text, and with the platform&rsquo;s reduce-motion setting on screens swap with no animation. The layout mirrors for right-to-left languages.</p>
+
+<h2 id="requirements">Requirements</h2>
+<table>
+<tr><th>Tool</th><th>Version</th></tr>
+<tr><td>Flutter</td><td>3.44 or newer (Dart 3.12)</td></tr>
+<tr><td><code>cairn_ui</code></td><td>^0.2.0</td></tr>
+<tr><td><code>flutter_bloc</code>, <code>get_it</code>, <code>equatable</code></td><td>pulled in by the package</td></tr>
+</table>
+<p>The template needs a <code>CairnTheme</code> above it (see <a href="#mount">Mount it</a>) and a bounded size: it fills whatever space it is given.</p>
+
+<h2 id="install">Install</h2>
+<h3>A. As a package (recommended)</h3>
+<p>Keeping it a package means you can pull in fixes later with a version bump.</p>
+<pre><button class="copy" type="button">Copy</button><code># pubspec.yaml
+dependencies:
+  cairn_ui: ^0.2.0
+  cairn_template_auth:
+    git:
+      url: https://github.com/rlphjyson/cairn_site.git
+      path: templates/auth
+      ref: main            # pin a tag or commit for production</code></pre>
+<p>Or, from a local checkout: <code>path: ../cairn_site/templates/auth</code>.</p>
+<h3>B. Copy the source into your app</h3>
+<ol class="steps">
+<li>Copy <code>templates/auth/lib/</code> into <code>lib/auth/</code> in your app.</li>
+<li>Add <code>cairn_ui</code>, <code>flutter_bloc</code>, <code>get_it</code> and <code>equatable</code> to your <code>pubspec.yaml</code>.</li>
+<li>Rewrite the <code>package:cairn_template_auth/…</code> imports to your app&rsquo;s package name (a find-and-replace). Files inside the template use relative imports, so only your own references change.</li>
+<li>Delete <code>cairn_template_auth.dart</code> if you do not want the barrel. The template has no assets, so <code>AuthPackage.name</code> only matters if you add images.</li>
+</ol>
+<p>Copying is the way to go when you want to edit the views, the copy or the DI file directly. Most changes in this guide are possible without it.</p>
+
+<h2 id="mount">Mount it</h2>
+<p>A complete <code>main.dart</code> that shows the template until someone signs in, then your own home screen:</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'package:cairn_template_auth/cairn_template_auth.dart';
+import 'package:cairn_ui/cairn_ui.dart';
+import 'package:flutter/material.dart';
+
+void main() =&gt; runApp(const MyApp());
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State&lt;MyApp&gt; createState() =&gt; _MyAppState();
+}
+
+class _MyAppState extends State&lt;MyApp&gt; {
+  Session? _session;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: CairnTheme.materialTheme(CairnTheme.light),
+      darkTheme: CairnTheme.materialTheme(CairnTheme.dark),
+      home: _session == null
+          ? Scaffold(
+              body: AuthApp(
+                onAuthenticated: (Session session) =&gt;
+                    setState(() =&gt; _session = session),
+                onLegalLink: (AuthLegalLink link) {
+                  // Open your terms or privacy page here.
+                },
+                showDemoHint: true, // prints the demo account; remove in a real app
+              ),
+            )
+          : Scaffold(
+              body: SafeArea(
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 16,
+                    children: &lt;Widget&gt;[
+                      Text('Hello, ${_session!.account.name}'),
+                      CairnButton(
+                        onPressed: () =&gt; setState(() =&gt; _session = null),
+                        child: const Text('Sign out'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+    );
+  }
+}</code></pre>
+<p><code>AuthApp</code> takes these arguments, all optional:</p>
+<table>
+<tr><th>Argument</th><th>What it does</th></tr>
+<tr><td><code>onAuthenticated(Session)</code></td><td>Runs whenever someone signs in or up, by any route (email, social, sign-up). Navigate to your home screen here. This is the hook the signed-in placeholder explains.</td></tr>
+<tr><td><code>onSignedOut()</code></td><td>Runs after the placeholder&rsquo;s sign-out completes.</td></tr>
+<tr><td><code>authDataSource</code></td><td>Your backend. Defaults to the in-memory server. Read once, when the app is first built.</td></tr>
+<tr><td><code>startOn</code></td><td><code>AuthScreen.welcome</code> (default), <code>signIn</code>, <code>signUp</code> or <code>forgotPassword</code>. Also where the app returns after a sign-out.</td></tr>
+<tr><td><code>onSocialSignIn</code>, <code>socialProviders</code></td><td>Run a provider&rsquo;s SDK and choose which buttons show. See <a href="#social">Social sign-in</a>.</td></tr>
+<tr><td><code>onLegalLink(AuthLegalLink)</code></td><td>Called for the Terms and Privacy Policy links.</td></tr>
+<tr><td><code>resetToken</code></td><td>Start on the reset screen from a link. See <a href="#deeplinks">Deep links</a>.</td></tr>
+<tr><td><code>recoveryByLink</code></td><td>For backends that email a link rather than a code.</td></tr>
+<tr><td><code>showDemoHint</code></td><td>Prints <code>ada@example.com</code>, <code>Cairn-demo-1</code> and the demo code on screen.</td></tr>
+</table>
+<div class="callout note"><strong>The demo</strong><p>Out of the box the template talks to an in-memory server with one user, <code>ada@example.com</code> / <code>Cairn-demo-1</code>. A reset code is accepted when it is <code>123456</code>. Five wrong passwords lock sign-in for 30 seconds; five wrong codes lock the code until a new one is requested.</p></div>
+
+<h2 id="flows">The flows</h2>
+<p>Navigation is a stack held by <code>AuthNavigationCubit</code> and shown by a nested <code>Navigator</code>. The pages below the top one stay alive, so a form keeps what was typed when you go back.</p>
+<pre class="tree">welcome ──Sign in with email──▶ signIn ──success──▶ signedIn ──Sign out──▶ welcome
+   │                              │  ▲                    ▲
+   │                              │  └───────────────┐    │ onAuthenticated(session)
+   │                  Forgot password?                │    │
+   │                              ▼                   │    │
+   │                        forgotPassword            │    │
+   │                              │ Send code         │    │
+   │                              ▼                   │    │
+   │                  &quot;Check your inbox&quot; (same reply for everyone)
+   │                              │ Enter code        │    │
+   │                              ▼                   │    │
+   │                         verifyCode ──right code──▶ resetPassword
+   │                          (wrong: attempts left;        │ Update password
+   │                           5 wrong: locked until        ▼
+   │                           a new code)            &quot;Password updated&quot;
+   │                                                        │ Continue to sign in
+   │                                                        └─▶ signIn (email prefilled, fresh form)
+   │
+   ├──Create an account──▶ signUp ──success──▶ signedIn
+   └──Continue with Google / Apple──▶ (provider SDK) ──▶ signedIn</pre>
+<table>
+<tr><th>Rule</th><th>Where</th></tr>
+<tr><td>Sign-in, sign-up and social sign-in all end in <code>SessionCubit.start(session)</code>. <code>AuthProviders</code> reacts once: it shows <code>signedIn</code> and calls <code>onAuthenticated</code>.</td><td><code>presentation/shell/auth_providers.dart</code></td></tr>
+<tr><td>Sign out ends in <code>SessionCubit.signOut()</code>; <code>AuthProviders</code> returns to the start screen and calls <code>onSignedOut</code>.</td><td>same file</td></tr>
+<tr><td>Verifying a code replaces the forgot-password and verify screens with the reset screen, so back goes to where recovery began.</td><td><code>AuthNavigationCubit.replaceTrailing</code></td></tr>
+<tr><td>Going back to a screen that is already on the stack pops to it instead of stacking another copy.</td><td><code>AuthNavigationCubit.switchTo</code></td></tr>
+<tr><td>The system back gesture steps back while there is something to go back to, then falls through to your app.</td><td><code>AuthShell</code> (<code>NavigatorPopHandler</code>)</td></tr>
+</table>
+
+<h2 id="customise">Copy, brand and rules</h2>
+<h3>Words</h3>
+<p>Every string the screens show is a member of <code>AuthCopy</code> (<code>core/presentation/auth_copy.dart</code>): titles, buttons, placeholders, the password rules, and the message for each validation issue and each failure. Edit them to change the voice. The messages about sign-in never say whether the email or the password was wrong, and the messages about recovery never say whether an account exists; keep it that way when you rewrite them.</p>
+<pre><button class="copy" type="button">Copy</button><code>// auth_copy.dart
+static const String brandName = 'Northwind';
+static const String tagline = 'Plan the week in one place.';
+static const String signInTitle = 'Welcome back';</code></pre>
+<h3>Logo</h3>
+<p>The mark on the welcome screen is <code>BrandMark</code>, drawn from theme colours. Replace its body with your own logo and every screen follows:</p>
+<pre><button class="copy" type="button">Copy</button><code>// core/presentation/widgets/brand_mark.dart
+@override
+Widget build(BuildContext context) =&gt; Image.asset(
+  'assets/logo.png',
+  width: size,
+  height: size,
+  semanticLabel: 'Northwind',
+);</code></pre>
+<p>If the image ships inside the template package, pass <code>package: AuthPackage.name</code> too, and declare the assets in the package&rsquo;s <code>pubspec.yaml</code>.</p>
+<h3>Colours, radius, type</h3>
+<p>None of them are in the template. Everything resolves through <code>CairnTheme</code>, so a custom theme re-skins every screen:</p>
+<pre><button class="copy" type="button">Copy</button><code>theme: CairnTheme.materialTheme(
+  CairnTheme.light.copyWith(radius: 14, fontFamily: 'Inter'),
+),</code></pre>
+<h3>Policy numbers</h3>
+<p><code>common/constants/auth_policy.dart</code> holds every number the screens, the validators and the in-memory server share:</p>
+<table>
+<tr><th>Constant</th><th>Default</th><th>Used for</th></tr>
+<tr><td><code>minPasswordLength</code></td><td>8</td><td>the length rule and its checklist line</td></tr>
+<tr><td><code>longPasswordLength</code></td><td>12</td><td>the extra strength point for length</td></tr>
+<tr><td><code>maxSignInAttempts</code>, <code>signInLockout</code></td><td>5, 30 s</td><td>the in-memory server&rsquo;s sign-in lockout</td></tr>
+<tr><td><code>codeLength</code></td><td>6</td><td>the OTP field and <code>ValidateCode</code></td></tr>
+<tr><td><code>maxCodeAttempts</code>, <code>codeLifetime</code></td><td>5, 10 min</td><td>the in-memory server&rsquo;s code rules; the confirmation copy</td></tr>
+<tr><td><code>resendCooldown</code></td><td>30 s</td><td>the resend countdown on the verify screen</td></tr>
+<tr><td><code>commonPasswords</code></td><td>a short list</td><td>rejected whatever their score</td></tr>
+</table>
+<div class="callout warn"><strong>Client numbers are a mirror</strong><p>The cooldowns on screen are driven by what the server says (<code>retryAfterSeconds</code>), falling back to these defaults. The server must enforce its own limits; the client can only display them.</p></div>
+<h3>Password rules</h3>
+<p>Which rules are required lives on the enum in <code>domain/validation/models/password_assessment.dart</code>. To require a symbol, flip one flag:</p>
+<pre><button class="copy" type="button">Copy</button><code>enum PasswordRule {
+  minLength(required: true),
+  mixedCase(required: true),
+  number(required: true),
+  symbol(required: true), // was false: now the checklist says so and validation enforces it
+  ...
+}</code></pre>
+<p>To drop the case and number rules in favour of length alone (current guidance favours long passwords over composition rules), set <code>mixedCase</code> and <code>number</code> to <code>required: false</code> and raise <code>minPasswordLength</code>. The checklist, the validators and the meter all read the same enum.</p>
+<h3>Strength scoring</h3>
+<p><code>PasswordStrength</code> is deliberately small: one point each for mixed case, a digit, a symbol and 12 or more characters, with common passwords capped at weak. To use a dictionary-aware estimator (zxcvbn and its ports), keep the class and its return type, and change only how the level is chosen. Everything else reads the returned <code>PasswordAssessment</code>:</p>
+<pre><button class="copy" type="button">Copy</button><code>class PasswordStrength {
+  const PasswordStrength(this._estimate);
+
+  /// Your estimator: returns 0 (guessable) to 4 (very hard to guess).
+  final int Function(String password) _estimate;
+
+  PasswordAssessment call(String password) {
+    if (password.isEmpty) return PasswordAssessment.empty;
+    final int score = _estimate(password);
+    final bool longEnough = password.length &gt;= AuthPolicy.minPasswordLength;
+    final PasswordStrengthLevel level = !longEnough
+        ? PasswordStrengthLevel.tooShort
+        : score &lt;= 1
+        ? PasswordStrengthLevel.weak
+        : score == 2
+        ? PasswordStrengthLevel.fair
+        : PasswordStrengthLevel.strong;
+    return PasswordAssessment(
+      level: level,
+      score: longEnough ? (score + 1) / 5 : 0.2 * password.length / AuthPolicy.minPasswordLength,
+      met: &lt;PasswordRule&gt;{
+        if (longEnough) PasswordRule.minLength,
+        // ...the other rules, as in the original
+      },
+      isCommon: score == 0,
+    );
+  }
+}</code></pre>
+<h3>Email and name rules</h3>
+<p><code>ValidateEmail</code> checks the shape only (one <code>@</code>, a dotted domain, at most 254 characters) because the only real proof an address works is mailing it. <code>ValidateName</code> wants two characters. Both are tiny classes in <code>domain/validation/use_cases/</code>; change them and the unit tests tell you what moved.</p>
+<h3>Adding a field or a screen</h3>
+<ol class="steps">
+<li>Add a value to <code>AuthField</code> and, if it has new messages, to <code>ValidationIssue</code> and <code>AuthCopy.issue</code>.</li>
+<li>Extend the use case (<code>SignUp</code>) and the cubit&rsquo;s <code>submit</code>; pass the value to the repository and the data source.</li>
+<li>Add a <code>LabeledInput</code> to the view, wired like its neighbours (<code>onChanged</code> clears the issue, <code>onFocusLost</code> validates).</li>
+<li>For a new screen (a two-factor step, say): add a value to <code>AuthScreen</code>, a cubit, a view model, a view, one <code>registerFactoryParam</code> line in <code>auth_injection.dart</code> and one <code>case</code> in <code>AuthShell._screen</code>.</li>
+</ol>
+
+<h2 id="backend">Connect a backend</h2>
+<p>Everything the template knows about a server is one interface, <code>AuthRemoteDataSource</code>. It takes plain arguments and returns the decoded JSON body. <code>AuthMapper</code> turns that into models and is the only code that knows the wire format.</p>
+
+<h3 id="contract">The contract</h3>
+<table>
+<tr><th>Method</th><th>Arguments</th><th>Success body</th><th>Error <code>code</code>s</th></tr>
+<tr><td><code>signIn</code></td><td>email, password, remember</td><td>a session</td><td><code>invalid_credentials</code>, <code>rate_limited</code></td></tr>
+<tr><td><code>signUp</code></td><td>name, email, password</td><td>a session</td><td><code>email_taken</code></td></tr>
+<tr><td><code>signInWithProvider</code></td><td>provider (<code>google</code> or <code>apple</code>), idToken</td><td>a session</td><td><code>invalid_credentials</code></td></tr>
+<tr><td><code>requestPasswordReset</code></td><td>email</td><td>anything without <code>error</code></td><td><code>rate_limited</code></td></tr>
+<tr><td><code>verifyCode</code></td><td>email, code</td><td><code>{"resetToken": "…"}</code></td><td><code>invalid_code</code>, <code>code_expired</code>, <code>too_many_attempts</code></td></tr>
+<tr><td><code>resetPassword</code></td><td>resetToken, password</td><td>anything without <code>error</code></td><td><code>code_expired</code></td></tr>
+<tr><td><code>signOut</code></td><td>none</td><td>anything without <code>error</code></td><td>none</td></tr>
+</table>
+<pre><button class="copy" type="button">Copy</button><code>// a session
+{ "user": { "id": "u_1", "name": "Ada Lovelace", "email": "ada@example.com" },
+  "accessToken": "opaque", "refreshToken": "opaque", "expiresIn": 3600 }
+
+// any failure (a non-2xx body decodes to the same shape)
+{ "error": { "code": "rate_limited", "retryAfterSeconds": 30 } }
+{ "error": { "code": "invalid_code", "attemptsRemaining": 3 } }</code></pre>
+<p>Codes the mapper does not know become &ldquo;Something went wrong&rdquo;. A thrown <code>Exception</code> (a dropped socket, a timeout, a TLS error) becomes &ldquo;You seem to be offline&rdquo;; a body that does not have the documented shape becomes the generic failure. <code>refreshToken</code> and <code>expiresIn</code> are optional.</p>
+
+<h3 id="rest">REST example</h3>
+<p>With <code>package:http</code>. It adapts status codes to the error envelope for servers that do not send one, and it keeps the access token it was given so <code>signOut</code> can send it:</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'dart:convert';
+
+import 'package:cairn_template_auth/cairn_template_auth.dart';
+import 'package:http/http.dart' as http;
+
+class RestAuthRemoteDataSource implements AuthRemoteDataSource {
+  RestAuthRemoteDataSource(this._client, {required Uri baseUrl}) : _base = baseUrl;
+
+  final http.Client _client;
+  final Uri _base; // for example https://api.example.com/v1/auth/
+  String? _accessToken;
+
+  Future&lt;Map&lt;String, Object?&gt;&gt; _post(
+    String path,
+    Map&lt;String, Object?&gt; body,
+  ) async {
+    final http.Response response = await _client
+        .post(
+          _base.resolve(path),
+          headers: &lt;String, String&gt;{
+            'content-type': 'application/json',
+            if (_accessToken != null) 'authorization': 'Bearer $_accessToken',
+          },
+          body: jsonEncode(body),
+        )
+        .timeout(const Duration(seconds: 15)); // a timeout becomes "offline"
+
+    final Object? decoded =
+        response.body.isEmpty ? null : jsonDecode(response.body);
+    final Map&lt;String, Object?&gt; json =
+        decoded is Map&lt;String, Object?&gt; ? decoded : &lt;String, Object?&gt;{};
+
+    if (response.statusCode &gt;= 400 &amp;&amp; json['error'] == null) {
+      final int? retry = int.tryParse(response.headers['retry-after'] ?? '');
+      return &lt;String, Object?&gt;{
+        'error': &lt;String, Object?&gt;{
+          'code': switch (response.statusCode) {
+            401 =&gt; 'invalid_credentials',
+            409 =&gt; 'email_taken',
+            410 =&gt; 'code_expired',
+            429 =&gt; 'rate_limited',
+            _ =&gt; 'unknown',
+          },
+          'retryAfterSeconds': ?retry,
+        },
+      };
+    }
+    _accessToken = json['accessToken'] as String? ?? _accessToken;
+    return json;
+  }
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; signIn({
+    required String email,
+    required String password,
+    required bool remember,
+  }) =&gt; _post('sign-in', &lt;String, Object?&gt;{
+    'email': email,
+    'password': password,
+    'remember': remember,
+  });
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; signUp({
+    required String name,
+    required String email,
+    required String password,
+  }) =&gt; _post('sign-up', &lt;String, Object?&gt;{
+    'name': name,
+    'email': email,
+    'password': password,
+  });
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; signInWithProvider({
+    required String provider,
+    required String idToken,
+  }) =&gt; _post('social', &lt;String, Object?&gt;{
+    'provider': provider,
+    'idToken': idToken,
+  });
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; requestPasswordReset({required String email}) =&gt;
+      _post('password/forgot', &lt;String, Object?&gt;{'email': email});
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; verifyCode({
+    required String email,
+    required String code,
+  }) =&gt; _post('password/verify', &lt;String, Object?&gt;{'email': email, 'code': code});
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; resetPassword({
+    required String resetToken,
+    required String password,
+  }) =&gt; _post('password/reset', &lt;String, Object?&gt;{
+    'resetToken': resetToken,
+    'password': password,
+  });
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; signOut() async {
+    final Map&lt;String, Object?&gt; result = await _post('sign-out', &lt;String, Object?&gt;{});
+    _accessToken = null;
+    return result;
+  }
+}</code></pre>
+<div class="callout note"><strong>Always HTTPS</strong><p>Send credentials only over TLS. Never log request bodies, and never put a password or a code in a URL: they end up in server logs and proxies.</p></div>
+
+<h3 id="firebase">Firebase Auth example</h3>
+<p>Firebase Auth does the hashing, rate limiting and token refresh for you, and persists the session itself, so you store nothing. Two differences matter: it emails a <strong>link</strong> (not a six-digit code) for password reset, and the access token is an ID token from <code>getIdToken()</code>. Use <code>recoveryByLink: true</code> so the screens do not ask for a code (see <a href="#deeplinks">Deep links</a> for opening the link):</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'package:cairn_template_auth/cairn_template_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+class FirebaseAuthRemoteDataSource implements AuthRemoteDataSource {
+  FirebaseAuthRemoteDataSource([FirebaseAuth? auth])
+    : _auth = auth ?? FirebaseAuth.instance;
+
+  final FirebaseAuth _auth;
+
+  Future&lt;Map&lt;String, Object?&gt;&gt; _session(User user, {String? name}) async =&gt;
+      &lt;String, Object?&gt;{
+        'user': &lt;String, Object?&gt;{
+          'id': user.uid,
+          'name': user.displayName ?? name ?? '',
+          'email': user.email ?? '',
+        },
+        'accessToken': await user.getIdToken() ?? '',
+        'expiresIn': 3600,
+      };
+
+  static Map&lt;String, Object?&gt; _error(String code) =&gt; &lt;String, Object?&gt;{
+    'error': &lt;String, Object?&gt;{'code': code},
+  };
+
+  static String _codeFor(String firebaseCode) =&gt; switch (firebaseCode) {
+    'email-already-in-use' =&gt; 'email_taken',
+    'too-many-requests' =&gt; 'rate_limited',
+    'invalid-credential' ||
+    'wrong-password' ||
+    'user-not-found' ||
+    'invalid-email' ||
+    'user-disabled' =&gt; 'invalid_credentials',
+    'expired-action-code' || 'invalid-action-code' =&gt; 'code_expired',
+    _ =&gt; 'unknown',
+  };
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; signIn({
+    required String email,
+    required String password,
+    required bool remember,
+  }) async {
+    try {
+      final UserCredential credential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return _session(credential.user!);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'network-request-failed') rethrow; // shown as "offline"
+      return _error(_codeFor(e.code));
+    }
+  }
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; signUp({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final UserCredential credential = await _auth
+          .createUserWithEmailAndPassword(email: email, password: password);
+      await credential.user!.updateDisplayName(name);
+      return _session(credential.user!, name: name);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'network-request-failed') rethrow;
+      return _error(_codeFor(e.code));
+    }
+  }
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; signInWithProvider({
+    required String provider,
+    required String idToken,
+  }) async {
+    try {
+      // Apple also needs the raw nonce you hashed into its request.
+      final AuthCredential credential = provider == 'google'
+          ? GoogleAuthProvider.credential(idToken: idToken)
+          : OAuthProvider('apple.com').credential(idToken: idToken); // plus rawNonce
+      final UserCredential result = await _auth.signInWithCredential(credential);
+      return _session(result.user!);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'network-request-failed') rethrow;
+      return _error(_codeFor(e.code));
+    }
+  }
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; requestPasswordReset({required String email}) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      // Answer the same for an unknown address. Projects with email
+      // enumeration protection (the default) never throw this anyway.
+      if (e.code != 'user-not-found') rethrow;
+    }
+    return &lt;String, Object?&gt;{'accepted': true};
+  }
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; verifyCode({
+    required String email,
+    required String code,
+  }) =&gt; throw UnsupportedError(
+    'Firebase emails a link, not a code. Mount AuthApp(recoveryByLink: true).',
+  );
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; resetPassword({
+    required String resetToken, // the link's oobCode
+    required String password,
+  }) async {
+    try {
+      await _auth.confirmPasswordReset(code: resetToken, newPassword: password);
+      return &lt;String, Object?&gt;{'ok': true};
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'network-request-failed') rethrow;
+      return _error(_codeFor(e.code));
+    }
+  }
+
+  @override
+  Future&lt;Map&lt;String, Object?&gt;&gt; signOut() async {
+    await _auth.signOut();
+    return &lt;String, Object?&gt;{'ok': true};
+  }
+}</code></pre>
+<p>On launch, restore the session before mounting the template: <code>FirebaseAuth.instance.currentUser != null</code> means the person is already signed in, so show your home screen and skip <code>AuthApp</code> entirely.</p>
+
+<h3 id="di">Registering it</h3>
+<p>As a package, pass the data source to the widget:</p>
+<pre><button class="copy" type="button">Copy</button><code>AuthApp(
+  authDataSource: RestAuthRemoteDataSource(
+    http.Client(),
+    baseUrl: Uri.parse('https://api.example.com/v1/auth/'),
+  ),
+  onAuthenticated: (Session session) =&gt; router.go('/home'),
+)</code></pre>
+<p>As copied source, edit the one registration in <code>core/infrastructure/di/auth_injection.dart</code>:</p>
+<pre><button class="copy" type="button">Copy</button><code>// Data source. Replace it with one that calls your backend.
+g.registerLazySingleton&lt;AuthRemoteDataSource&gt;(
+  () =&gt; dataSource ??
+      RestAuthRemoteDataSource(
+        http.Client(),
+        baseUrl: Uri.parse('https://api.example.com/v1/auth/'),
+      ),
+);</code></pre>
+<p>Nothing else changes. The repository, the use cases, the cubits and the screens only ever see models. Delete <code>InMemoryAuthRemoteDataSource</code>, <code>DemoAccount</code> and the <code>showDemoHint</code> copy once you no longer need the demo.</p>
+
+<h2 id="social">Social sign-in</h2>
+<p>The welcome screen shows <em>Continue with Google</em> and <em>Continue with Apple</em> buttons. The template ships generic Material glyphs, not the providers&rsquo; logos, because each provider&rsquo;s brand guidelines require its official button. The wiring point is one function, <code>SocialIdTokenProvider</code>: run the provider&rsquo;s SDK, return the ID token it gives you, or return <code>null</code> if the person cancelled. The template sends the token to your data source&rsquo;s <code>signInWithProvider</code>, and your server <strong>verifies it with the provider</strong> (signature, audience, expiry, nonce) before creating a session. Never trust a token the client says is valid.</p>
+<pre><button class="copy" type="button">Copy</button><code>AuthApp(
+  authDataSource: myDataSource,
+  socialProviders: &lt;SocialProvider&gt;[
+    SocialProvider.google,
+    if (Platform.isIOS) SocialProvider.apple,
+  ],
+  onSocialSignIn: (SocialProvider provider) async {
+    switch (provider) {
+      case SocialProvider.google:
+        return signInWithGoogle();
+      case SocialProvider.apple:
+        return signInWithApple();
+    }
+  },
+)</code></pre>
+<h3>google_sign_in</h3>
+<p>For <code>google_sign_in</code> 7 or newer (check the package&rsquo;s changelog for your version). Initialise once at start-up, with your web client ID as <code>serverClientId</code> so the ID token&rsquo;s audience is your backend:</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'package:google_sign_in/google_sign_in.dart';
+
+Future&lt;void&gt; initGoogle() =&gt;
+    GoogleSignIn.instance.initialize(serverClientId: 'YOUR_WEB_CLIENT_ID');
+
+Future&lt;String?&gt; signInWithGoogle() async {
+  try {
+    final GoogleSignInAccount account = await GoogleSignIn.instance.authenticate();
+    return account.authentication.idToken;
+  } on GoogleSignInException catch (e) {
+    if (e.code == GoogleSignInExceptionCode.canceled) return null; // not an error
+    rethrow; // shown as "You seem to be offline"
+  }
+}</code></pre>
+<h3>sign_in_with_apple</h3>
+<p>Apple wants a nonce: send its SHA-256 to Apple, and the raw value to your server with the token so it can check the two match. Pass the raw nonce to your data source however suits your API (a closure over the nonce you generated is simplest):</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'dart:convert';
+import 'dart:math';
+
+import 'package:crypto/crypto.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+
+String lastRawNonce = '';
+
+Future&lt;String?&gt; signInWithApple() async {
+  final Random random = Random.secure();
+  lastRawNonce = base64UrlEncode(
+    List&lt;int&gt;.generate(32, (_) =&gt; random.nextInt(256)),
+  );
+  final String hashed = sha256.convert(utf8.encode(lastRawNonce)).toString();
+  try {
+    final AuthorizationCredentialAppleID credential =
+        await SignInWithApple.getAppleIDCredential(
+          scopes: &lt;AppleIDAuthorizationScopes&gt;[
+            AppleIDAuthorizationScopes.email,
+            AppleIDAuthorizationScopes.fullName,
+          ],
+          nonce: hashed,
+        );
+    return credential.identityToken;
+  } on SignInWithAppleAuthorizationException catch (e) {
+    if (e.code == AuthorizationErrorCode.canceled) return null;
+    rethrow;
+  }
+}</code></pre>
+<div class="callout warn"><strong>Things that bite</strong><ul>
+<li>Apple returns the person&rsquo;s name only the first time they authorise. Save it then.</li>
+<li>The App Store requires Sign in with Apple when an iOS app offers other third-party sign-in (review guideline 4.8), unless an exception applies. Show both, or neither, on iOS.</li>
+<li>Replace <code>SocialButton</code> (<code>presentation/welcome/widgets/social_button.dart</code>) with the providers&rsquo; official button widgets or assets when you ship.</li>
+</ul></div>
+<p>Without <code>onSocialSignIn</code> the buttons send a placeholder token, which the in-memory server accepts and a real one rejects. Pass <code>socialProviders: const []</code> to hide the section and its &ldquo;or&rdquo; divider.</p>
+
+<h2 id="storage">Secure session storage</h2>
+<p>The template keeps the session in memory only, for the life of the mounted <code>AuthApp</code>. Closing the app signs the person out. To keep them signed in, persist <strong>one thing: the refresh token</strong>, in the platform keystore, and restore it before showing any screen.</p>
+<table>
+<tr><th>Value</th><th>Where it lives</th><th>Why</th></tr>
+<tr><td>Password</td><td>a text controller, cleared on success</td><td>never stored, never in a cubit state, never logged</td></tr>
+<tr><td>Access token</td><td>memory (<code>Session.accessToken</code>)</td><td>short-lived (minutes); a new one comes from the refresh token</td></tr>
+<tr><td>Refresh token</td><td>Keychain / Keystore (<code>Session.refreshToken</code>)</td><td>long-lived, so it needs hardware-backed storage; rotate it on every use</td></tr>
+<tr><td>Reset token, one-time code</td><td>memory, single use</td><td>an attacker who reads it can take the account</td></tr>
+</table>
+<p><code>Session</code> leaves both tokens out of its equality and <code>toString</code>, so a logged or equatable-printed state never shows them. Keep that habit in your own code.</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+class SessionStore {
+  SessionStore([FlutterSecureStorage? storage])
+    : _storage = storage ?? const FlutterSecureStorage();
+
+  static const String _key = 'refresh_token';
+  final FlutterSecureStorage _storage;
+
+  Future&lt;String?&gt; read() =&gt; _storage.read(key: _key);
+  Future&lt;void&gt; save(String token) =&gt; _storage.write(key: _key, value: token);
+  Future&lt;void&gt; clear() =&gt; _storage.delete(key: _key);
+}</code></pre>
+<p>Save on sign-in (only when the person ticked <em>Remember me</em>, which arrives as <code>Session.remembered</code>) and clear on sign-out. Restore at launch with a call of your own that exchanges the stored token; <code>AuthMapper.sessionFromJson</code> is exported so you can reuse the same mapping:</p>
+<pre><button class="copy" type="button">Copy</button><code>Future&lt;void&gt; main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final SessionStore store = SessionStore();
+
+  Session? restored;
+  final String? stored = await store.read();
+  if (stored != null) {
+    try {
+      // POST /auth/refresh with the stored token; the server rotates it.
+      final Map&lt;String, Object?&gt; json = await api.refresh(stored);
+      restored = AuthMapper.sessionFromJson(
+        json,
+        now: DateTime.now(),
+        remembered: true,
+      );
+      await store.save(restored.refreshToken ?? stored);
+    } on Object {
+      await store.clear(); // revoked, expired or offline-at-launch policy: your call
+    }
+  }
+  runApp(MyApp(store: store, initial: restored));
+}
+
+// In MyApp:
+AuthApp(
+  onAuthenticated: (Session session) {
+    if (session.remembered &amp;&amp; session.refreshToken != null) {
+      store.save(session.refreshToken!);
+    }
+    setState(() =&gt; _session = session);
+  },
+  onSignedOut: store.clear,
+)</code></pre>
+<ul>
+<li>When your own home screen signs the person out, call the server&rsquo;s sign-out (revoking the refresh token) and <code>store.clear()</code> yourself.</li>
+<li>On Android use <code>AndroidOptions(encryptedSharedPreferences: true)</code>; on iOS choose a Keychain accessibility such as <code>first_unlock</code>. Exclude the storage from backups.</li>
+<li>Consider gating the restore with biometrics (<code>local_auth</code>) for sensitive apps.</li>
+<li>If a rotated refresh token is ever presented twice, treat it as theft: revoke the whole token family on the server.</li>
+</ul>
+
+<h2 id="abuse">Enumeration and rate limits</h2>
+<h3>Do not reveal who has an account</h3>
+<ul>
+<li><strong>Sign in</strong> answers &ldquo;The email or password is not right&rdquo; for an unknown email and for a wrong password alike. The in-memory server also counts failures for unknown emails, so the lockout itself reveals nothing. A real server should also spend the same time on both (hash a dummy password when the user does not exist).</li>
+<li><strong>Forgot password</strong> always says &ldquo;If an account exists for &hellip;, a code is on its way&rdquo;. <code>RequestPasswordReset</code> returns <code>void</code> and the screen has no way to learn more, on purpose. The server must answer identically, in about the same time, whether or not it sent mail. Wrong codes for an address that was never sent one fail like any other wrong code.</li>
+<li><strong>Sign up</strong> is the one place the template trades privacy for clarity: it tells the person the email is already registered, because most apps prefer that. If you need to hide it, have the server answer success for existing emails, and mail that address &ldquo;you already have an account&rdquo;; then change <code>SignUpCubit.submit</code> to show a &ldquo;check your email&rdquo; state instead of mapping <code>emailTaken</code> to a field error. The two approaches suit different products; pick one deliberately.</li>
+</ul>
+<h3>Rate limits belong on the server</h3>
+<ul>
+<li>Limit per account <em>and</em> per IP address, so that neither password spraying (many accounts, few guesses) nor a targeted guess run (one account, many guesses) works.</li>
+<li>Prefer throttling and growing delays to a hard lock: a hard lock lets anyone lock out a victim on purpose. Add a challenge (CAPTCHA, device attestation) after repeated failures.</li>
+<li>Answer with <code>429</code> and <code>Retry-After</code>, and let the data source turn it into <code>rate_limited</code> with <code>retryAfterSeconds</code>. The sign-in screen then disables its button and shows <em>Try again in 29s</em> counting down as plain text. The countdown is a finite <code>Timer</code> owned by the cubit and cancelled when it closes.</li>
+<li>A six-digit code has a million values, so allow few guesses (the template: five) and then require a new code. Keep codes short-lived (ten minutes), single use and hashed at rest, and limit how often one can be requested. A new code resets the guess count, which the template&rsquo;s resend link relies on.</li>
+<li>Tell people when a reset or a new sign-in happened, by email.</li>
+</ul>
+
+<h2 id="deeplinks">Deep links for reset</h2>
+<p>Two recovery styles are supported:</p>
+<ul>
+<li><strong>Code</strong> (the default): the email carries a six-digit code, the person types it on the verify screen, and the server answers with a <code>resetToken</code>.</li>
+<li><strong>Link</strong>: the email carries a link. Mount <code>AuthApp(recoveryByLink: true)</code> so the confirmation says &ldquo;we emailed a link&rdquo; and offers no code step. When the link opens your app, mount the template with the token from it: <code>AuthApp(resetToken: token)</code> starts on <em>Choose a new password</em>, and the token goes to <code>resetPassword</code> as the <code>resetToken</code> argument (Firebase&rsquo;s <code>oobCode</code>, or your own).</li>
+</ul>
+<p>Use https links that open the app (Android App Links, iOS Universal Links: <code>https://example.com/reset?token=…</code>), not a custom scheme, which any app can claim. With the <code>app_links</code> package:</p>
+<pre><button class="copy" type="button">Copy</button><code>import 'dart:async';
+
+import 'package:app_links/app_links.dart';
+
+class AuthGate extends StatefulWidget {
+  const AuthGate({super.key});
+
+  @override
+  State&lt;AuthGate&gt; createState() =&gt; _AuthGateState();
+}
+
+class _AuthGateState extends State&lt;AuthGate&gt; {
+  final AppLinks _links = AppLinks();
+  StreamSubscription&lt;Uri&gt;? _subscription;
+  String? _resetToken;
+
+  String? _tokenFrom(Uri? uri) =&gt;
+      uri != null &amp;&amp; uri.path == '/reset' ? uri.queryParameters['token'] : null;
+
+  @override
+  void initState() {
+    super.initState();
+    _links.getInitialLink().then((Uri? uri) {
+      if (mounted) setState(() =&gt; _resetToken = _tokenFrom(uri));
+    });
+    _subscription = _links.uriLinkStream.listen((Uri uri) {
+      final String? token = _tokenFrom(uri);
+      if (token != null) setState(() =&gt; _resetToken = token);
+    });
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) =&gt; AuthApp(
+    // A new key remounts the template with the new token.
+    key: ValueKey&lt;String?&gt;(_resetToken),
+    resetToken: _resetToken,
+    recoveryByLink: true,
+    authDataSource: myDataSource,
+    onAuthenticated: (Session session) =&gt; router.go('/home'),
+  );
+}</code></pre>
+<div class="callout warn"><strong>Treat the token as a password</strong><ul>
+<li>Single use, short life (an hour at most), bound to one account, stored hashed on the server.</li>
+<li>Do not log the URL. Do not put the token in analytics events.</li>
+<li>Expired or used tokens come back as <code>code_expired</code>; the screen then offers <em>Start over</em>, which goes to <em>Forgot your password?</em>.</li>
+<li>After a successful reset, revoke the account&rsquo;s other sessions and refresh tokens, and email the owner.</li>
+</ul></div>
+
+<h2 id="navigation">Use go_router</h2>
+<p>The template navigates with its own stack so it runs unchanged in any app. There are two ways to fit it to <code>go_router</code>.</p>
+<h3>A. One route (recommended)</h3>
+<p>Give the whole template a single route, and leave through <code>onAuthenticated</code>. This needs no copying:</p>
+<pre><button class="copy" type="button">Copy</button><code>final ValueNotifier&lt;Session?&gt; session = ValueNotifier&lt;Session?&gt;(null);
+
+final GoRouter router = GoRouter(
+  refreshListenable: session,
+  redirect: (BuildContext context, GoRouterState state) {
+    final bool signedIn = session.value != null;
+    if (!signedIn &amp;&amp; state.matchedLocation != '/auth') return '/auth';
+    if (signedIn &amp;&amp; state.matchedLocation == '/auth') return '/home';
+    return null;
+  },
+  routes: &lt;RouteBase&gt;[
+    GoRoute(
+      path: '/auth',
+      builder: (BuildContext context, GoRouterState state) =&gt; Scaffold(
+        body: AuthApp(
+          resetToken: state.uri.queryParameters['token'],
+          recoveryByLink: true,
+          onAuthenticated: (Session s) =&gt; session.value = s,
+        ),
+      ),
+    ),
+    GoRoute(
+      path: '/home',
+      builder: (BuildContext context, GoRouterState state) =&gt;
+          HomePage(onSignOut: () =&gt; session.value = null),
+    ),
+  ],
+);</code></pre>
+<p>Back inside the template is handled by the template; the system back gesture only reaches <code>go_router</code> when the template is on its first screen.</p>
+<h3>B. One route per screen (copied source)</h3>
+<p>If you want <code>/auth/sign-in</code>, <code>/auth/sign-up</code> and so on as real URLs, copy the source, delete <code>AuthShell</code> and <code>AuthNavigationCubit</code>, and make each view a route. The views only need an <code>AuthDestination</code> and the scope above them:</p>
+<table>
+<tr><th>Template call</th><th>go_router call</th></tr>
+<tr><td><code>nav.push(AuthScreen.signIn)</code></td><td><code>context.push('/auth/sign-in')</code></td></tr>
+<tr><td><code>nav.push(AuthScreen.verifyCode, email: e)</code></td><td><code>context.push('/auth/verify?email=$e')</code></td></tr>
+<tr><td><code>nav.replaceTrailing(..., AuthScreen.resetPassword, grant: g)</code></td><td><code>context.go('/auth/reset?token=${g.token}')</code></td></tr>
+<tr><td><code>nav.switchTo(AuthScreen.signIn)</code></td><td><code>context.go('/auth/sign-in')</code></td></tr>
+<tr><td><code>nav.back()</code></td><td><code>context.pop()</code></td></tr>
+</table>
+<pre><button class="copy" type="button">Copy</button><code>MaterialApp.router(
+  routerConfig: router,
+  // The scope and providers replace AuthApp's; keep them above the router.
+  builder: (BuildContext context, Widget? child) =&gt; AuthScope(
+    locator: locator, // createAuthLocator(dataSource: ...)
+    config: const AuthConfig(),
+    child: AuthProviders(
+      locator: locator,
+      onAuthenticated: (Session s) =&gt; router.go('/home'),
+      child: Material(type: MaterialType.transparency, child: child!),
+    ),
+  ),
+);
+
+GoRoute(
+  path: '/auth/sign-in',
+  builder: (BuildContext context, GoRouterState state) =&gt; SignInView(
+    destination: AuthDestination(
+      AuthScreen.signIn,
+      email: state.uri.queryParameters['email'],
+    ),
+    showBack: context.canPop(),
+  ),
+),</code></pre>
+<p>The cubits, use cases and data layer are untouched. In <code>AuthProviders</code>, replace the navigation calls in the session listener with <code>router.go</code>.</p>
+
+<h2 id="l10n">Localisation</h2>
+<p>All words are in <code>AuthCopy</code>, and the layouts wrap, mirror for right-to-left and respect large text, so translations drop in. <code>AuthCopy</code> is a set of <code>static</code> members, which have no <code>BuildContext</code>, so connecting <code>gen_l10n</code> is a mechanical change in three steps:</p>
+<ol class="steps">
+<li>Add the strings to your ARB files (<code>authSignInTitle</code>, <code>authCheckInboxBody(email)</code>, …) and run <code>flutter gen-l10n</code>.</li>
+<li>Turn <code>AuthCopy</code> into a class that wraps your localisations:
+<pre><button class="copy" type="button">Copy</button><code>class AuthCopy {
+  const AuthCopy(this._l10n);
+  final AppLocalizations _l10n;
+
+  String get signInTitle =&gt; _l10n.authSignInTitle;
+  String checkInboxBody(String email) =&gt; _l10n.authCheckInboxBody(email);
+  String issue(ValidationIssue issue) =&gt; switch (issue) {
+    ValidationIssue.emailInvalid =&gt; _l10n.authEmailInvalid,
+    // ...one case per value; the compiler tells you which are missing
+  };
+}
+
+extension AuthCopyOf on BuildContext {
+  AuthCopy get copy =&gt; AuthCopy(AppLocalizations.of(this));
+}</code></pre></li>
+<li>In the views, replace <code>AuthCopy.signInTitle</code> with <code>context.copy.signInTitle</code>, and remove the <code>const</code> from the widgets that used them. The compiler finds every one.</li>
+</ol>
+<p>The domain never contains user-facing text: validators return <code>ValidationIssue</code> values and failures are <code>AuthFailure</code> values, so translating means changing only <code>AuthCopy</code>.</p>
+
+<h2 id="testing">Testing</h2>
+<p>From the package folder:</p>
+<pre><button class="copy" type="button">Copy</button><code>flutter pub get
+dart format .
+flutter analyze --fatal-infos --fatal-warnings
+flutter test</code></pre>
+<p>Time is injected, so tests never wait. Cubits that count down take a <code>TickerFactory</code>, and the in-memory server takes a <code>Clock</code>:</p>
+<pre><button class="copy" type="button">Copy</button><code>final FakeClock clock = FakeClock();   // test/support/fakes.dart
+final FakeTicker ticker = FakeTicker();
+
+final GetIt locator = createAuthLocator(
+  dataSource: InMemoryAuthRemoteDataSource(
+    latency: Duration.zero,
+    clock: clock.call,
+  ),
+  ticker: ticker.call,
+  clock: clock.call,
+);
+
+final SignInViewModel vm = locator.get&lt;SignInViewModel&gt;(
+  param1: const AuthDestination(AuthScreen.signIn),
+);
+for (int i = 0; i &lt; 5; i++) {
+  await vm.cubit.submit(email: 'ada@example.com', password: 'wrong', remember: false);
+}
+expect(vm.cubit.state.lockedSeconds, 30);
+ticker.tick(30);                      // thirty seconds, instantly
+expect(vm.cubit.state.locked, isFalse);
+vm.dispose();
+expect(ticker.active, 0);             // closing cancelled the timer</code></pre>
+<p>To test your own data source, run the same screens against it: <code>AuthApp(authDataSource: fake)</code> where <code>fake</code> returns the JSON shapes from <a href="#contract">the contract</a>. Widget tests follow three rules that Cairn&rsquo;s animations make necessary:</p>
+<ul>
+<li>Pump in small steps (<code>tester.pump(const Duration(milliseconds: 100))</code>), never <code>pumpAndSettle</code>: the spinner and progress bars repeat and never settle.</li>
+<li>Advance countdowns with <code>tester.pump(const Duration(seconds: 1))</code>; flutter_test&rsquo;s fake clock fires the cubits&rsquo; timers.</li>
+<li>Unmount at the end (<code>pumpWidget(const SizedBox.shrink())</code>) so cubits close and timers are cancelled.</li>
+</ul>
+<p><code>test/flutter_test_config.dart</code> loads Geist from <code>../../fonts</code> when the template sits in the Cairn site checkout. Without a real font, Flutter&rsquo;s test font draws every glyph as a wide box and reports overflows real text never has; load your own font in the same file and set <code>fontFamily</code> on the test theme.</p>
+
+<h2 id="faq">Troubleshooting</h2>
+<h3>&ldquo;No AuthScope above this context&rdquo;</h3>
+<p>You built a view or <code>ViewModelBuilder</code> outside <code>AuthApp</code>. Mount <code>AuthApp</code> (it provides the scope), or wrap your tree in <code>AuthScope</code> and <code>AuthProviders</code> with a locator from <code>createAuthLocator()</code>.</p>
+<h3>Everything is unstyled</h3>
+<p>The host app has no <code>CairnTheme</code>. Use <code>CairnTheme.materialTheme(...)</code>, or add <code>CairnTheme.light</code> to <code>ThemeData.extensions</code>.</p>
+<h3>The keyboard covers the field</h3>
+<p>The template pads its scroll area by the keyboard height, but if your <code>Scaffold</code> has <code>resizeToAvoidBottomInset: false</code> something else must make room: remove that flag, or wrap <code>AuthApp</code> in a <code>Padding</code> of <code>MediaQuery.viewInsetsOf(context).bottom</code>.</p>
+<h3>The system back button closes my app</h3>
+<p>That is correct on the template&rsquo;s first screen; on every other screen back steps through the stack. If back never reaches the template, check that nothing above it (a <code>PopScope</code>, a router) consumes the gesture.</p>
+<h3>The verify button is dimmed</h3>
+<p>It waits for six digits, and stays disabled while the code is locked (too many wrong codes, or expired). Requesting a new code clears the lock.</p>
+<h3>The social buttons sign in as &ldquo;Taylor&rdquo;</h3>
+<p>No <code>onSocialSignIn</code> was given, so the in-memory server received a placeholder token. See <a href="#social">Social sign-in</a>.</p>
+<h3>The keyboard offers no saved passwords</h3>
+<p>Cairn&rsquo;s <code>CairnInput</code> does not expose <code>autofillHints</code>, so platform autofill is not offered inside the template. The password keyboard type is set for password fields. If you need autofill, wrap Flutter&rsquo;s <code>TextField</code> in <code>LabeledInput</code> yourself.</p>
+<h3>Tests report &ldquo;A Timer is still pending&rdquo;</h3>
+<p>A countdown outlived the test. Unmount the app before the test ends (<code>pumpWidget(const SizedBox.shrink())</code>), or close the cubit through its view model.</p>
+<h3>Where do I report a bug?</h3>
+<p>Open an issue on the <a href="https://github.com/rlphjyson/cairn_site/issues">cairn_site repository</a> with the Flutter and <code>cairn_ui</code> versions.</p>
+
+<h2 id="migrate">Migration</h2>
+<table>
+<tr><th>You want to&hellip;</th><th>Do this</th></tr>
+<tr><td>Move from the demo to a real backend</td><td>Write an <code>AuthRemoteDataSource</code>, pass it as <code>authDataSource</code>, remove <code>showDemoHint</code>. Run your own flows through the widget tests against a fake of it.</td></tr>
+<tr><td>Move from copied source to the package</td><td>Delete your copy, add the dependency, change imports back to <code>package:cairn_template_auth/…</code>, and move your edits (the data source, the copy, the brand mark) into your own wrapper where you can; edits to views need a fork.</td></tr>
+<tr><td>Pull template updates into a copy</td><td>Diff <code>templates/auth/lib</code> between your last sync and the new one. Dependencies point inwards, so a change is almost always inside one layer.</td></tr>
+<tr><td>Keep people signed in</td><td>Follow <a href="#storage">Secure session storage</a>: persist the refresh token from <code>onAuthenticated</code> and restore it before mounting.</td></tr>
+<tr><td>Switch from codes to links (or back)</td><td>Toggle <code>recoveryByLink</code>, and pass the link&rsquo;s token as <code>resetToken</code> (see <a href="#deeplinks">Deep links</a>). The data source&rsquo;s <code>verifyCode</code> is unused in link mode.</td></tr>
+<tr><td>Replace the navigation</td><td>See <a href="#navigation">Use go_router</a>. Views depend on <code>AuthDestination</code> and the session cubits only.</td></tr>
+<tr><td>Change state management</td><td>Cubits are plain streams of immutable states. Views call <code>vm.cubit.method()</code> and read <code>state</code>, so Riverpod or Provider can replace <code>BlocConsumer</code> view by view.</td></tr>
+<tr><td>Use your own password rules or estimator</td><td>Edit <code>PasswordRule</code>, <code>PasswordStrength</code> and <code>AuthPolicy</code>. Register a changed <code>PasswordStrength</code> constructor in <code>auth_injection.dart</code>.</td></tr>
+</table>
+</main>
+</div>
+<script>
+(function(){
+  document.querySelectorAll('pre').forEach(function(pre){
+    var b=pre.querySelector('.copy'); if(!b) return;
+    b.addEventListener('click',function(){
+      var code=pre.querySelector('code').innerText;
+      var done=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1200)};
+      if(navigator.clipboard){navigator.clipboard.writeText(code).then(done,done)}else{done()}
+    });
+  });
+  var links=[].slice.call(document.querySelectorAll('nav.toc a'));
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){links.forEach(function(a){a.classList.remove('active')});var a=map[e.target.id];if(a)a.classList.add('active')}
+  })},{rootMargin:'-20% 0px -70% 0px'});
+  document.querySelectorAll('h2[id],h3[id]').forEach(function(h){io.observe(h)});
+  var root=document.documentElement, key='tpl-theme';
+  try{var s=localStorage.getItem(key);if(s)root.setAttribute('data-theme',s)}catch(e){}
+  document.getElementById('theme').addEventListener('click',function(){
+    var dark=root.getAttribute('data-theme')?root.getAttribute('data-theme')==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+    var next=dark?'light':'dark';root.setAttribute('data-theme',next);try{localStorage.setItem(key,next)}catch(e){}
+  });
+})();
+</script>
+</body>
+</html>
