@@ -260,17 +260,25 @@ class _DesktopNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String location = currentLocation(context);
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        for (final NavDestination destination in siteNav)
-          if (destination.primary)
-            _NavLink(
-              destination: destination,
-              active: destination.matches(location),
-            ),
-      ],
+    // The header is mounted once by the ShellRoute and `GoRouter.of` does not
+    // notify on navigation, so listen to the delegate directly; otherwise the
+    // highlighted link stays on whichever page the site was opened at.
+    return ListenableBuilder(
+      listenable: GoRouter.of(context).routerDelegate,
+      builder: (BuildContext context, _) {
+        final String location = currentLocation(context);
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            for (final NavDestination destination in siteNav)
+              if (destination.primary)
+                _NavLink(
+                  destination: destination,
+                  active: destination.matches(location),
+                ),
+          ],
+        );
+      },
     );
   }
 }

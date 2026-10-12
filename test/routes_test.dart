@@ -16,6 +16,7 @@ import 'package:cairn_site/src/pages/typeset_page.dart';
 import 'package:cairn_ui/cairn_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 
 import 'site_harness.dart';
 
@@ -181,6 +182,42 @@ void main() {
 
     expect(find.byType(ChartsPage), findsOneWidget);
     expect(find.byType(HomePage), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('the nav bar highlights the page you navigate to', (
+    WidgetTester tester,
+  ) async {
+    bool isActive(String label) {
+      final Text text = tester.widget<Text>(
+        find
+            .descendant(
+              of: find.widgetWithText(CairnButton, label).first,
+              matching: find.text(label),
+            )
+            .first,
+      );
+      return text.style?.fontWeight == CairnTypography.medium;
+    }
+
+    await pumpSite(tester, Routes.templates);
+    expect(isActive('Templates'), isTrue);
+    expect(isActive('Docs'), isFalse);
+
+    await tester.tap(find.widgetWithText(CairnButton, 'Docs').first);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
+
+    expect(isActive('Docs'), isTrue);
+    expect(isActive('Templates'), isFalse);
+
+    // Navigation that does not come from the nav bar updates it too.
+    GoRouter.of(tester.element(find.byType(DocsPage))).go(Routes.charts);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
+
+    expect(isActive('Charts'), isTrue);
+    expect(isActive('Docs'), isFalse);
     expect(tester.takeException(), isNull);
   });
 }
